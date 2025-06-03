@@ -1,6 +1,9 @@
 const EpisodiSchema = mongoose.Schema({  
 	_id: Schema.Types.ObjectId,
-	tconst: String, 
+	tconst: {type:
+		String,
+		ref: "Titoli2"
+	},
 	parentTconst: String, 
 	seasonNumber: String,
 	episodeNumber: String 

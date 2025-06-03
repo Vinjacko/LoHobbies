@@ -1,8 +1,14 @@
 const MansioniSchema = mongoose.Schema({
     _id: Schema.Types.ObjectId,
-    tconst: String,
+    tconst: {type:
+		String,
+		ref: "Titoli2"
+	},
     ordering: Number,
-    nconst: String,
+    nconst: {type:
+		String,
+		ref: "Crew"
+	},
     category: String,
     job: String,
     characters: String,
