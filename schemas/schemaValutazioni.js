@@ -1,4 +1,5 @@
 const ValutazioniSchema = mongoose.Schema({  
+	_id: Schema.Types.ObjectId,
 	tconst: String, 
 	averageRating: Number, 
 	numVotes: Number

@@ -1,4 +1,5 @@
 const CrewSchema = new mongoose.Schema({
+  _id: Schema.Types.ObjectId,
   nconst: String,
   primaryName: String,
   birthYear: String,

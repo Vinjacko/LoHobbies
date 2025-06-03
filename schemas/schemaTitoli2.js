@@ -1,4 +1,5 @@
 const Titoli2Schema = mongoose.Schema({  
+	_id: Schema.Types.ObjectId,
 	tconst: String, 
 	titleType: String, 
 	primaryTitle: String,

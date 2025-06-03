@@ -1,4 +1,5 @@
 const MansioniSchema = mongoose.Schema({
+    _id: Schema.Types.ObjectId,
     tconst: String,
     ordering: Number,
     nconst: String,
