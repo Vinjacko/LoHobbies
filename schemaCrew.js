@@ -1,4 +1,4 @@
-const crewSchema = new mongoose.Schema({
+const CrewSchema = new mongoose.Schema({
   nconst: String,
   primaryName: String,
   birthYear: String,
@@ -7,4 +7,4 @@ const crewSchema = new mongoose.Schema({
   knownForTitles: String
 });
 
-const crew = mongoose.model('Crew', crewSchema);
+const Crew = mongoose.model('Crew', CrewSchema);

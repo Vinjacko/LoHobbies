@@ -1,4 +1,4 @@
-const titoliSchema = new mongoose.Schema({
+const TitoliSchema = new mongoose.Schema({
   titleId: String,
   ordering: Number,
   title: String,
@@ -9,4 +9,4 @@ const titoliSchema = new mongoose.Schema({
   isOriginalTitle: Boolean
 });
 
-const titoli = mongoose.model('Titoli', titoliSchema);
+const Titoli = mongoose.model('Titoli', TitoliSchema);
