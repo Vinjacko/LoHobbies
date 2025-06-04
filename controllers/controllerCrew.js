@@ -9,14 +9,12 @@ exports.findCrewByName = async (req, res) => {
         }
 
         // Ricerca case-insensitive e parziale
-        const Crew = await Crew.find({
+        const crew = await Crew.find({
             primaryName: { $regex: nomeCercato, $options: 'i' }
         });
 
-        res.status(200).json(Crew);
+        res.status(200).json(crew);
     } catch (err) {
         res.status(500).json({ errore: err.message });
     }
 };
-
-
