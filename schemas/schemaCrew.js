@@ -5,10 +5,11 @@ const CrewSchema = new mongoose.Schema({
   birthYear: String,
   deathYear: String,
   primaryProfession: String,
-  knownForTitles: {type:
-		String,
-		ref: "Titoli2",
-	},
+  knownForTitles: {
+    type:
+      String,
+    ref: "Titoli2",
+  },
 });
 
 const Crew = mongoose.model('Crew', CrewSchema);

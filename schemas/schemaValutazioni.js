@@ -1,11 +1,12 @@
-const ValutazioniSchema = mongoose.Schema({  
+const ValutazioniSchema = mongoose.Schema({
 	_id: Schema.Types.ObjectId,
-	tconst: {type:
-		String,
+	tconst: {
+		type:
+			String,
 		ref: "Titoli2"
-	}, 
-	averageRating: Number, 
+	},
+	averageRating: Number,
 	numVotes: Number
-	
-}); 
+
+});
 const Valutazioni = mongoose.model("Valutazioni", ValutazioniSchema);

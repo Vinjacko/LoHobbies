@@ -1,11 +1,12 @@
-const EpisodiSchema = mongoose.Schema({  
+const EpisodiSchema = mongoose.Schema({
 	_id: Schema.Types.ObjectId,
-	tconst: {type:
-		String,
+	tconst: {
+		type:
+			String,
 		ref: "Titoli2"
 	},
-	parentTconst: String, 
+	parentTconst: String,
 	seasonNumber: String,
-	episodeNumber: String 
-}); 
+	episodeNumber: String
+});
 const Episodi = mongoose.model("Episodi", EpisodiSchema);
