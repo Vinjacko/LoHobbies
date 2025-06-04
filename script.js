@@ -8,7 +8,3 @@ mongoose.connect('mongodb://localhost:27017/MoviesSeries', {
 .then(() => console.log('Connesso a MongoDB!'))
 .catch(err => console.error('Errore di connessione:', err));
 
-
-
-const angelo = document.getElementById("angelo");
-angelo.addEventListener("click", function () {alert("Sei gay!!!!");});
