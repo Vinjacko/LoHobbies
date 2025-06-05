@@ -1,0 +1,21 @@
+-login / sign in
+-schermata per la descrizione dei film e degli attori
+-barra di ricerca per cercare i f/t, con i filtri, + contenuto dinamico (es.cerco jhonny depp ed esce pagina di jd e la pagina di alcuni titoli e poi c'è il tasto mostra di più che mi fa accedere alla visione di tutti i titoli di jhonny depp)
+-salvataggio preferiti
+-valutazioni f/t
+-commentare
+-Diario in cui ti mantiene la data in cui hai visto il titolo 
+-raccolta è  l'elenco delle cose che ho visto
+-watchlist è l'elenco delle cose che voglio vedere
+-discover una schermata che mi fa vedere quali f/t sono più in tendenza in quel momento
+
+Utente:
+
+Valutazioni:
+
+Preferiti:
+
+Watchlist:
+
+Commenti:
+
