@@ -1,5 +1,5 @@
-const Titoli2 = require('../schemas/schemaTitoli2');
-const Crew = require('../schemas/schemaCrew');
+const Titoli2 = require('../../schemas/schemaTitoli2');
+const Crew = require('../../schemas/schemaCrew');
 
 exports.findMovieByTitle = async (req, res) => {
     try {
