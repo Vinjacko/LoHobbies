@@ -3,20 +3,20 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: [true, "L'username è obbligatorio"],
+    required: true,
     unique: true,
     trim: true,
   },
   email: {
     type: String,
-    required: [true, "L'email è obbligatoria"],
+    required: true, 
     unique: true,
     trim: true,
     lowercase: true,
   },
   password: {
     type: String,
-    required: [true, "La password è obbligatoria"],
+    required: true, 
     minlength: 6,
     select: false,          // Non ritorna la password nelle query di default
   },
