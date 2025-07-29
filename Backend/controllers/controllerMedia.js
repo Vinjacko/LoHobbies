@@ -6,10 +6,10 @@ exports.getMediaByTmdbId = async (req, res) => {
     try {
         const media = await Media.findOne({ tmdbId: req.params.tmdbId });
         if (!media) {
-            return res.status(404).json({ status: 'fail', message: 'Media non trovato nel database locale.' });
+            return res.status(404).json({ message: "Media non trovato nel database locale." });
         }
-        res.status(200).json({ status: 'success', data: { media } });
+        res.status(200).json({ message: "Media trovato correttamente"});
     } catch (error) {
-        res.status(500).json({ status: 'error', message: error.message });
+        res.status(500).json({ message: "Errore del server, media non trovato" });
     }
 };

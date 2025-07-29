@@ -1,8 +1,8 @@
-const DiaryEntry = require('../models/diaryEntry.model');
+const Diary = require('../models/diary.model');
 const Media = require('../models/media.model');
 const User = require('../models/user.model');
 
-// Funzione helper già vista
+
 async function findOrCreateMedia(mediaData) {
     let media = await Media.findOne({ tmdbId: mediaData.tmdbId });
     if (!media) {
@@ -19,31 +19,31 @@ exports.logOrUpdateEntry = async (req, res) => {
 
         const media = await findOrCreateMedia(mediaData);
         
-        const entry = await DiaryEntry.findOneAndUpdate(
-            { user: user, media: media._id }, // Criterio di ricerca
-            { rating, reviewText, watchedDate }, // Dati da aggiornare o creare
-            { new: true, upsert: true, runValidators: true } // Opzioni: ritorna il doc nuovo, crealo se non esiste, esegui validatori
+        const entry = await Diary.findOneAndUpdate(
+            { user: user, media: media._id },       // Criterio di ricerca
+            { rating, reviewText, watchedDate },    // Dati da aggiornare o creare
+            { new: true, upsert: true, runValidators: true }    // Opzioni: ritorna il doc nuovo, crealo se non esiste, esegui validatori per rispettare i vincoli sul voto
         ).populate('media');
 
-        // Bonus: rimuovi il film dalla watchlist se era presente
+        //rimuovi il film dalla watchlist se era presente
         await User.findByIdAndUpdate(user, { $pull: { watchlist: media._id } });
 
-        res.status(201).json({ status: 'success', data: { entry } });
+        res.status(201).json({ message: "Diario aggiornato correttamente."});
     } catch (error) {
-        res.status(500).json({ status: 'error', message: error.message });
+        res.status(500).json({ message: "Errore nel server, diario non aggiornato."});
     }
 };
 
 // Ottiene tutte le voci del diario di un utente
 exports.getUserDiary = async (req, res) => {
     try {
-        const entries = await DiaryEntry.find({ user: req.user.id })
-            .populate('media') // Sostituisce l'ID del media con l'oggetto media completo
-            .sort({ watchedDate: -1 }); // Ordina per data di visione più recente
+        const entries = await Diary.find({ user: req.user.id })
+            .populate('media')              // Sostituisce l'ID del media con l'oggetto media completo
+            .sort({ watchedDate: -1 });     // Ordina per data di visione più recente
 
-        res.status(200).json({ status: 'success', results: entries.length, data: { entries } });
+        res.status(200).json({ message: "Diario mostrato correttamente."});
     } catch (error) {
-        res.status(500).json({ status: 'error', message: error.message });
+        res.status(500).json({ message: "Errore del server, impossibile visualizzare il diario."});
     }
 };
 
@@ -51,14 +51,14 @@ exports.getUserDiary = async (req, res) => {
 exports.deleteEntry = async (req, res) => {
     try {
         const { entryId } = req.params;
-        const entry = await DiaryEntry.findOneAndDelete({ _id: entryId, user: req.user.id });
+        const entry = await Diary.findOneAndDelete({ _id: entryId, user: req.user.id });
 
         if (!entry) {
-            return res.status(404).json({ status: 'fail', message: 'Nessuna voce del diario trovata con questo ID per questo utente.' });
+            return res.status(404).json({message: "Errore: voce del diario non trovata."});
         }
 
-        res.status(204).json({ status: 'success', data: null });
+        res.status(204).json({ message: "La rimozione è stata eseguita correttamente" });
     } catch (error) {
-        res.status(500).json({ status: 'error', message: error.message });
+        res.status(500).json({ message: "Errore del server, impossibile rimuovere la voce del diario." });
     }
 };
