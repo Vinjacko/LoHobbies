@@ -1,11 +1,11 @@
 const User = require('../models/user.model');
 const Media = require('../models/media.model');
 
-// 'findOrCreateMedia' è una funzione helper (che abbiamo definito prima) che:
-    // Cerca nella tua collezione 'Media' un documento con quel tmdbId.
-    // Se lo trova, lo restituisce.
-    // Se NON lo trova, ne crea uno nuovo nel tuo database e poi lo restituisce.
-    // Questo passaggio è cruciale per non avere duplicati di film nel tuo DB.
+// 'findOrCreateMedia' è una funzione helper che:
+    // Cerca nella tua collezione 'Media' un documento con quel tmdbId
+    // Se lo trova, lo restituisce
+    // Se NON lo trova, ne crea uno nuovo nel tuo database e poi lo restituisce
+    // Questo passaggio è cruciale per non avere duplicati di film nel tuo DB
 
 async function findOrCreateMedia(mediaData) {                               
     let media = await Media.findOne({ tmdbId: mediaData.tmdbId });

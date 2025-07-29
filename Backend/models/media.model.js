@@ -27,24 +27,6 @@ const mediaSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
-    genre: {
-        genreId: {
-            type: Number,
-            required: true,
-            trim: true,
-        },
-        genreName: {
-            type: String,
-            required: true,
-            trim: true,
-        }
-    },
-    personId: {
-        type: Number,
-        required: true,
-        unique: true,
-    }
-
 }, { timestamps: true });
 
 const Media = mongoose.model('Media', mediaSchema);

@@ -13,3 +13,5 @@ exports.getMediaByTmdbId = async (req, res) => {
         res.status(500).json({ message: "Errore del server, media non trovato" });
     }
 };
+
+

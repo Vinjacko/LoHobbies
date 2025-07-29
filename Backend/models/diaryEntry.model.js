@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const diarySchema = new mongoose.Schema({
+const diaryEntrySchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -20,27 +20,23 @@ const diarySchema = new mongoose.Schema({
             validator: function(v) {
                 return v % 0.5 === 0;
             },
-            message: props => `${props.value} non è un valore valido! Il voto deve essere incrementato per multipli di 0.5`     // viene eseguito il contenuto di message se il return è false
+            message: props => `${props.value} non è un valore valido! La valutazione deve essere in incrementi di 0.5.`
         }
     },
-
-    // Il "commento" o recensione
-
-    reviewText: {               
+    reviewText: { // Il "commento" o recensione
         type: String,
         trim: true
     },
     watchedDate: {
         type: Date,
-        required: true,
+        required: [true, 'La data di visione è obbligatoria'],
         default: Date.now,
     }
 }, { timestamps: true });
 
 // Indice composto per assicurare che un utente possa avere una sola voce per un dato media
+diaryEntrySchema.index({ user: 1, media: 1 }, { unique: true });
 
-diarySchema.index({ user: 1, media: 1 }, { unique: true });
+const DiaryEntry = mongoose.model('DiaryEntry', diaryEntrySchema);
 
-const Diary = mongoose.model('Diary', diarySchema);
-
-module.exports = Diary;
+module.exports = DiaryEntry;
