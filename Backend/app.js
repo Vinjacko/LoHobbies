@@ -18,12 +18,4 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/diary', diaryRouter);
 app.use('/api/v1/media', mediaRouter);
 
-// Gestione rotte non trovate
-app.all('*', (req, res, next) => {
-    res.status(404).json({
-        status: 'fail',
-        message: `Impossibile trovare ${req.originalUrl} su questo server!`
-    });
-});
-
 module.exports = app;
