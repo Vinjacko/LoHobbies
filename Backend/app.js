@@ -4,6 +4,7 @@ const cors = require('cors');
 const userRouter = require('./routes/user.routes');
 const diaryRouter = require('./routes/diary.routes');
 const mediaRouter = require('./routes/media.routes');
+const filmRouter = require('./routes/film.routes');
 
 const app = express();
 
@@ -17,5 +18,6 @@ app.use(express.json());
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/diary', diaryRouter);
 app.use('/api/v1/media', mediaRouter);
+app.use('/api/v1/film', filmRouter)
 
 module.exports = app;
