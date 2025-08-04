@@ -34,17 +34,17 @@ const MediaPage = () => {
         const fetchMedia = async () => {
             try {
                 // Fetch main media details
-                const mediaRes = await axios.get(`http://localhost:3000/api/v1/media/${media_type}/${id}?language=${i18n.language}`);
+                const mediaRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/${media_type}/${id}?language=${i18n.language}`);
                 setMedia(mediaRes.data.data);
 
                 // Fetch recommendations
-                const recommendationsRes = await axios.get(`http://localhost:3000/api/v1/media/${media_type}/${id}/recommendations?language=${i18n.language}`);
+                const recommendationsRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/${media_type}/${id}/recommendations?language=${i18n.language}`);
                 setRecommendations(recommendationsRes.data.data.slice(0, 12));
 
                 // Fetch similar media by genre
                 if (mediaRes.data.data.genres && mediaRes.data.data.genres.length > 0) {
                     const genreId = mediaRes.data.data.genres[0].id;
-                    const similarRes = await axios.get(`http://localhost:3000/api/v1/media/discover?genres=${genreId}&mediaType=${media_type}&language=${i18n.language}`);
+                    const similarRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/discover?genres=${genreId}&mediaType=${media_type}&language=${i18n.language}`);
                     const filteredSimilar = similarRes.data.data
                         .filter(item => item.id !== parseInt(id))
                         .slice(0, 12);
@@ -62,7 +62,7 @@ const MediaPage = () => {
         const checkWatchlist = async () => {
             if (auth && auth.user) {
                 try {
-                    const response = await axios.get('http://localhost:3000/api/v1/media/watchlist');
+                    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/watchlist`);
                     const inWatchlist = response.data.data.some(item => item.mediaId === id);
                     setIsInWatchlist(inWatchlist);
                 } catch (error) {
@@ -77,7 +77,7 @@ const MediaPage = () => {
         const checkFavourites = async () => {
             if (auth && auth.user) {
                 try {
-                    const response = await axios.get('http://localhost:3000/api/v1/media/favourites');
+                    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/favourites`);
                     const inFavourites = response.data.data.some(item => item.mediaId === id);
                     setIsInFavourites(inFavourites);
                 } catch (error) {
@@ -120,11 +120,11 @@ const MediaPage = () => {
         }
         try {
             if (isInWatchlist) {
-                await axios.delete(`http://localhost:3000/api/v1/media/watchlist/${media.id}`);
+                await axios.delete(`${process.env.REACT_APP_API_URL}/api/v1/media/watchlist/${media.id}`);
                 setNotificationMessage(t('removedFromWatchlist'));
                 setNotificationType('error');
             } else {
-                await axios.post('http://localhost:3000/api/v1/media/watchlist', {
+                await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/media/watchlist`, {
                     mediaId: media.id,
                     mediaType: media_type,
                     posterPath: media.poster_path,
@@ -149,11 +149,11 @@ const MediaPage = () => {
         }
         try {
             if (isInFavourites) {
-                await axios.delete(`http://localhost:3000/api/v1/media/favourites/${media.id}`);
+                await axios.delete(`${process.env.REACT_APP_API_URL}/api/v1/media/favourites/${media.id}`);
                 setNotificationMessage(t('removedFromFavourites'));
                 setNotificationType('error');
             } else {
-                await axios.post('http://localhost:3000/api/v1/media/favourites', {
+                await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/media/favourites`, {
                     mediaId: media.id,
                     mediaType: media_type,
                     posterPath: media.poster_path,
@@ -176,7 +176,7 @@ const MediaPage = () => {
             return;
         }
         try {
-            await axios.post('http://localhost:3000/api/v1/media/diary', {
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/media/diary`, {
                 mediaId: media.id,
                 mediaType: media_type,
                 posterPath: media.poster_path,

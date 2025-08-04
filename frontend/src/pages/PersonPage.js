@@ -13,7 +13,7 @@ const PersonPage = () => {
     useEffect(() => {
         const fetchPerson = async () => {
             try {
-                const personRes = await fetch(`http://localhost:3000/api/v1/media/person/${id}?language=${i18n.language}`);
+                const personRes = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/media/person/${id}?language=${i18n.language}`);
                 if (!personRes.ok) throw new Error(`HTTP error! status: ${personRes.status}`);
                 const personData = await personRes.json();
                 setPerson(personData.data);

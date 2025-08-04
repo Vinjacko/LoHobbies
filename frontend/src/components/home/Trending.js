@@ -15,7 +15,7 @@ const Trending = () => {
   useEffect(() => {
     const getTrending = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/v1/media/trending?language=${i18n.language}`);
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/media/trending?language=${i18n.language}`);
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
