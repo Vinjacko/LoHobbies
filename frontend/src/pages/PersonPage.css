@@ -1,0 +1,44 @@
+.person-page {
+    color: #fff;
+}
+
+.person-header {
+    background: #111;
+    padding: 2rem;
+}
+
+.person-header-content {
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.person-header-content img {
+    width: 300px;
+    border-radius: 8px;
+}
+
+.person-info {
+    color: #fff;
+}
+
+.person-info h1 {
+    margin-top: 0;
+    color: #fff;
+}
+
+.person-info h3 {
+    color: #fff;
+    text-align: left;
+}
+
+.person-info p {
+    text-align: justify;
+}
+
+.person-details {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}

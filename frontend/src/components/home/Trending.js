@@ -1,0 +1,68 @@
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import i18n from '../../i18n';
+import { Link } from 'react-router-dom';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import './Trending.css';
+import { Navigation } from 'swiper';
+
+const Trending = () => {
+  const { t } = useTranslation();
+  const [trending, setTrending] = useState([]);
+
+  useEffect(() => {
+    const getTrending = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/api/v1/media/trending?language=${i18n.language}`);
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+        setTrending(data.data);
+      } catch (error) {
+        console.error("Could not fetch trending data:", error);
+      }
+    };
+    getTrending();
+  }, []);
+
+  return (
+    <div className="trending-container">
+      <h2>{t('trending')}</h2>
+      <Swiper
+        className="trending-swiper"
+        modules={[Navigation]}
+        spaceBetween={16} /* Spaziatura uniforme tra le locandine */
+        slidesPerView={'auto'} /* Permette a Swiper di mostrare quante più slide possibili */
+        navigation
+      >
+        {trending.map((item) => (
+          <SwiperSlide key={item.id} className="trending-slide">
+            <Link to={`/media/${item.media_type}/${item.id}`} className="trending-item">
+              <div className="trending-item-image-container">
+                {item.poster_path ? (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                    alt={item.title || item.name}
+                  />
+                ) : (
+                  <img src='/img/content_placeholder.jpg' alt='Placeholder' />
+                )}
+                <div className="trending-item-overlay">
+                  <div className="trending-item-info">
+                    <strong>{item.title || item.name}</strong>
+                    <span>{new Date(item.release_date || item.first_air_date).getFullYear()} • ★ {(item.vote_average / 2).toFixed(1)}/5</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
+};
+
+export default Trending;

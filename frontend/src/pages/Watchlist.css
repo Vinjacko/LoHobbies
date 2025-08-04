@@ -1,0 +1,48 @@
+.watchlist-container {
+  padding: 2rem;
+}
+
+.watchlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.watchlist-item {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.watchlist-item:hover {
+  transform: scale(1.05);
+}
+
+.watchlist-item a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.watchlist-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.watchlist-item-info {
+  padding: 1rem;
+}
+
+.watchlist-item-info h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.watchlist-item-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #aaa;
+}

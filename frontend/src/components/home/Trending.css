@@ -1,0 +1,157 @@
+/*
+  Stili per la sezione "Contenuti di Tendenza"
+  Design compatto con carosello orizzontale e aspect ratio 2:3.
+*/
+
+/* Contenitore principale della sezione */
+.trending-container {
+  padding: 0 0 2rem 0; /* Padding verticale, orizzontale gestito dal carosello */
+  background-color: #000;
+  color: var(--text-color);
+  overflow: hidden; /* Nasconde lo scrollbar orizzontale del browser se il carosello sporge */
+}
+
+/* Titolo della sezione */
+.trending-container h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  padding: 0 2rem; /* Spaziatura interna per allineare con il resto del layout */
+  color: #fff;
+}
+
+/* Stile per il contenitore Swiper per dare spazio ai lati */
+.trending-swiper {
+  padding: 0 2rem;
+}
+
+/* Wrapper per ogni singola slide, per centrare il contenuto */
+.trending-slide {
+  display: flex;
+  justify-content: center;
+  width: auto; /* Permette a Swiper di calcolare la larghezza in base al contenuto */
+}
+
+/* Contenitore della locandina per aspect ratio e interazioni */
+.trending-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  /* --- Dimensioni Desktop (Base) --- */
+  /* Mantiene un aspect ratio di 2:3 */
+  width: 225px;
+  height: 337.5px;
+}
+
+/* Effetto al passaggio del mouse */
+.trending-item:hover .trending-item-image-container .trending-item-overlay {
+  opacity: 1;
+}
+
+.trending-item:hover .trending-item-image-container img {
+  transform: scale(1.05);
+}
+
+.trending-item-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* Immagine della locandina */
+.trending-item-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Copre l'area senza distorcere l'immagine */
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.trending-item-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  box-sizing: border-box;
+}
+
+.trending-item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.trending-item-info span {
+  color: #e0e0e0;
+  font-weight: 400;
+}
+
+/* --- Adattamenti Responsive --- */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .trending-item {
+    width: 187.5px;
+    height: 281.25px; /* Mantiene l'aspect ratio 2:3 */
+  }
+  .trending-container h2,
+  .trending-swiper {
+    padding: 0 1.5rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .trending-item {
+    width: 150px;
+    height: 225px; /* Mantiene l'aspect ratio 2:3 */
+  }
+  .trending-container h2,
+  .trending-swiper {
+    padding: 0 1rem;
+  }
+}
+
+/* Stile per i bottoni di navigazione di Swiper */
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--text-color);
+  background-color: var(--surface-color);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: background-color 0.2s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: var(--background-color);
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Nascondiamo la paginazione, non adatta a questo tipo di carosello */
+.swiper-pagination {
+  display: none;
+}

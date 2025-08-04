@@ -1,0 +1,310 @@
+.media-page {
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+.media-header {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.media-header-overlay {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 50%, transparent);
+    padding: 2rem;
+    color: #fff;
+}
+
+.media-header-content {
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.media-header-content img {
+    width: 300px;
+    border-radius: 8px;
+}
+
+.no-poster {
+    width: 300px;
+    height: 450px; /* Same as poster image */
+    background-color: var(--surface-color);
+    border-radius: 8px;
+}
+
+.media-info h1 {
+    margin-top: 0;
+    color: #fff;
+}
+
+.media-info h3 {
+    color: #fff;
+}
+
+.genres span {
+    background: var(--surface-color);
+    color: var(--text-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.tagline {
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.tagline + p {
+    color: #fff;
+}
+
+.rating {
+   margin-top: 1rem;
+}
+
+.rating h3 {
+   margin: 0;
+   font-size: 1rem;
+   font-weight: bold;
+}
+
+.rating p {
+   margin: 0;
+   font-size: 1.5rem;
+   font-weight: bold;
+}
+
+.media-details {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.left-column {
+    flex: 2;
+    position: relative;
+}
+
+.left-column h3 {
+    /* The color is inherited from the global h3 style in App.css */
+}
+
+.right-column {
+    flex: 1;
+    padding: 0 2rem;
+}
+
+.cast-swiper {
+    padding: 0 2rem;
+}
+
+.right-column p {
+    color: #fff;
+}
+
+.cast-swiper .swiper-slide {
+    width: 150px !important;
+    height: auto;
+}
+
+.cast-swiper .swiper-button-next,
+.cast-swiper .swiper-button-prev {
+  color: var(--text-color);
+  background-color: var(--surface-color);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: background-color 0.2s ease;
+}
+
+.cast-swiper .swiper-button-next:hover,
+.cast-swiper .swiper-button-prev:hover {
+  background-color: var(--background-color);
+}
+
+.cast-swiper .swiper-button-next::after,
+.cast-swiper .swiper-button-prev::after {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.actor p {
+    margin: 0.5rem 0 0;
+}
+
+.actor-card {
+    background-color: var(--surface-color);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    height: 100%;
+    color: #fff;
+}
+
+.actor-card img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.horizontal-grids {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.horizontal-grids > * {
+    flex: 1;
+}
+
+.trailer-button {
+   background-color: var(--primary-color);
+   color: var(--background-color);
+   border: none;
+   padding: 0.75rem 1.5rem;
+   border-radius: 5px;
+   font-size: 1rem;
+   font-weight: bold;
+   cursor: pointer;
+   margin-top: 1rem;
+   display: inline-flex;
+   align-items: center;
+   gap: 0.5rem;
+   justify-content: center;
+}
+
+.trailer-button:hover {
+   background-color: var(--primary-variant-color);
+}
+
+.media-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.watchlist-button, .diary-button {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    justify-content: center;
+}
+
+.watchlist-button:hover, .diary-button:hover {
+    background-color: var(--primary-variant-color);
+}
+
+.watchlist-button i, .diary-button i {
+    margin-right: 8px;
+}
+
+.user-actions {
+    display: flex;
+    gap: 20px;
+}
+
+.favorite-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    opacity: 0.5;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.favorite-button:hover {
+    color: var(--primary-color);
+    opacity: 1;
+}
+
+.favorite-button.is-favorite {
+    color: var(--primary-color);
+}
+
+.notification {
+    position: fixed;
+    top: 80px; /* Adjusted to be below the header */
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    color: #fff;
+    z-index: 1001;
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: slideIn 0.3s ease-out forwards, fadeOut 0.3s ease-in 2.7s forwards;
+}
+
+.notification.success {
+    background-color: #28a745; /* Green for success */
+}
+
+.notification.error {
+    background-color: #dc3545; /* Red for removal/error */
+}
+
+.notification i {
+    font-size: 1.2rem;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+.stats-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: baseline;
+    margin-top: 1rem;
+}
+
+.episodes h3 {
+   margin: 0;
+   font-size: 1rem;
+   font-weight: bold;
+}
+
+.episodes p {
+   margin: 0;
+   font-size: 1.5rem;
+   font-weight: bold;
+}

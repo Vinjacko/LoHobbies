@@ -1,0 +1,268 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header__logo img {
+  height: 150px;
+  clip-path: inset(15% 0 15% 0);
+}
+
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn {
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  border: 1px solid var(--primary-color);
+}
+
+.search-input {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-color);
+  color: var(--text-color);
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-wrapper {
+  position: relative;
+}
+
+.profile-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-right: 2rem;
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.5rem 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  cursor: pointer;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+  background-color: var(--background-color);
+  transform: none; /* Prevent any scaling on hover */
+}
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.settings-menu {
+  position: absolute;
+  top: 0;
+  right: 100%;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.5rem 0;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+}
+
+.settings-menu a {
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  cursor: pointer;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.settings-menu a:hover {
+  background-color: var(--background-color);
+}
+.search-container {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  margin: 0 20px;
+}
+
+.search-bar {
+  display: flex;
+  width: 100%;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 20px 0 0 20px;
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-color);
+  color: var(--text-color);
+}
+
+.search-bar .search-button {
+  padding: 0 15px;
+  border-radius: 0 20px 20px 0;
+  border: 1px solid var(--border-color);
+  border-left: none;
+  background-color: var(--surface-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-bar .search-button svg {
+  height: 20px;
+  width: 20px;
+  fill: var(--text-color);
+}
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.filter-button svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--text-color);
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  margin: 5px 0 0 0;
+  padding: 0;
+  z-index: 1000;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.search-result-item a {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: background-color 0.2s ease;
+}
+
+.search-result-item a:hover {
+  background-color: var(--background-color);
+}
+
+.search-result-item img {
+  width: 50px;
+  height: 75px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 4px;
+}
+
+.result-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.result-year {
+  font-weight: normal;
+  color: var(--text-color);
+  opacity: 0.7;
+  margin-left: 5px;
+}
+
+.result-type {
+  font-size: 0.8rem;
+  color: var(--text-color);
+  opacity: 0.7;
+  text-transform: capitalize;
+  margin: 0;
+}

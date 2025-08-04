@@ -1,0 +1,624 @@
+const tmdb = require('../utils/tmdb');
+const User = require('../models/User');
+
+// @desc    Get trending content
+// @route   GET /api/v1/media/trending
+// @access  Public
+// Helper function for Wilson Score
+const wilsonScore = (p, n) => {
+  const z = 1.96; // 95% confidence
+  if (n === 0) return 0;
+  const p_hat = p;
+  const score =
+    (p_hat + (z * z) / (2 * n) - z * Math.sqrt((p_hat * (1 - p_hat) + (z * z) / (4 * n)) / n)) /
+    (1 + (z * z) / n);
+  return score;
+};
+
+const getTrending = async (req, res, next) => {
+  const { language = 'it-IT' } = req.query;
+  try {
+    // 1. Fetch a larger pool of popular content from TMDB
+    const movieResponse = await tmdb.get('/discover/movie', {
+      params: {
+        sort_by: 'popularity.desc',
+        'vote_count.gte': 150, // Filter for relevance
+        page: 1,
+        'primary_release_date.lte': new Date().toISOString().split('T')[0],
+        language,
+      },
+    });
+
+    const tvResponse = await tmdb.get('/discover/tv', {
+      params: {
+        sort_by: 'popularity.desc',
+        'vote_count.gte': 150, // Filter for relevance
+        page: 1,
+        'first_air_date.lte': new Date().toISOString().split('T')[0],
+        language,
+      },
+    });
+
+    const candidates = [
+      ...movieResponse.data.results.map((m) => ({ ...m, media_type: 'movie' })),
+      ...tvResponse.data.results.map((t) => ({ ...t, media_type: 'tv' })),
+    ];
+
+    // 2. Calculate Trending Score for each candidate
+    const WEIGHTS = { freshness: 0.15, popularity: 0.45, quality: 0.35, completion: 0.05 };
+    const MAX_POPULARITY = Math.max(...candidates.map(c => c.popularity), 10000);
+
+    const scoredCandidates = candidates.map((c) => {
+      // S_freshness
+      const releaseDate = new Date(c.release_date || c.first_air_date);
+      const hoursSinceRelease = (new Date() - releaseDate) / (1000 * 60 * 60);
+      const score_freshness = hoursSinceRelease <= 120 ? 1.0 : Math.exp(-0.00577 * (hoursSinceRelease - 120));
+
+      // S_popularity
+      const score_popularity = Math.log(1 + c.popularity) / Math.log(1 + MAX_POPULARITY);
+
+      // S_quality (using Wilson Score)
+      const p_hat = c.vote_average / 10.0;
+      const score_quality = wilsonScore(p_hat, c.vote_count);
+      
+      // S_completion (placeholder)
+      const score_completion = 0.75; // Placeholder value
+
+      // Final Trending Score
+      const trendingScore =
+        WEIGHTS.freshness * score_freshness +
+        WEIGHTS.popularity * score_popularity +
+        WEIGHTS.quality * score_quality +
+        WEIGHTS.completion * score_completion;
+
+      return { ...c, trendingScore };
+    });
+
+    // 3. Sort by the new Trending Score
+    const sortedCandidates = scoredCandidates.sort((a, b) => b.trendingScore - a.trendingScore);
+
+    // 4. Diversify results
+    const finalTrendingList = [];
+    const genreCounts = {};
+    const MAX_GENRE = 3;
+
+    for (const candidate of sortedCandidates) {
+      if (finalTrendingList.length >= 20) break;
+
+      const mainGenreId = candidate.genre_ids[0];
+      const genreCount = genreCounts[mainGenreId] || 0;
+
+      if (genreCount < MAX_GENRE) {
+        finalTrendingList.push(candidate);
+        genreCounts[mainGenreId] = genreCount + 1;
+      }
+    }
+
+    res.status(200).json({ success: true, data: finalTrendingList });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const getExplore = async (req, res, next) => {
+  try {
+    const { page = 1, language = 'it-IT' } = req.query;
+
+    const movieResponse = await tmdb.get('/discover/movie', {
+      params: {
+        sort_by: 'vote_average.desc',
+        'vote_count.gte': 150,
+        page,
+        language,
+      },
+    });
+
+    const tvResponse = await tmdb.get('/discover/tv', {
+        params: {
+          sort_by: 'vote_average.desc',
+          'vote_count.gte': 150,
+          page,
+          language,
+        },
+      });
+
+    const results = [
+        ...movieResponse.data.results.map((m) => ({ ...m, media_type: 'movie' })),
+        ...tvResponse.data.results.map((t) => ({ ...t, media_type: 'tv' }))
+    ].sort((a, b) => b.vote_average - a.vote_average);
+
+    const total_pages = Math.max(movieResponse.data.total_pages, tvResponse.data.total_pages);
+    const total_results = movieResponse.data.total_results + tvResponse.data.total_results;
+
+    res.status(200).json({
+      success: true,
+      data: results,
+      pagination: {
+        page: parseInt(page, 10),
+        total_pages,
+        total_results,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const getMovieDetails = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { language = 'it-IT' } = req.query;
+    const response = await tmdb.get(`/movie/${id}`, {
+      params: {
+        append_to_response: 'credits,videos,images',
+        language
+      }
+    });
+    res.status(200).json({ success: true, data: response.data });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const getTvShowDetails = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { language = 'it-IT' } = req.query;
+    const response = await tmdb.get(`/tv/${id}`, {
+      params: {
+        append_to_response: 'credits,videos,images',
+        language
+      }
+    });
+    res.status(200).json({ success: true, data: response.data });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const getRecommendations = async (req, res, next) => {
+  try {
+    const { media_type, id } = req.params;
+    const { language = 'it-IT' } = req.query;
+    const response = await tmdb.get(`/${media_type}/${id}/recommendations`, {
+      params: { language }
+    });
+    const results = response.data.results.map((m) => ({ ...m, media_type }));
+    res.status(200).json({ success: true, data: results });
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      return res.status(200).json({ success: true, data: [] });
+    }
+    console.error(error);
+    res.status(400).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const getPersonDetails = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { language = 'it-IT' } = req.query;
+    const response = await tmdb.get(`/person/${id}`, {
+      params: {
+        append_to_response: 'movie_credits,tv_credits',
+        language
+      }
+    });
+    res.status(200).json({ success: true, data: response.data });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ success: false, error: 'Server Error' });
+  }
+};
+
+
+const searchAll = async (req, res, next) => {
+  try {
+    const { query, mediaType, sortBy = 'popularity.desc', genres, yearFrom, yearTo, language = 'it-IT' } = req.query;
+    let results = [];
+
+    const searchPromises = [];
+    // If a specific mediaType is provided, use it. Otherwise, search both.
+    const typesToSearch = mediaType ? [mediaType] : ['movie', 'tv'];
+
+    if (typesToSearch.includes('movie')) {
+        searchPromises.push(
+            tmdb.get('/search/movie', { params: { query, primary_release_year: yearFrom, language } })
+                .then(res => res.data.results.map(item => ({ ...item, media_type: 'movie' })))
+        );
+    }
+    if (typesToSearch.includes('tv')) {
+        searchPromises.push(
+            tmdb.get('/search/tv', { params: { query, first_air_date_year: yearFrom, language } })
+                .then(res => res.data.results.map(item => ({ ...item, media_type: 'tv' })))
+        );
+    }
+
+    const responses = await Promise.all(searchPromises);
+    responses.forEach(responseArray => {
+        results.push(...responseArray);
+    });
+
+    // Filter by genre if provided
+    if (genres) {
+      const genreArray = genres.split(',');
+      results = results.filter(item =>
+        item.genre_ids && item.genre_ids.some(genreId => genreArray.includes(genreId.toString()))
+      );
+    }
+
+    // Sort results
+    const [sortKey, sortOrder] = sortBy.split('.');
+    results.sort((a, b) => {
+      let valA, valB;
+
+      if (sortKey === 'release_date') {
+        valA = new Date(a.release_date || a.first_air_date);
+        valB = new Date(b.release_date || b.first_air_date);
+      } else {
+        valA = a[sortKey] || 0;
+        valB = b[sortKey] || 0;
+      }
+
+      if (valA < valB) {
+        return sortOrder === 'asc' ? -1 : 1;
+      }
+      if (valA > valB) {
+        return sortOrder === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+
+    res.status(200).json({ success: true, data: results });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const discoverMedia = async (req, res, next) => {
+  try {
+    const {
+      mediaType = 'movie',
+      page = 1,
+      sortBy = 'popularity.desc',
+      genres,
+      yearFrom,
+      yearTo,
+      ratingFrom,
+      ratingTo,
+      providers,
+      language = 'it-IT',
+    } = req.query;
+
+    const params = {
+      page,
+      sort_by: sortBy,
+      'vote_count.gte': 100, // Filter out items with very few votes
+      language,
+    };
+
+    if (genres) params.with_genres = genres;
+    if (providers) params.with_watch_providers = providers;
+    if (mediaType === 'movie') {
+      if (yearFrom) params['primary_release_date.gte'] = `${yearFrom}-01-01`;
+      if (yearTo) params['primary_release_date.lte'] = `${yearTo}-12-31`;
+    } else if (mediaType === 'tv') {
+      if (yearFrom) params['first_air_date.gte'] = `${yearFrom}-01-01`;
+      if (yearTo) params['first_air_date.lte'] = `${yearTo}-12-31`;
+    }
+    if (ratingFrom) params['vote_average.gte'] = ratingFrom;
+    if (ratingTo) params['vote_average.lte'] = ratingTo;
+
+    const response = await tmdb.get(`/discover/${mediaType}`, { params });
+
+    const results = response.data.results.map((item) => ({ ...item, media_type: mediaType }));
+
+    res.status(200).json({
+      success: true,
+      data: results,
+      pagination: {
+        page: response.data.page,
+        total_pages: response.data.total_pages,
+        total_results: response.data.total_results,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const getGenres = async (req, res, next) => {
+  try {
+    const { language = 'it-IT' } = req.query;
+    const movieGenresPromise = tmdb.get('/genre/movie/list', { params: { language } });
+    const tvGenresPromise = tmdb.get('/genre/tv/list', { params: { language } });
+
+    const [movieGenres, tvGenres] = await Promise.all([movieGenresPromise, tvGenresPromise]);
+
+    const genres = {
+      movie: movieGenres.data.genres.filter(genre => genre.name !== 'TV Movie'),
+      tv: tvGenres.data.genres.filter(genre => genre.name !== 'TV Movie'),
+    };
+
+    res.status(200).json({ success: true, data: genres });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const getProviders = async (req, res, next) => {
+  try {
+    const { language = 'it-IT' } = req.query;
+    const response = await tmdb.get('/watch/providers/movie', {
+      params: {
+        language,
+        watch_region: 'IT',
+      },
+    });
+
+    // We only need a flat list of providers, not per-country
+    const providers = response.data.results.map(({ provider_id, provider_name, logo_path }) => ({
+      provider_id,
+      provider_name,
+      logo_path,
+    }));
+
+    res.status(200).json({ success: true, data: providers });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const autocompleteSearch = async (req, res, next) => {
+  try {
+    const { query, language = 'it-IT' } = req.query;
+
+    if (!query || query.length < 2) {
+      return res.status(200).json({ success: true, data: [] });
+    }
+
+    const response = await tmdb.get('/search/multi', {
+      params: {
+        query,
+        language,
+        include_adult: false,
+      },
+    });
+
+    const scoredResults = response.data.results.map(item => {
+      const title = item.title || item.name || '';
+      const lowerTitle = title.toLowerCase();
+      const lowerQuery = query.toLowerCase();
+      let score = 0;
+
+      if (lowerTitle === lowerQuery) {
+        score = 3; // Exact match
+      } else if (lowerTitle.startsWith(lowerQuery)) {
+        score = 2; // Starts with query
+      } else if (lowerTitle.includes(lowerQuery)) {
+        score = 1; // Contains query
+      }
+
+      return { ...item, relevanceScore: score };
+    });
+
+    const sortedResults = scoredResults.sort((a, b) => {
+        if (a.relevanceScore !== b.relevanceScore) {
+            return b.relevanceScore - a.relevanceScore;
+        }
+        return b.popularity - a.popularity;
+    });
+
+    // Filter and limit results
+    const finalResults = sortedResults
+      .filter(item =>
+        item.relevanceScore > 0 &&
+        ((item.media_type === 'movie' && item.poster_path) ||
+         (item.media_type === 'tv' && item.poster_path) ||
+         (item.media_type === 'person' && item.profile_path))
+      )
+      .slice(0, 7); // Limit to 7 results
+
+    res.status(200).json({ success: true, data: finalResults });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const addToWatchlist = async (req, res, next) => {
+  try {
+    const { mediaId, mediaType, posterPath, title, releaseDate } = req.body;
+    const userId = req.user.id;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    const isAlreadyInWatchlist = user.watchlist.some(item => item.mediaId === mediaId && item.mediaType === mediaType);
+
+    if (isAlreadyInWatchlist) {
+      return res.status(400).json({ success: false, error: 'Media already in watchlist' });
+    }
+
+    user.watchlist.push({ mediaId, mediaType, posterPath, title, releaseDate });
+    await user.save();
+
+    res.status(200).json({ success: true, data: user.watchlist });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const getWatchlist = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    res.status(200).json({ success: true, data: user.watchlist });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const removeFromWatchlist = async (req, res, next) => {
+  try {
+    const { mediaId } = req.params;
+    const userId = req.user.id;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    user.watchlist = user.watchlist.filter(item => item.mediaId !== mediaId);
+    await user.save();
+
+    res.status(200).json({ success: true, data: user.watchlist });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const addToDiary = async (req, res, next) => {
+    try {
+        const { mediaId, mediaType, posterPath, title, releaseDate, rating, comment, watchedDate } = req.body;
+        const userId = req.user.id;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+
+        const diaryEntry = {
+            mediaId,
+            mediaType,
+            posterPath,
+            title,
+            releaseDate,
+            rating,
+            comment,
+            watchedDate: watchedDate,
+        };
+
+        user.diary.push(diaryEntry);
+        await user.save();
+
+        res.status(200).json({ success: true, data: user.diary });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'Server Error' });
+    }
+};
+
+const getDiary = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    res.status(200).json({ success: true, data: user.diary });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const addToFavourites = async (req, res, next) => {
+  try {
+    const { mediaId, mediaType, posterPath, title, releaseDate } = req.body;
+    const userId = req.user.id;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    const isAlreadyInFavourites = user.favourites.some(item => item.mediaId === mediaId && item.mediaType === mediaType);
+
+    if (isAlreadyInFavourites) {
+      return res.status(400).json({ success: false, error: 'Media already in favourites' });
+    }
+
+    user.favourites.push({ mediaId, mediaType, posterPath, title, releaseDate });
+    await user.save();
+
+    res.status(200).json({ success: true, data: user.favourites });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const getFavourites = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    res.status(200).json({ success: true, data: user.favourites });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+};
+
+const removeFromFavourites = async (req, res, next) => {
+  try {
+    const { mediaId } = req.params;
+    const userId = req.user.id;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    user.favourites = user.favourites.filter(item => item.mediaId !== mediaId);
+    await user.save();
+
+    res.status(200).json({ success: true, data: user.favourites });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+};
+
+module.exports = {
+  getTrending,
+  getExplore,
+  getMovieDetails,
+  getTvShowDetails,
+  getRecommendations,
+  getPersonDetails,
+  searchAll,
+  discoverMedia,
+  getGenres,
+  getProviders,
+  autocompleteSearch,
+  addToWatchlist,
+  getWatchlist,
+  removeFromWatchlist,
+  addToDiary,
+  getDiary,
+  addToFavourites,
+  getFavourites,
+  removeFromFavourites,
+};

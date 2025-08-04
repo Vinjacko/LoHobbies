@@ -1,0 +1,104 @@
+/* 
+  Soluzione CSS per la paginazione di Swiper.js
+  Questo file risolve il problema della sovrapposizione della paginazione
+  spostandola sotto il contenitore delle slide.
+*/
+
+/* 
+  ==========================================================================
+  Soluzione 1 (Raccomandata): Posizionamento Statico
+  ==========================================================================
+  Questa è la soluzione più robusta e semplice. Modifichiamo il posizionamento
+  di default della paginazione da `absolute` a `static`. In questo modo,
+  la paginazione si posizionerà naturalmente dopo il contenitore delle slide,
+  seguendo il normale flusso del documento.
+*/
+
+/* 1. Contenitore principale di Swiper */
+.swiper {
+  /* 
+    Aggiungiamo un po' di padding in basso al contenitore principale per assicurarci
+    che ci sia sempre spazio visivo, specialmente se lo slider è vicino
+    ad altri elementi. Questo passaggio è opzionale ma consigliato.
+  */
+  padding-bottom: 40px; /* Spazio extra sotto lo slider */
+}
+
+/* 2. Riposizionamento della paginazione */
+.swiper-pagination {
+  /* 
+    Cambiando la posizione in 'static', l'elemento esce dal posizionamento
+    assoluto e si comporta come un normale blocco, posizionandosi
+    immediatamente sotto il '.swiper-wrapper'.
+  */
+  position: static;
+  
+  /* 
+    Usiamo 'margin-top' per creare uno spazio verticale preciso tra la fine
+    delle slide e l'inizio dei bullet di paginazione.
+  */
+  margin-top: 20px; /* Spazio di 20px tra slide e paginazione */
+}
+
+/* 3. Stile dei bullet di paginazione */
+.swiper-pagination-bullet {
+  /* 
+    Stile di base per i bullet non attivi.
+    Un grigio chiaro è una scelta sicura per la maggior parte degli sfondi.
+  */
+  background-color: #cccccc;
+  width: 10px;
+  height: 10px;
+  opacity: 0.8;
+  transition: background-color 0.3s ease; /* Transizione fluida */
+}
+
+/* 4. Stile del bullet attivo */
+.swiper-pagination-bullet-active {
+  /* 
+    Il bullet attivo viene reso più evidente con un colore più scuro
+    e un'opacità completa.
+  */
+  background-color: #333333;
+  opacity: 1;
+}
+
+
+/* 
+  ==========================================================================
+  Soluzione 2 (Alternativa): Posizionamento Assoluto Modificato
+  ==========================================================================
+  Questa soluzione mantiene il posizionamento assoluto di default, ma lo
+  controlla per spostare la paginazione sotto il contenitore.
+  È utile se si ha bisogno di un controllo più granulare sulla posizione,
+  ma richiede più attenzione.
+  
+  Per usare questa soluzione, commenta la Soluzione 1 e decommenta questa.
+*/
+
+/*
+.swiper {
+  position: relative;
+  padding-bottom: 50px; 
+}
+
+.swiper-pagination {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.swiper-pagination-bullet {
+  background-color: #cccccc;
+  width: 10px;
+  height: 10px;
+  opacity: 0.8;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #333333;
+  opacity: 1;
+}
+*/
