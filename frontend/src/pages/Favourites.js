@@ -14,7 +14,7 @@ const Favourites = () => {
         const fetchFavourites = async () => {
             if (auth.user) {
                 try {
-                    const response = await axios.get('http://localhost:3000/api/v1/media/favourites');
+                    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/favourites`);
                     setFavourites(response.data.data);
                 } catch (error) {
                     console.error("Failed to fetch favourites", error);

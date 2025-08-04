@@ -14,7 +14,7 @@ const Explore = () => {
   useEffect(() => {
     const getExplore = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/v1/media/explore?page=${page}&language=${i18n.language}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/media/explore?page=${page}&language=${i18n.language}`);
         const data = await response.json();
         setExplore(data.data);
         setTotalPages(data.pagination.total_pages);
