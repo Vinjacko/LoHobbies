@@ -21,7 +21,7 @@ app.use(cookieParser());
 
 // Enable CORS
 app.use(cors({
-  origin: 'http://localhost:3001', // Allow only the frontend origin
+  origin: '*', // Allow only the frontend origin
   credentials: true // Allow cookies to be sent
 }));
 
