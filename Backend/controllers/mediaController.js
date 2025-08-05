@@ -4,7 +4,7 @@ const User = require('../models/User');
 // @desc    Get trending content
 // @route   GET /api/v1/media/trending
 // @access  Public
-// Helper function for Wilson Score
+// Helper function for Wilson Score 1
 const wilsonScore = (p, n) => {
   const z = 1.96; // 95% confidence
   if (n === 0) return 0;

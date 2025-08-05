@@ -22,7 +22,7 @@
 .explore-item-image-container {
   position: relative;
   width: 100%;
-  padding-top: 150%; /* Aspect Ratio 2:3 */
+  padding-top: 150%; /* Aspect Ratio: 2:3 */
   overflow: hidden;
   border-radius: 8px;
 }
