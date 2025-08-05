@@ -70,7 +70,6 @@ const AuthModal = ({ closeModal }) => {
   return ReactDOM.createPortal(
     <div className="auth-modal-overlay" onClick={closeModal}>
       <div className="auth-modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={closeModal}>X</button>
         <div className="auth-modal-tabs">
           <button
             className={`tab-button ${activeTab === 'login' ? 'active' : ''}`}
