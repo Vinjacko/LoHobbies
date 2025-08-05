@@ -27,15 +27,10 @@ const AuthModal = ({ closeModal }) => {
     setLoading(true);
     setError('');
     try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
       const { data } = await axios.post(
         '/api/v1/auth/register',
         { name: registerName, email: registerEmail, password: registerPassword },
-        config
+        { withCredentials: true }
       );
       login(data.user);
       closeModal();
@@ -54,15 +49,10 @@ const AuthModal = ({ closeModal }) => {
     setLoading(true);
     setError('');
     try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
       const { data } = await axios.post(
         '/api/v1/auth/login',
         { email: loginEmail, password: loginPassword },
-        config
+        { withCredentials: true }
       );
       login(data.user);
       closeModal();

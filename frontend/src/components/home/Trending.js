@@ -7,6 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import './Trending.css';
 import { Navigation } from 'swiper';
+import axios from 'axios';
 
 const Trending = () => {
   const { t } = useTranslation();
@@ -15,12 +16,10 @@ const Trending = () => {
   useEffect(() => {
     const getTrending = async () => {
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/media/trending?language=${i18n.language}`);
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        const data = await res.json();
-        setTrending(data.data);
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/trending?language=${i18n.language}`, {
+          withCredentials: true,
+        });
+        setTrending(res.data.data);
       } catch (error) {
         console.error("Could not fetch trending data:", error);
       }

@@ -57,7 +57,7 @@ const Diary = () => {
         <div className="diary-grid">
           {diary.map((entry) => (
             <div key={entry.mediaId} className="diary-entry">
-              <Link to={`/${entry.mediaType}/${entry.mediaId}`}>
+              <Link to={`/media/${entry.mediaType}/${entry.mediaId}`}>
                 <img src={`https://image.tmdb.org/t/p/w500${entry.posterPath}`} alt={entry.title} />
               </Link>
               <div className="diary-entry-content">
