@@ -43,7 +43,12 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
     .cookie('refreshToken', refreshToken, refreshTokenCookieOptions)
     .json({
       success: true,
-      user,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        profilePicture: user.profilePicture,
+      },
     });
 };
 
