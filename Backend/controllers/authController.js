@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 
 // Helper function to generate tokens and set cookies
 const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
@@ -170,7 +172,7 @@ const uploadProfilePicture = async (req, res) => {
       return res.status(404).json({ msg: 'User not found' });
     }
     if (req.file) {
-      user.profilePicture = `/uploads/${req.file.filename}`;
+      user.profilePicture = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
       await user.save();
       res.json(user);
     } else {
@@ -188,6 +190,18 @@ const deleteProfilePicture = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }
+
+    if (user.profilePicture) {
+      const filename = path.basename(user.profilePicture);
+      const imagePath = path.join(__dirname, '..', 'public', 'uploads', filename);
+      
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error('Error deleting file:', err);
+        }
+      });
+    }
+
     user.profilePicture = '';
     await user.save();
     res.json(user);

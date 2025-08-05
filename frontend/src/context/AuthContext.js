@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
 
   const loadUser = async () => {
     try {
-      const res = await axios.get('/api/v1/auth');
+      const res = await axios.get(`/api/v1/auth?t=${new Date().getTime()}`);
       setUser(res.data);
     } catch (err) {
       setUser(null);

@@ -23,7 +23,7 @@ const ProfilePictureModal = ({ closeModal }) => {
     formData.append('profilePicture', selectedFile);
 
     try {
-      await axios.post('/api/auth/profile-picture', formData, {
+      await axios.post('/api/v1/auth/profile-picture', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -40,7 +40,7 @@ const ProfilePictureModal = ({ closeModal }) => {
     setLoading(true);
     setError('');
     try {
-      await axios.delete('/api/auth/profile-picture');
+      await axios.delete('/api/v1/auth/profile-picture');
       await loadUser();
       closeModal();
     } catch (err) {
@@ -63,6 +63,7 @@ const ProfilePictureModal = ({ closeModal }) => {
               {t('selectFile')}
             </label>
             <input id="file-upload" type="file" onChange={handleFileChange} />
+            {selectedFile && <p>{selectedFile.name}</p>}
           </div>
           <div className="button-group">
             <button onClick={handleUpload} disabled={loading || !selectedFile}>
