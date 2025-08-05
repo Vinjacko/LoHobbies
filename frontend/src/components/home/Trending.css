@@ -130,7 +130,7 @@
   font-weight: bold;
 }
 
-/* Nascondiamo la paginazione, non adatta a questo tipo di carosello */
+/* Nascondiamo la paginazione non adatta a questo tipo di carosello */
 .swiper-pagination {
   display: none;
 }
