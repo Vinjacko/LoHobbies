@@ -5,7 +5,7 @@
 
 /* Contenitore principale della sezione */
 .trending-container {
-  padding: 0 0 2rem 0; /* Padding verticale, orizzontale gestito dal carosello */
+  padding: 2rem 0; /* Aggiunto padding verticale */
   background-color: #000;
   color: var(--text-color);
   overflow: hidden; /* Nasconde lo scrollbar orizzontale del browser se il carosello sporge */
@@ -13,17 +13,17 @@
 
 /* Titolo della sezione */
 .trending-container h2 {
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 4vw, 1.8rem); /* Dimensione del font fluida */
   font-weight: 600;
   margin-top: 0;
   margin-bottom: 2rem;
-  padding: 0 2rem; /* Spaziatura interna per allineare con il resto del layout */
+  padding: 0 clamp(1rem, 5vw, 2rem); /* Spaziatura interna fluida */
   color: #FFC107;
 }
 
 /* Stile per il contenitore Swiper per dare spazio ai lati */
 .trending-swiper {
-  padding: 0 2rem;
+  padding: 0 clamp(1rem, 5vw, 2rem); /* Spaziatura interna fluida */
 }
 
 /* Wrapper per ogni singola slide, per centrare il contenuto */
@@ -43,10 +43,9 @@
   color: inherit;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-  /* --- Dimensioni Desktop (Base) --- */
-  /* Mantiene un aspect ratio di 2:3 */
-  width: 225px;
-  height: 337.5px;
+  /* --- Dimensioni fluide con aspect ratio --- */
+  width: clamp(150px, 25vw, 225px); /* Larghezza fluida con min e max */
+  aspect-ratio: 2 / 3; /* Mantiene l'aspect ratio di 2:3 */
 }
 
 /* Effetto al passaggio del mouse */
@@ -103,29 +102,9 @@
 
 /* --- Adattamenti Responsive --- */
 
-/* Tablet */
-@media (max-width: 1024px) {
-  .trending-item {
-    width: 187.5px;
-    height: 281.25px; /* Mantiene l'aspect ratio 2:3 */
-  }
-  .trending-container h2,
-  .trending-swiper {
-    padding: 0 1.5rem;
-  }
-}
-
-/* Mobile */
-@media (max-width: 767px) {
-  .trending-item {
-    width: 150px;
-    height: 225px; /* Mantiene l'aspect ratio 2:3 */
-  }
-  .trending-container h2,
-  .trending-swiper {
-    padding: 0 1rem;
-  }
-}
+/* Rimuoviamo le media query specifiche per la larghezza,
+   dato che clamp() e vw gestiscono la fluidità.
+   Potrebbero essere utili per altri aggiustamenti. */
 
 /* Stile per i bottoni di navigazione di Swiper */
 .swiper-button-next,
