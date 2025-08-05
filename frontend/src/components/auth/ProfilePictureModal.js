@@ -31,7 +31,11 @@ const ProfilePictureModal = ({ closeModal }) => {
       await loadUser();
       closeModal();
     } catch (err) {
-      setError(t('uploadError'));
+      if (err.response && err.response.data && err.response.data.msg) {
+        setError(err.response.data.msg);
+      } else {
+        setError(t('uploadError'));
+      }
     }
     setLoading(false);
   };

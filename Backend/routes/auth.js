@@ -13,6 +13,7 @@ const {
 } = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
 const upload = require('../middleware/upload');
+const multer = require('multer');
 
 // @route   POST api/auth/register
 // @desc    Register user
@@ -35,7 +36,20 @@ router.post('/logout', logoutUser);
 // @route   POST api/auth/profile-picture
 // @desc    Upload profile picture
 // @access  Private
-router.post('/profile-picture', protect, upload, uploadProfilePicture);
+const handleUpload = (req, res, next) => {
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ msg: 'File size is too large. Maximum size is 1MB.' });
+      }
+    } else if (err) {
+      return res.status(400).json({ msg: err });
+    }
+    next();
+  });
+};
+
+router.post('/profile-picture', protect, handleUpload, uploadProfilePicture);
 
 // @route   DELETE api/auth/profile-picture
 // @desc    Delete profile picture
