@@ -1,12 +1,14 @@
 const tmdb = require('../utils/tmdb');
 const User = require('../models/User');
 
-// @desc    Get trending content
-// @route   GET /api/v1/media/trending
-// @access  Public
-// Helper function for Wilson Score 1
+/*Lo scopo è risolvere un problema comune nei sistemi di valutazione: 
+  come confrontare un film con un punteggio di 9/10 basato su 1.000 voti con un film che ha un punteggio di 10/10 ma solo 5 voti? 
+  Un semplice punteggio medio favorirebbe il secondo film, ma intuitivamente sappiamo che il primo risultato è più affidabile. 
+  Il Wilson Score affronta questo problema calcolando un limite inferiore "pessimistico" del punteggio che un elemento probabilmente otterrebbe se tutti avessero votato. 
+  In questo modo, penalizza gli elementi con un numero inferiore di voti, fornendo un ordinamento più equo e affidabile.
+*/
 const wilsonScore = (p, n) => {
-  const z = 1.96; // 95% confidence
+  const z = 1.96;   // 95% di confidenza
   if (n === 0) return 0;
   const p_hat = p;
   const score =
@@ -15,16 +17,17 @@ const wilsonScore = (p, n) => {
   return score;
 };
 
+// calcola un punteggio di tendenza
 const getTrending = async (req, res, next) => {
-  const { language = 'it-IT' } = req.query;
+  const { language = 'it-IT' } = req.query;   // permette di ottenere i risultati di TMDB basati sul mercato italiano
   try {
-    // 1. Fetch a larger pool of popular content from TMDB
+    // recupera un insieme più ampio di contenuti popolari da TMDB
     const movieResponse = await tmdb.get('/discover/movie', {
       params: {
         sort_by: 'popularity.desc',
-        'vote_count.gte': 150, // Filter for relevance
+        'vote_count.gte': 150, // filtro per rilevanza
         page: 1,
-        'primary_release_date.lte': new Date().toISOString().split('T')[0],
+        'primary_release_date.lte': new Date().toISOString().split('T')[0],   // filtro sulla data, converte la data in formato ISO e prende solo la parte che corrisponde a gg/mm/aaaa
         language,
       },
     });
@@ -32,39 +35,42 @@ const getTrending = async (req, res, next) => {
     const tvResponse = await tmdb.get('/discover/tv', {
       params: {
         sort_by: 'popularity.desc',
-        'vote_count.gte': 150, // Filter for relevance
+        'vote_count.gte': 150, // filtro per rilevanza
         page: 1,
         'first_air_date.lte': new Date().toISOString().split('T')[0],
         language,
       },
     });
 
+    // aggiunge l'attributo media_type a film e serie-TV
     const candidates = [
       ...movieResponse.data.results.map((m) => ({ ...m, media_type: 'movie' })),
       ...tvResponse.data.results.map((t) => ({ ...t, media_type: 'tv' })),
     ];
 
-    // 2. Calculate Trending Score for each candidate
+    // calcola il punteggio di tendenza per ogni candidato
     const WEIGHTS = { freshness: 0.15, popularity: 0.45, quality: 0.35, completion: 0.05 };
     const MAX_POPULARITY = Math.max(...candidates.map(c => c.popularity), 10000);
 
     const scoredCandidates = candidates.map((c) => {
-      // S_freshness
+      // freschezza: misura quanto è recente il film (nel nostro caso 5 giorni)
       const releaseDate = new Date(c.release_date || c.first_air_date);
       const hoursSinceRelease = (new Date() - releaseDate) / (1000 * 60 * 60);
       const score_freshness = hoursSinceRelease <= 120 ? 1.0 : Math.exp(-0.00577 * (hoursSinceRelease - 120));
 
-      // S_popularity
+      // popolarità di TMDB: questo valore viene normalizzato con una funzione logaritmica per evitare che titoli estremamente virali dominino la classifica.
       const score_popularity = Math.log(1 + c.popularity) / Math.log(1 + MAX_POPULARITY);
 
-      // S_quality (using Wilson Score)
+      // qualità percepita da TMDB: calcola un punteggio di qualità statisticamente robusto usando la media voti (vote_average) e il numero di voti (vote_count) di TMDB.
+      // Utilizza la formula dell'intervallo di confidenza di Wilson per dare più peso ai titoli con un numero significativo di recensioni
       const p_hat = c.vote_average / 10.0;
       const score_quality = wilsonScore(p_hat, c.vote_count);
       
-      // S_completion (placeholder)
+      // tasso di completamento visione: metrica interna che misura la percentuale media di un film che gli utenti guardano. 
+      // Premia i titoli che mantengono gli spettatori incollati allo schermo fino alla fine
       const score_completion = 0.75; // Placeholder value
 
-      // Final Trending Score
+      // punteggio di tendenza finale
       const trendingScore =
         WEIGHTS.freshness * score_freshness +
         WEIGHTS.popularity * score_popularity +
@@ -74,16 +80,26 @@ const getTrending = async (req, res, next) => {
       return { ...c, trendingScore };
     });
 
-    // 3. Sort by the new Trending Score
+    // ordina con il nuovo punteggio di tendenza
     const sortedCandidates = scoredCandidates.sort((a, b) => b.trendingScore - a.trendingScore);
 
-    // 4. Diversify results
+    // diversifica i risultati
     const finalTrendingList = [];
     const genreCounts = {};
     const MAX_GENRE = 3;
 
-    for (const candidate of sortedCandidates) {
-      if (finalTrendingList.length >= 20) break;
+    sortedCandidates.forEach((candidate) => {
+
+});
+    let stop = false;
+
+    sortedCandidates.forEach((candidate) => {
+      if (stop) return;
+
+      if (finalTrendingList.length >= 20) {
+        stop = true;
+      return;
+      }
 
       const mainGenreId = candidate.genre_ids[0];
       const genreCount = genreCounts[mainGenreId] || 0;
@@ -92,12 +108,12 @@ const getTrending = async (req, res, next) => {
         finalTrendingList.push(candidate);
         genreCounts[mainGenreId] = genreCount + 1;
       }
-    }
+    });
 
     res.status(200).json({ success: true, data: finalTrendingList });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ success: false, error: 'Server Error' });
+    res.status(400).json({ success: false, error: 'Errore del server' });
   }
 };
 

@@ -27,7 +27,7 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
   // crea il cookie
   const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: false,
     sameSite: 'strict',
   };
 
@@ -114,48 +114,42 @@ const loginUser = async (req, res) => {
   }
 };
 
-// @desc    Get user data
-// @route   GET /api/auth
-// @access  Private
+//  restituisce le informazioni sull'utente
 const getMe = async (req, res) => {
   try {
-    // req.user is set by the auth middleware
+    // req.user è settato da authMiddleware
     const user = await User.findById(req.user.id).select('-password');
     res.json(user);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send('Errore del server!');
   }
 };
 
-// @desc    Refresh token
-// @route   POST /api/auth/refresh
-// @access  Public
+// aggiorna il refreshToken
 const refreshToken = async (req, res) => {
   const { refreshToken } = req.cookies;
 
   if (!refreshToken) {
-    return res.status(401).json({ msg: 'No refresh token, authorization denied' });
+    return res.status(401).json({ msg: 'Refresh Token non presente, autorizzazione negata!' });
   }
 
   try {
-    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-    const user = await User.findById(decoded.id);
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);   // decodifica del refreshToken
+    const user = await User.findById(decoded.id);   // ricerca dell'utente tramite ID del token
 
     if (!user || user.refreshToken !== refreshToken) {
-      return res.status(401).json({ msg: 'Invalid refresh token' });
+      return res.status(401).json({ msg: 'Refresh Token non valido!' });
     }
 
     sendTokenResponse(user, 200, res);
   } catch (err) {
     console.error(err.message);
-    res.status(401).json({ msg: 'Refresh token is not valid' });
+    res.status(401).json({ msg: 'Refresh Token non valido' });
   }
 };
 
-// @desc    Logout user
-// @route   POST /api/auth/logout
-// @access  Public
+// effettuare il logout dell'utente e cancellare entrambi i token
 const logoutUser = async (req, res) => {
   res.cookie('accessToken', 'none', {
     expires: new Date(Date.now() + 5 * 1000),
@@ -165,40 +159,42 @@ const logoutUser = async (req, res) => {
     expires: new Date(Date.now() + 5 * 1000),
     httpOnly: true,
   });
-  res.status(200).json({ success: true, data: {} });
+  res.status(200).json({ success: true });
 };
 
+// consente di caricare una foto profilo
 const uploadProfilePicture = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
+      return res.status(404).json({ msg: 'Utente non trovato!' });
     }
     if (req.file) {
       user.profilePicture = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
       await user.save();
       res.json(user);
     } else {
-      res.status(400).json({ msg: 'Please upload a file' });
+      res.status(400).json({ msg: 'Per favore carica un file!' });
     }
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send('Errore del server');
   }
 };
 
+// consente di eliminare una foto profilo
 const deleteProfilePicture = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
+      return res.status(404).json({ msg: 'Utente non trovato!' });
     }
 
     if (user.profilePicture) {
-      const filename = path.basename(user.profilePicture);
-      const imagePath = path.join(__dirname, '..', 'public', 'uploads', filename);
+      const filename = path.basename(user.profilePicture);    // nome dell'immagine
+      const imagePath = path.join(__dirname, '..', 'public', 'uploads', filename);    // percorso dell'immagine
       
-      fs.unlink(imagePath, (err) => {
+      fs.unlink(imagePath, (err) => {   // .unlink è un metodo di fs che elimina il contenuto di imagePath
         if (err) {
           console.error('Error deleting file:', err);
         }
@@ -210,48 +206,49 @@ const deleteProfilePicture = async (req, res) => {
     res.json(user);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send('Errore del server!');
   }
 };
 
+// esegue la verifica della password
 const verifyPassword = async (req, res) => {
-  console.log('--- Password Verification Start ---');
-  console.log('Request Body:', req.body);
+  console.log('Verifica della password');
+  console.log('Request Body: ', req.body);
   const { password } = req.body;
-  console.log('Password from body:', password);
+  console.log('Password from body:', password); 
 
   if (!password) {
-    console.log('Error: No password in request body.');
-    return res.status(400).json({ msg: 'Password is required' });
+    console.log('Errore: nessuna password nel body della richiesta.');
+    return res.status(400).json({ msg: 'Password richiesta!' });
   }
 
   try {
-    console.log('User ID from token:', req.user.id);
+    console.log('ID Utente dal token:', req.user.id);
     const user = await User.findById(req.user.id).select('+password');
 
     if (!user) {
-      console.log('Error: User not found in database.');
-      return res.status(404).json({ msg: 'User not found' });
+      console.log('Errore: utente non trovato nel DB.');
+      return res.status(404).json({ msg: 'Utente non trovato' });
     }
     
-    console.log('User found. Comparing passwords...');
+    console.log('Utente trovato. Confrontando le password...');
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log('Password comparison result:', isMatch);
+    console.log('Risultato del confronto tra le password: ', isMatch);
 
     if (!isMatch) {
-      console.log('Error: Password comparison failed.');
-      return res.status(400).json({ msg: 'Invalid credentials' });
+      console.log('Errore: confronto delle password fallito.');
+      return res.status(400).json({ msg: 'Credenziali non valide!' });
     }
 
-    console.log('--- Password Verification Success ---');
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, msg: 'Password verificata correttamente!' });
   } catch (err) {
-    console.error('--- Password Verification Error ---');
+    console.error('Errore durante la verifica della password');
     console.error(err);
-    res.status(500).send('Server Error');
+    res.status(500).send('Errore del server');
   }
 };
 
+// permette di resettare la password
 const resetPassword = async (req, res) => {
   const { newPassword } = req.body;
 
@@ -259,7 +256,7 @@ const resetPassword = async (req, res) => {
     const user = await User.findById(req.user.id);
 
     if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
+      return res.status(404).json({ msg: 'Utente non trovato' });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -267,13 +264,14 @@ const resetPassword = async (req, res) => {
 
     await user.save();
 
-    res.status(200).json({ success: true, msg: 'Password updated successfully' });
+    res.status(200).json({ success: true, msg: 'Password aggiornata correttamente' });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send('Errore del server');
   }
 };
 
+// esportiamo tutte i metodi definiti
 module.exports = {
   registerUser,
   loginUser,
