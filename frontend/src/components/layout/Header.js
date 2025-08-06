@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../api/axios';
 import i18n from '../../i18n';
 import './Header.css';
 import AuthModal from '../auth/AuthModal';

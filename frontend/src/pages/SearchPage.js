@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../api/axios';
 import { useFilters } from '../context/FilterContext';
 import './SearchPage.css';
 

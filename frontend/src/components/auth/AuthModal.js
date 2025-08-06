@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import axios from '../../api/axios';
 import './AuthModal.css';
 import AuthContext from '../../context/AuthContext';
 
