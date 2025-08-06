@@ -22,40 +22,89 @@ const userSchema = new mongoose.Schema({
   },
   watchlist: [
     {
-      mediaId: { type: String, required: true },
-      mediaType: { type: String, required: true },
-      posterPath: { type: String },
-      title: { type: String },
-      releaseDate: { type: String },
-      addedAt: { type: Date, default: Date.now }
+      mediaId: { 
+        type: String, 
+        required: true, 
+      },
+      mediaType: { 
+        type: String, 
+        required: true, 
+      },
+      posterPath: { 
+        type: String, 
+      },
+      title: { 
+        type: String, 
+      },
+      releaseDate: { 
+        type: String, 
+      },
+      addedAt: { 
+        type: Date, 
+        default: Date.now, 
+      }
     }
   ],
   diary: [
     {
-      mediaId: { type: String, required: true },
-      mediaType: { type: String, required: true },
-      posterPath: { type: String },
-      title: { type: String },
-      releaseDate: { type: String },
-      rating: { type: Number, required: true },
-      comment: { type: String },
-      watchedDate: { type: Date, default: Date.now }
+      mediaId: { 
+        type: String, 
+        required: true,
+      },
+      mediaType: { 
+        type: String, 
+        required: true, 
+      },
+      posterPath: { 
+        type: String, 
+      },
+      title: { 
+        type: String, 
+      },
+      releaseDate: { 
+        type: String, 
+      },
+      rating: { 
+        type: Number, 
+        required: true,
+      },
+      comment: { 
+        type: String, 
+      },
+      watchedDate: { 
+        type: Date, 
+        default: Date.now, 
+      }
     }
   ],
   favourites: [
     {
-      mediaId: { type: String, required: true },
-      mediaType: { type: String, required: true },
-      posterPath: { type: String },
-      title: { type: String },
-      releaseDate: { type: String },
-      addedAt: { type: Date, default: Date.now }
+      mediaId: { 
+        type: String, 
+        required: true 
+      },
+      mediaType: { 
+        type: String, 
+        required: true 
+      },
+      posterPath: { 
+        type: String 
+      },
+      title: { 
+        type: String 
+      },
+      releaseDate: { 
+        type: String 
+      },
+      addedAt: { 
+        type: Date, 
+        default: Date.now 
+      }
     }
   ]
 }, {
-  timestamps: true,
+  timestamps: true,   // tenere traccia delle modifiche
 });
-
 
 const User = mongoose.model('User', userSchema);
 

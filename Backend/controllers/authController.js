@@ -1,24 +1,30 @@
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');   // permette di criptare le password in modo sicuro ed è usata con login e registrazione utenti
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs');       // modulo nativo di Node.js che permette di: leggere file, scrivere file, creare, rinominare o cancellare file e cartelle, lavorare con path e file system in generale
+const path = require('path');   // modulo path di Node.js che permette di lavorare facilmente con percorsi di file e cartelle nel filesystem
 
-// Helper function to generate tokens and set cookies
+// funzione per generare i token e settare i cookies
 const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
-  // Create token
-  const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: '15m'
-  });
+  // crea l'access token
+  const accessToken = jwt.sign(
+    { id: user._id }, 
+    process.env.JWT_SECRET, 
+    {expiresIn: '15m'}
+  );
 
-  const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_REFRESH_SECRET, {
-    expiresIn: '7d'
-  });
+  // crea il refresh token
+  const refreshToken = jwt.sign(
+    { id: user._id }, 
+    process.env.JWT_REFRESH_SECRET, 
+    {expiresIn: '7d'}
+  );
 
-  // Store refresh token in DB
+  // conserva il refresh token nel DB
   user.refreshToken = refreshToken;
   user.save();
 
+  // crea il cookie
   const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -27,24 +33,24 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
 
   const accessTokenCookieOptions = {
     ...cookieOptions,
-    maxAge: 15 * 60 * 1000 // 15 minutes
+    maxAge: 15 * 60 * 1000  // 15 minuti
   };
 
   const refreshTokenCookieOptions = {
     ...cookieOptions,
-    path: '/api/auth/refresh'
+    path: '/api/auth/refresh'   // specifica a quale percorso del server il cookie deve essere inviato
   };
 
   if (rememberMe) {
-    refreshTokenCookieOptions.maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days
+    refreshTokenCookieOptions.maxAge = 7 * 24 * 60 * 60 * 1000; // 7 giorni
   }
 
   res
     .status(statusCode)
-    .cookie('accessToken', accessToken, accessTokenCookieOptions)
+    .cookie('accessToken', accessToken, accessTokenCookieOptions)   // (nome, valore, opzioni)
     .cookie('refreshToken', refreshToken, refreshTokenCookieOptions)
     .json({
-      success: true,
+      success: true,  // esito positivo
       user: {
         _id: user._id,
         name: user.name,
@@ -54,17 +60,15 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
     });
 };
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
-// @access  Public
+// registra un nuovo utente
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
-
+  
   try {
     let user = await User.findOne({ email });
 
     if (user) {
-      return res.status(400).json({ msg: 'User already exists' });
+      return res.status(400).json({ msg: 'L\'utente già esiste!' });
     }
 
     user = new User({
@@ -73,21 +77,20 @@ const registerUser = async (req, res) => {
       password,
     });
 
+    // encoding della password
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 
     await user.save();
 
-    sendTokenResponse(user, 200, res, false);
+    sendTokenResponse(user, 200, res, false);  
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send('Errore del server');
   }
 };
 
-// @desc    Auth user & get token
-// @route   POST /api/auth/login
-// @access  Public
+// procedura di login per un utente
 const loginUser = async (req, res) => {
   const { email, password, rememberMe } = req.body;
 
@@ -95,19 +98,19 @@ const loginUser = async (req, res) => {
     let user = await User.findOne({ email }).select('+password');
 
     if (!user) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
+      return res.status(400).json({ msg: 'Email o Password non validi!' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
+      return res.status(400).json({ msg: 'Password non valida!' });
     }
 
     sendTokenResponse(user, 200, res, rememberMe);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send('Errore del server');
   }
 };
 
