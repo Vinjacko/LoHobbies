@@ -11,6 +11,7 @@ const AuthModal = ({ closeModal }) => {
   const [activeTab, setActiveTab] = useState('login');
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [registerName, setRegisterName] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
@@ -51,7 +52,7 @@ const AuthModal = ({ closeModal }) => {
     try {
       const { data } = await axios.post(
         '/api/v1/auth/login',
-        { email: loginEmail, password: loginPassword },
+        { email: loginEmail, password: loginPassword, rememberMe },
         { withCredentials: true }
       );
       login(data.user);
@@ -96,6 +97,17 @@ const AuthModal = ({ closeModal }) => {
                 <div className="form-group">
                   <label htmlFor="login-password">{t('password')}</label>
                   <input type="password" id="login-password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required />
+                </div>
+                <div className="form-group-row">
+                  <div className="remember-me">
+                    <input
+                      type="checkbox"
+                      id="remember-me"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                    />
+                    <label htmlFor="remember-me">{t('rememberMe')}</label>
+                  </div>
                 </div>
                 {error && activeTab === 'login' && <p className="error-message">{error}</p>}
                 <button type="submit" className="btn-submit" disabled={loading}>

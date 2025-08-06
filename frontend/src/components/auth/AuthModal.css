@@ -74,6 +74,12 @@
 
 .remember-me input {
   margin-right: 5px;
+  width: auto; /* Override default input width */
+}
+
+.remember-me label {
+  margin-bottom: 0; /* Override default label margin */
+  cursor: pointer;
 }
 
 .forgot-password-button {
