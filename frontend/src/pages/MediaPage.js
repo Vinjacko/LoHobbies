@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import i18n from '../i18n';
-import axios from 'axios';
+import axios from '../api/axios';
 import AuthContext from '../context/AuthContext';
 import './MediaPage.css';
 import CastCarousel from '../components/media/CastCarousel';

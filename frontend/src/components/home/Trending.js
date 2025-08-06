@@ -7,7 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import './Trending.css';
 import { Navigation } from 'swiper';
-import axios from 'axios';
+import axios from '../../api/axios';
 
 const Trending = () => {
   const { t } = useTranslation();

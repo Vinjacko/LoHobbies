@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import axios from '../../api/axios';
 import './ResetPasswordModal.css';
 import { useNavigate } from 'react-router-dom';
 import SuccessModal from '../common/SuccessModal';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import axios from '../api/axios';
 import AuthContext from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import './Watchlist.css';

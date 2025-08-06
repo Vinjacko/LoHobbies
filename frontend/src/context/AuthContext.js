@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../api/axios';
 
 const AuthContext = createContext({
   user: null,
@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  axios.defaults.withCredentials = true; // Send cookies with requests
 
   useEffect(() => {
     const responseInterceptor = axios.interceptors.response.use(

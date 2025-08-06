@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import axios from '../../api/axios';
 import './ProfilePictureModal.css';
 import AuthContext from '../../context/AuthContext';
 
