@@ -1,21 +1,19 @@
 const jwt = require('jsonwebtoken');
 
 const protect = (req, res, next) => {
-  // Get token from cookie
+  // prende il token dal cookie
   const token = req.cookies.accessToken;
 
-  // Check if not token
   if (!token) {
-    return res.status(401).json({ msg: 'No token, authorization denied' });
+    return res.status(401).json({ msg: 'Nessun token, autorizzazione negata' });
   }
 
-  // Verify token
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(401).json({ msg: 'Token is not valid' });
+    res.status(401).json({ msg: 'Il token non è valido!' });
   }
 };
 

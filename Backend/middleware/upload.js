@@ -1,37 +1,37 @@
-const multer = require('multer');
+const multer = require('multer'); // libreria utilizzata per l'upload di file
 const path = require('path');
 
-// Set up storage engine
+// crea un motore di archiviazione per salvare i file sul disco del server
 const storage = multer.diskStorage({
   destination: './public/uploads/',
-  filename: function(req, file, cb){
-    cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  // funzione per stabilire come nominare il file
+  filename: function(req, file, callback){
+    callback(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
 });
 
-// Init upload
-const upload = multer({
-  storage: storage,
-  limits:{fileSize: 1000000}, // 1MB
-  fileFilter: function(req, file, cb){
-    checkFileType(file, cb);
-  }
-}).single('profilePicture');
-
-// Check file type
-function checkFileType(file, cb){
-  // Allowed ext
+// verifica del tipo di file
+function checkFileType(file, callback){
   const filetypes = /jpeg|jpg|png|gif/;
-  // Check ext
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  // Check mime
   const mimetype = filetypes.test(file.mimetype);
 
   if(mimetype && extname){
-    return cb(null,true);
+    return callback(null,true);
   } else {
-    cb('Error: Images Only!');
+    callback('Error: Images Only!');
   }
 }
+
+// inizializzazione e configurazione del middleware multer
+const upload = multer({
+  storage: storage,
+  limits:{fileSize: 1000000},
+  fileFilter: function(req, file, callback){
+    checkFileType(file, callback);
+  }
+}).single('profilePicture');  // viene caricato solo un file dal modulo HTML 'profilePicture'
+
+
 
 module.exports = upload;

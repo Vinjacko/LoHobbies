@@ -1,8 +1,26 @@
 const express = require('express');
-const router = express.Router();
-
-const { getTrending, getExplore, getMovieDetails, getTvShowDetails, getRecommendations, getPersonDetails, searchAll, discoverMedia, getGenres, getProviders, autocompleteSearch, addToWatchlist, getWatchlist, removeFromWatchlist, addToDiary, getDiary, addToFavourites, getFavourites, removeFromFavourites } = require('../controllers/mediaController');
+const { 
+    getTrending, 
+    getExplore, 
+    getMovieDetails, 
+    getTvShowDetails, 
+    getRecommendations, 
+    getPersonDetails, 
+    searchAll, 
+    discoverMedia, 
+    getGenres,
+    autocompleteSearch, 
+    addToWatchlist, 
+    getWatchlist, 
+    removeFromWatchlist, 
+    addToDiary, 
+    getDiary, 
+    addToFavourites, 
+    getFavourites, 
+    removeFromFavourites } = require('../controllers/mediaController');
 const { protect } = require('../middleware/authMiddleware');
+
+const router = express.Router();
 
 router.get('/trending', getTrending);
 router.get('/explore', getExplore);
@@ -10,7 +28,6 @@ router.get('/search', searchAll);
 router.get('/autocomplete', autocompleteSearch);
 router.get('/discover', discoverMedia);
 router.get('/genres', getGenres);
-router.get('/providers', getProviders);
 router.get('/movie/:id', getMovieDetails);
 router.get('/tv/:id', getTvShowDetails);
 router.get('/:media_type/:id/recommendations', getRecommendations);
