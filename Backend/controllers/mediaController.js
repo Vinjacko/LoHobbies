@@ -25,7 +25,7 @@ const getTrending = async (req, res, next) => {
     const movieResponse = await tmdb.get('/discover/movie', {
       params: {
         sort_by: 'popularity.desc',
-        'vote_count.gte': 150, // filtro per rilevanza
+        'vote_count.gte': 150, // filtro per rilevanza (almeno 150 voti)
         page: 1,
         'primary_release_date.lte': new Date().toISOString().split('T')[0],   // filtro sulla data, converte la data in formato ISO e prende solo la parte che corrisponde a gg/mm/aaaa
         language,
@@ -35,7 +35,7 @@ const getTrending = async (req, res, next) => {
     const tvResponse = await tmdb.get('/discover/tv', {
       params: {
         sort_by: 'popularity.desc',
-        'vote_count.gte': 150, // filtro per rilevanza
+        'vote_count.gte': 150,
         page: 1,
         'first_air_date.lte': new Date().toISOString().split('T')[0],
         language,
@@ -117,13 +117,15 @@ const getTrending = async (req, res, next) => {
   }
 };
 
+// metodo per ottenere il contenuto della sezione esplora
 const getExplore = async (req, res, next) => {
   try {
     const { page = 1, language = 'it-IT' } = req.query;
 
     const movieResponse = await tmdb.get('/discover/movie', {
       params: {
-        sort_by: 'vote_average.desc',
+        sort_by: 
+        'vote_average.desc',
         'vote_count.gte': 150,
         page,
         language,
@@ -132,7 +134,8 @@ const getExplore = async (req, res, next) => {
 
     const tvResponse = await tmdb.get('/discover/tv', {
         params: {
-          sort_by: 'vote_average.desc',
+          sort_by: 
+          'vote_average.desc',
           'vote_count.gte': 150,
           page,
           language,
@@ -151,31 +154,33 @@ const getExplore = async (req, res, next) => {
       success: true,
       data: results,
       pagination: {
-        page: parseInt(page, 10),
+        page: parseInt(page, 10),   // pagina corrente convertita da stringa a numero intero
         total_pages,
         total_results,
       },
     });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ success: false, error: 'Server Error' });
+    res.status(400).json({ success: false, error: 'Errore del server!' });
   }
 };
 
+// metodo per ottenere i dettagli di film e serie-TV
 const getMovieDetails = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { language = 'it-IT' } = req.query;
     const response = await tmdb.get(`/movie/${id}`, {
       params: {
-        append_to_response: 'credits,videos,images',
+        // permette di richiedere tutte le informazioni sul contenuto
+        append_to_response: 'credits,videos,images',    
         language
       }
     });
     res.status(200).json({ success: true, data: response.data });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ success: false, error: 'Server Error' });
+    res.status(400).json({ success: false, error: 'Errore del server!' });
   }
 };
 
@@ -192,10 +197,11 @@ const getTvShowDetails = async (req, res, next) => {
     res.status(200).json({ success: true, data: response.data });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ success: false, error: 'Server Error' });
+    res.status(400).json({ success: false, error: 'Errore del server!' });
   }
 };
 
+// metodo per ottenere i contenuti consigliati nella sezione 'potrebbero piacerti anche'
 const getRecommendations = async (req, res, next) => {
   try {
     const { media_type, id } = req.params;
@@ -207,13 +213,15 @@ const getRecommendations = async (req, res, next) => {
     res.status(200).json({ success: true, data: results });
   } catch (error) {
     if (error.response && error.response.status === 404) {
-      return res.status(200).json({ success: true, data: [] });
+      // se il contenuto non esiste viene ugualmente riscontrato un esito positivo ma restituito un array vuoto
+      return res.status(200).json({ success: true, data: [] });   
     }
     console.error(error);
     res.status(400).json({ success: false, error: 'Server Error' });
   }
 };
 
+// metodo per ottenere le informazioni sul cast
 const getPersonDetails = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -227,18 +235,17 @@ const getPersonDetails = async (req, res, next) => {
     res.status(200).json({ success: true, data: response.data });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ success: false, error: 'Server Error' });
+    res.status(400).json({ success: false, error: 'Errore del server!' });
   }
 };
 
-
+// metodo per gestire la barra di ricerca
 const searchAll = async (req, res, next) => {
   try {
     const { query, mediaType, sortBy = 'popularity.desc', genres, yearFrom, yearTo, language = 'it-IT' } = req.query;
     let results = [];
-
     const searchPromises = [];
-    // If a specific mediaType is provided, use it. Otherwise, search both.
+    // se viene fornito un mediaType specifico lo usa altrimenti cerca entrambi
     const typesToSearch = mediaType ? [mediaType] : ['movie', 'tv'];
 
     if (typesToSearch.includes('movie')) {
@@ -259,7 +266,7 @@ const searchAll = async (req, res, next) => {
         results.push(...responseArray);
     });
 
-    // Filter by genre if provided
+    // filtra il genere se fornito
     if (genres) {
       const genreArray = genres.split(',');
       results = results.filter(item =>
@@ -267,7 +274,7 @@ const searchAll = async (req, res, next) => {
       );
     }
 
-    // Sort results
+    // ordina i risultati
     const [sortKey, sortOrder] = sortBy.split('.');
     results.sort((a, b) => {
       let valA, valB;
@@ -292,10 +299,11 @@ const searchAll = async (req, res, next) => {
     res.status(200).json({ success: true, data: results });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ success: false, error: 'Server Error' });
+    res.status(400).json({ success: false, error: 'Errore del server!' });
   }
 };
 
+// metodo per gestire i filtri di ricerca
 const discoverMedia = async (req, res, next) => {
   try {
     const {
@@ -305,30 +313,29 @@ const discoverMedia = async (req, res, next) => {
       genres,
       yearFrom,
       yearTo,
-      ratingFrom,
-      ratingTo,
-      providers,
       language = 'it-IT',
     } = req.query;
 
     const params = {
       page,
       sort_by: sortBy,
-      'vote_count.gte': 100, // Filter out items with very few votes
+      'vote_count.gte': 100, // filtra gli oggetti con almeno 100 voti
       language,
     };
 
-    if (genres) params.with_genres = genres;
-    if (providers) params.with_watch_providers = providers;
+    if (genres) 
+      params.with_genres = genres;
     if (mediaType === 'movie') {
-      if (yearFrom) params['primary_release_date.gte'] = `${yearFrom}-01-01`;
-      if (yearTo) params['primary_release_date.lte'] = `${yearTo}-12-31`;
+      if (yearFrom) 
+        params['primary_release_date.gte'] = `${yearFrom}-01-01`;
+      if (yearTo) 
+        params['primary_release_date.lte'] = `${yearTo}-12-31`;
     } else if (mediaType === 'tv') {
-      if (yearFrom) params['first_air_date.gte'] = `${yearFrom}-01-01`;
-      if (yearTo) params['first_air_date.lte'] = `${yearTo}-12-31`;
+      if (yearFrom) 
+        params['first_air_date.gte'] = `${yearFrom}-01-01`;
+      if (yearTo) 
+        params['first_air_date.lte'] = `${yearTo}-12-31`;
     }
-    if (ratingFrom) params['vote_average.gte'] = ratingFrom;
-    if (ratingTo) params['vote_average.lte'] = ratingTo;
 
     const response = await tmdb.get(`/discover/${mediaType}`, { params });
 
@@ -345,10 +352,11 @@ const discoverMedia = async (req, res, next) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ success: false, error: 'Server Error' });
+    res.status(400).json({ success: false, error: 'Errore del server!' });
   }
 };
 
+// metodo per ottenere i generi nei filtri
 const getGenres = async (req, res, next) => {
   try {
     const { language = 'it-IT' } = req.query;
@@ -358,41 +366,18 @@ const getGenres = async (req, res, next) => {
     const [movieGenres, tvGenres] = await Promise.all([movieGenresPromise, tvGenresPromise]);
 
     const genres = {
-      movie: movieGenres.data.genres.filter(genre => genre.name !== 'TV Movie'),
+      movie: movieGenres.data.genres.filter(genre => genre.name !== 'TV Movie'),  // TV Movie è un genere ambiguo per questo è meglio filtrarlo
       tv: tvGenres.data.genres.filter(genre => genre.name !== 'TV Movie'),
     };
 
     res.status(200).json({ success: true, data: genres });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ success: false, error: 'Server Error' });
+    res.status(400).json({ success: false, error: 'Errore del server!' });
   }
 };
 
-const getProviders = async (req, res, next) => {
-  try {
-    const { language = 'it-IT' } = req.query;
-    const response = await tmdb.get('/watch/providers/movie', {
-      params: {
-        language,
-        watch_region: 'IT',
-      },
-    });
-
-    // We only need a flat list of providers, not per-country
-    const providers = response.data.results.map(({ provider_id, provider_name, logo_path }) => ({
-      provider_id,
-      provider_name,
-      logo_path,
-    }));
-
-    res.status(200).json({ success: true, data: providers });
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ success: false, error: 'Server Error' });
-  }
-};
-
+// metodo legato all'autocompletamento della barra di ricerca
 const autocompleteSearch = async (req, res, next) => {
   try {
     const { query, language = 'it-IT' } = req.query;
@@ -405,7 +390,7 @@ const autocompleteSearch = async (req, res, next) => {
       params: {
         query,
         language,
-        include_adult: false,
+        include_adult: true,
       },
     });
 
@@ -416,11 +401,11 @@ const autocompleteSearch = async (req, res, next) => {
       let score = 0;
 
       if (lowerTitle === lowerQuery) {
-        score = 3; // Exact match
+        score = 3; // corrispondenza esatta
       } else if (lowerTitle.startsWith(lowerQuery)) {
-        score = 2; // Starts with query
+        score = 2; // inizia con ciò che si è scritto
       } else if (lowerTitle.includes(lowerQuery)) {
-        score = 1; // Contains query
+        score = 1; // contiene ciò che si è scritto
       }
 
       return { ...item, relevanceScore: score };
@@ -428,12 +413,12 @@ const autocompleteSearch = async (req, res, next) => {
 
     const sortedResults = scoredResults.sort((a, b) => {
         if (a.relevanceScore !== b.relevanceScore) {
-            return b.relevanceScore - a.relevanceScore;
+            return b.relevanceScore - a.relevanceScore;   // ordina i risultati in base al relevanceScore dal più alto al più basso
         }
         return b.popularity - a.popularity;
     });
 
-    // Filter and limit results
+    // filtraggio e limitazione dei risultati
     const finalResults = sortedResults
       .filter(item =>
         item.relevanceScore > 0 &&
@@ -450,6 +435,7 @@ const autocompleteSearch = async (req, res, next) => {
   }
 };
 
+// metodo per aggiungere i titoli alla watchlist
 const addToWatchlist = async (req, res, next) => {
   try {
     const { mediaId, mediaType, posterPath, title, releaseDate } = req.body;
@@ -458,13 +444,13 @@ const addToWatchlist = async (req, res, next) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ success: false, error: 'User not found' });
+      return res.status(404).json({ success: false, error: 'Utente non trovato!' });
     }
 
     const isAlreadyInWatchlist = user.watchlist.some(item => item.mediaId === mediaId && item.mediaType === mediaType);
 
     if (isAlreadyInWatchlist) {
-      return res.status(400).json({ success: false, error: 'Media already in watchlist' });
+      return res.status(400).json({ success: false, error: 'Contenuto già presente nella watchlist!' });
     }
 
     user.watchlist.push({ mediaId, mediaType, posterPath, title, releaseDate });
@@ -473,23 +459,25 @@ const addToWatchlist = async (req, res, next) => {
     res.status(200).json({ success: true, data: user.watchlist });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: 'Server Error' });
+    res.status(500).json({ success: false, error: 'Errore del server!' });
   }
 };
 
+// metodo per ottenere il contenuto della watchlist
 const getWatchlist = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
-      return res.status(404).json({ success: false, error: 'User not found' });
+      return res.status(404).json({ success: false, error: 'Utente non trovato' });
     }
     res.status(200).json({ success: true, data: user.watchlist });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: 'Server Error' });
+    res.status(500).json({ success: false, error: 'Errore del server!' });
   }
 };
 
+// metodo per rimuovere il contenuto dalla watchlist
 const removeFromWatchlist = async (req, res, next) => {
   try {
     const { mediaId } = req.params;
@@ -498,7 +486,7 @@ const removeFromWatchlist = async (req, res, next) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ success: false, error: 'User not found' });
+      return res.status(404).json({ success: false, error: 'Utente non troavato' });
     }
 
     user.watchlist = user.watchlist.filter(item => item.mediaId !== mediaId);
@@ -507,10 +495,11 @@ const removeFromWatchlist = async (req, res, next) => {
     res.status(200).json({ success: true, data: user.watchlist });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: 'Server Error' });
+    res.status(500).json({ success: false, error: 'Errore del server!' });
   }
 };
 
+// metodo per aggiungere un contenuto al diario
 const addToDiary = async (req, res, next) => {
     try {
         const { mediaId, mediaType, posterPath, title, releaseDate, rating, comment, watchedDate } = req.body;
@@ -519,7 +508,7 @@ const addToDiary = async (req, res, next) => {
         const user = await User.findById(userId);
 
         if (!user) {
-            return res.status(404).json({ success: false, error: 'User not found' });
+            return res.status(404).json({ success: false, error: 'Utente non trovato!' });
         }
 
         const diaryEntry = {
@@ -539,23 +528,25 @@ const addToDiary = async (req, res, next) => {
         res.status(200).json({ success: true, data: user.diary });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, error: 'Server Error' });
+        res.status(500).json({ success: false, error: 'Errore del server!' });
     }
 };
 
+// metodo per ottenere il contenuto del diario
 const getDiary = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
-      return res.status(404).json({ success: false, error: 'User not found' });
+      return res.status(404).json({ success: false, error: 'Utente non trovato!' });
     }
     res.status(200).json({ success: true, data: user.diary });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: 'Server Error' });
+    res.status(500).json({ success: false, error: 'Errore del server' });
   }
 };
 
+// metodo per aggiungere un contenuto ai preferiti
 const addToFavourites = async (req, res, next) => {
   try {
     const { mediaId, mediaType, posterPath, title, releaseDate } = req.body;
@@ -564,13 +555,13 @@ const addToFavourites = async (req, res, next) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ success: false, error: 'User not found' });
+      return res.status(404).json({ success: false, error: 'Utente non trovato!' });
     }
 
     const isAlreadyInFavourites = user.favourites.some(item => item.mediaId === mediaId && item.mediaType === mediaType);
 
     if (isAlreadyInFavourites) {
-      return res.status(400).json({ success: false, error: 'Media already in favourites' });
+      return res.status(400).json({ success: false, error: 'Contenuto già presente nei preferiti!' });
     }
 
     user.favourites.push({ mediaId, mediaType, posterPath, title, releaseDate });
@@ -579,23 +570,25 @@ const addToFavourites = async (req, res, next) => {
     res.status(200).json({ success: true, data: user.favourites });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: 'Server Error' });
+    res.status(500).json({ success: false, error: 'Errore del server' });
   }
 };
 
+// metodo per ottenere il contenuto dei preferiti
 const getFavourites = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
-      return res.status(404).json({ success: false, error: 'User not found' });
+      return res.status(404).json({ success: false, error: 'Utente non trovato!' });
     }
     res.status(200).json({ success: true, data: user.favourites });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: 'Server Error' });
+    res.status(500).json({ success: false, error: 'Errore del server' });
   }
 };
 
+// metodo per rimuovere un contenuto dai preferiti
 const removeFromFavourites = async (req, res, next) => {
   try {
     const { mediaId } = req.params;
@@ -604,7 +597,7 @@ const removeFromFavourites = async (req, res, next) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ success: false, error: 'User not found' });
+      return res.status(404).json({ success: false, error: 'Utente non trovato!' });
     }
 
     user.favourites = user.favourites.filter(item => item.mediaId !== mediaId);
@@ -613,7 +606,7 @@ const removeFromFavourites = async (req, res, next) => {
     res.status(200).json({ success: true, data: user.favourites });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: 'Server Error' });
+    res.status(500).json({ success: false, error: 'Errore del server' });
   }
 };
 
@@ -627,7 +620,6 @@ module.exports = {
   searchAll,
   discoverMedia,
   getGenres,
-  getProviders,
   autocompleteSearch,
   addToWatchlist,
   getWatchlist,
