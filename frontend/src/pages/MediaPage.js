@@ -230,7 +230,7 @@ const MediaPage = () => {
                             </div>
                             <p className="tagline">{media.tagline}</p>
                             <h3>{t('description')}</h3>
-                            <p>{media.overview}</p>
+                            <p className="overview">{media.overview}</p>
                             <div className="media-actions">
                                 {trailer && (
                                     <button className="trailer-button" onClick={() => setShowTrailer(true)}>
