@@ -12,8 +12,8 @@
 }
 
 .auth-modal-content {
-  background-color: var(--surface-color);
-  color: var(--text-color);
+  background-color: var(--surface-color); /* definito in app.css */
+  color: var(--text-color); /* definito in app.css */
   padding: 20px;
   border-radius: 8px;
   width: 400px;
@@ -63,7 +63,7 @@
 .form-group-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center;  
   margin-bottom: 15px;
 }
 
@@ -74,21 +74,12 @@
 
 .remember-me input {
   margin-right: 5px;
-  width: auto; /* Override default input width */
+  width: auto; 
 }
 
 .remember-me label {
-  margin-bottom: 0; /* Override default label margin */
+  margin-bottom: 0; 
   cursor: pointer;
-}
-
-.forgot-password-button {
-  background: none;
-  border: none;
-  color: var(--primary-color);
-  cursor: pointer;
-  padding: 0;
-  font-size: 14px;
 }
 
 .btn-submit {
@@ -102,56 +93,13 @@
   cursor: pointer;
   box-sizing: border-box;
 }
-.terms-of-service {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-}
 
-.terms-of-service input {
-  margin-right: 10px;
-}
-
-.terms-of-service a {
-  color: var(--primary-color);
-  text-decoration: none;
-}
-
-.terms-of-service a:hover {
-  text-decoration: underline;
-}
 .error-message {
   color: var(--error-color);
   margin-bottom: 15px;
   text-align: center;
 }
-.password-strength-meter {
-  margin-top: 10px;
-}
 
-.password-strength-meter-progress {
-  width: 100%;
-}
-
-.password-strength-meter-label {
-  font-size: 12px;
-}
-
-.strength-Weak::-webkit-progress-value {
-  background-color: #f44336;
-}
-
-.strength-Fair::-webkit-progress-value {
-  background-color: #ff9800;
-}
-
-.strength-Good::-webkit-progress-value {
-  background-color: #4caf50;
-}
-
-.strength-Strong::-webkit-progress-value {
-  background-color: #2196f3;
-}
 .success-message {
   color: green;
   margin-bottom: 15px;

@@ -19,7 +19,9 @@ const ProfilePictureModal = ({ closeModal }) => {
     if (!selectedFile) return;
     setLoading(true);
     setError('');
+    // creo un contenitore per inviare dati via HTTP
     const formData = new FormData();
+    // inserisco il file nel contenitore   
     formData.append('profilePicture', selectedFile);
 
     try {
@@ -34,7 +36,7 @@ const ProfilePictureModal = ({ closeModal }) => {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
       } else {
-        setError(t('uploadError'));
+        setError(t('Errore nel caricamento'));
       }
     }
     setLoading(false);
@@ -48,7 +50,7 @@ const ProfilePictureModal = ({ closeModal }) => {
       await loadUser();
       closeModal();
     } catch (err) {
-      setError(t('removeError'));
+      setError(t('Errore nella rimozione'));
     }
     setLoading(false);
   };
