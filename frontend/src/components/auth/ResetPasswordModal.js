@@ -7,7 +7,7 @@ import SuccessModal from '../common/SuccessModal';
 
 const ResetPasswordModal = ({ closeModal }) => {
   const { t } = useTranslation();
-  const [step, setStep] = useState('verify'); // 'verify' or 'reset'
+  const [step, setStep] = useState('verify'); 
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,7 +28,7 @@ const ResetPasswordModal = ({ closeModal }) => {
       await axios.post('/api/v1/auth/verify-password', { password });
       setStep('reset');
     } catch (err) {
-      setError('Password errata');
+      setError(t('wrongPassword'));
     }
     setLoading(false);
   };
@@ -44,7 +44,7 @@ const ResetPasswordModal = ({ closeModal }) => {
 
     try {
       await axios.post('/api/v1/auth/reset-password', { newPassword });
-      setSuccessMessage('Password modificata con successo');
+      setSuccessMessage(t('passwordModified'));
     } catch (err) {
       setError(err.response?.data?.message || t('unexpectedError'));
     }
@@ -122,6 +122,7 @@ const ResetPasswordModal = ({ closeModal }) => {
                   </span>
                 </div>
               </div>
+              {error && <p className="error-message">{error}</p>}
               <div className="button-group">
                 <button type="submit" disabled={loading}>
                   {loading ? t('loading') : t('resetPassword')}

@@ -78,7 +78,9 @@ i18n
           show: 'Show',
           hide: 'Hide',
           close: 'Close',
-          success: 'Success'
+          success: 'Success',
+          wrongPassword: 'Wrong password',
+          passwordModified: 'Password correctly modified'
        }
      },
       it: {
@@ -147,7 +149,9 @@ i18n
           show: 'Mostra',
           hide: 'Nascondi',
           close: 'Chiudi',
-          success: 'Successo'
+          success: 'Successo',
+          wrongPassword: 'Password errata',
+          passwordModified: 'Password modificata correttamente'
        }
       }
      }
