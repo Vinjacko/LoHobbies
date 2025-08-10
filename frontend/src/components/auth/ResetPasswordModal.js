@@ -78,11 +78,9 @@ const ResetPasswordModal = ({ closeModal }) => {
                 </div>
                 {error && <p className="error-message">{error}</p>}
               </div>
-              <div className="button-group">
-                <button type="submit" disabled={loading}>
+                <button class="btn" type="submit" disabled={loading}>
                   {loading ? t('loading') : t('continue')}
                 </button>
-              </div>
             </form>
           ) : (
             <form onSubmit={handleResetPassword}>
@@ -123,11 +121,9 @@ const ResetPasswordModal = ({ closeModal }) => {
                 </div>
               </div>
               {error && <p className="error-message">{error}</p>}
-              <div className="button-group">
-                <button type="submit" disabled={loading}>
+                <button class="btn" type="submit" disabled={loading}>
                   {loading ? t('loading') : t('resetPassword')}
                 </button>
-              </div>
             </form>
           )}
         </div>
