@@ -23,7 +23,7 @@ const AuthModal = ({ closeModal }) => {
   const handleRegister = async (e) => {
     e.preventDefault();
     if (registerPassword !== confirmPassword) {
-      setError(t('Le password non corrispondono'));
+      setError(t('passwordsDoNotMatch'));
       return;
     }
     setLoading(true);
@@ -41,7 +41,7 @@ const AuthModal = ({ closeModal }) => {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
       } else {
-        setError(t('Errore inatteso'));
+        setError(t('unexpectedError'));
       }
     }
     setLoading(false);
@@ -64,7 +64,7 @@ const AuthModal = ({ closeModal }) => {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
       } else {
-        setError(t('Errore inatteso'));
+        setError(t('unexpectedError'));
       }
     }
     setLoading(false);

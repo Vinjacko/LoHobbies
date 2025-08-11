@@ -80,7 +80,17 @@ i18n
           close: 'Close',
           success: 'Success',
           wrongPassword: 'Wrong password',
-          passwordModified: 'Password correctly modified'
+          passwordModified: 'Password correctly modified',
+          advancedFilters:'Advanced Filters',
+          mediaType:'Media type',
+          movie:'Movies',
+          serie:'TV-series',
+          genres:'Generes',
+          releaseYear:'Release year',
+          from:'From',
+          to:'To',
+          reset:'Reset',
+          close:'Close',
        }
      },
       it: {
@@ -151,7 +161,17 @@ i18n
           close: 'Chiudi',
           success: 'Successo',
           wrongPassword: 'Password errata',
-          passwordModified: 'Password modificata correttamente'
+          passwordModified: 'Password modificata correttamente',
+          advancedFilters:'Filtri avanzati',
+          mediaType:'Tipo di media',
+          movie:'Film',
+          serie:'Serie-TV',
+          genres:'Generi',
+          releaseYear:'Anno di uscita',
+          from:'Da',
+          to:'A',
+          reset:'Annulla',
+          close:'Chiudi',
        }
       }
      }

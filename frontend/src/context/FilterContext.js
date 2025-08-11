@@ -33,7 +33,7 @@ export const FilterProvider = ({ children }) => {
         const res = await axios.get(`/api/v1/media/search?${params}`);
         setResults(res.data.data);
       } catch (error) {
-        console.error("Error fetching discover results:", error);
+        console.error("Errore durante il recupero dei risultati:", error);
         setResults([]);
       }
       setLoading(false);

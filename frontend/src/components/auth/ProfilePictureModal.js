@@ -36,7 +36,7 @@ const ProfilePictureModal = ({ closeModal }) => {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
       } else {
-        setError(t('Errore nel caricamento'));
+        setError(t('uploadError'));
       }
     }
     setLoading(false);
@@ -50,7 +50,7 @@ const ProfilePictureModal = ({ closeModal }) => {
       await loadUser();
       closeModal();
     } catch (err) {
-      setError(t('Errore nella rimozione'));
+      setError(t('removeError'));
     }
     setLoading(false);
   };
