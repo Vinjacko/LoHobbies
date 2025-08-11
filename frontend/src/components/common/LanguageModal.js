@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './LanguageModal.css';
 
@@ -11,12 +10,11 @@ const LanguageModal = ({ closeModal }) => {
   };
 
   return (
-    <div className="modal-overlay" onClick={closeModal}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="lan-modal-overlay" onClick={closeModal}>
+      <div className="lan-modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>{t('selectLanguage')}</h2>
         <button className="language-button" onClick={() => changeLanguage('en')}>English</button>
         <button className="language-button" onClick={() => changeLanguage('it')}>Italiano</button>
-        {/* Add more languages here */}
       </div>
     </div>
   );

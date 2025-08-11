@@ -1,4 +1,4 @@
-.modal-overlay {
+.lan-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -9,23 +9,28 @@
   align-items: center;
   justify-content: center;
   z-index: 1200;
+  backdrop-filter: blur(5px);
 }
 
-.modal-content {
-  background-color: #f8f9fa;
-  color: #333;
+.lan-modal-content {
+  background: #1a1a1a;
+  color: #f1c40f;
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: 15px;
+  text-align: center;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  border: 1px solid #dee2e6;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 380px;
+  border: 1px solid #f1c40f;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
 }
 
 .language-button {
   background: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #f1c40f;
   border-radius: 8px;
   padding: 0.75rem 1.5rem;
   color: #333;
@@ -41,9 +46,4 @@
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   background-color: #fdfdfd;
-}
-
-.language-button:active {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }

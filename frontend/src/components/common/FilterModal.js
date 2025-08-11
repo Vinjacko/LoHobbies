@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from '../../api/axios';
 import { useFilters } from '../../context/FilterContext.js';
 import './FilterModal.css';

@@ -18,9 +18,9 @@
   --input-background-color-light: #ffffff;
 
   /* Common */
-  --primary-variant-color: #3700b3;
+  --primary-variant-color: #f6de8f;
   --secondary-color: #03dac6;
-  --error-color: #cf6679;
+  --error-color: #ff0000;
   --success-color: #008000;
 }
 
