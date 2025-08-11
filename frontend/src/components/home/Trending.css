@@ -5,8 +5,9 @@
 
 /* Contenitore principale della sezione */
 .trending-container {
+  border-bottom: 40px solid var(--border-color);
   padding: 2rem 0; /* Aggiunto padding verticale */
-  background-color: #000;
+  background-color: var(--background-color);
   color: var(--text-color);
   overflow: hidden; /* Nasconde lo scrollbar orizzontale del browser se il carosello sporge */
 }
@@ -18,7 +19,6 @@
   margin-top: 0;
   margin-bottom: 2rem;
   padding: 0 clamp(1rem, 5vw, 2rem); /* Spaziatura interna fluida */
-  color: #FFC107;
 }
 
 /* Stile per il contenitore Swiper per dare spazio ai lati */
