@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './StarRating.css';
 
 const StarRating = ({ rating, onRatingChange }) => {
@@ -6,10 +6,11 @@ const StarRating = ({ rating, onRatingChange }) => {
   const stars = [1, 2, 3, 4, 5];
   const isInteractive = !!onRatingChange;
 
+  // gestisce la visualizzazione delle stelline per la valutazione
   const handleMouseMove = (e, star) => {
-    const rect = e.currentTarget.getBoundingClientRect();
+    const rect = e.currentTarget.getBoundingClientRect(); // restituisce un oggetto con le dimensioni e la posizione rispetto alla viewport
     const percent = (e.clientX - rect.left) / rect.width;
-    setHoverRating(star - (percent < 0.5 ? 0.5 : 0));
+    setHoverRating(star - (percent < 0.5 ? 0.5 : 0));   
   };
 
   const handleMouseLeave = () => {

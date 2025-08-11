@@ -13,7 +13,7 @@
 }
 
 .lan-modal-content {
-  background: #1a1a1a;
+  background-color: var(--background-color);
   color: #f1c40f;
   padding: 2rem;
   border-radius: 15px;
@@ -23,14 +23,14 @@
   gap: 1rem;
   width: 90%;
   max-width: 380px;
-  border: 1px solid #f1c40f;
+  border: 1px solid var(--border-color);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
 }
 
 .language-button {
   background: #fff;
-  border: 1px solid #f1c40f;
+  border: 1px solid var(--border-color);;
   border-radius: 8px;
   padding: 0.75rem 1.5rem;
   color: #333;

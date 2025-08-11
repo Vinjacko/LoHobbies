@@ -12,12 +12,12 @@
 }
 
 .filter-modal-content {
-  background: #2c2c2c;
+  background: var(--background-color);
   padding: 2rem;
   border-radius: 8px;
   width: 90%;
   max-width: 500px;
-  color: #f0f0f0;
+  color: var(--text-color);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -39,7 +39,7 @@
 .close-btn {
   background: none;
   border: none;
-  color: #f0f0f0;
+  color: #000000;
   font-size: 2rem;
   cursor: pointer;
 }
@@ -47,7 +47,7 @@
 .filter-section h4 {
   margin-top: 0;
   margin-bottom: 10px;
-  color: #aaa;
+  color: #9d9d9d;
   font-weight: 500;
   text-transform: uppercase;
   font-size: 1rem;
@@ -58,10 +58,10 @@
 .filter-group input[type="number"] {
   width: 100%;
   padding: 0.75rem;
-  background: #333;
+  background: var(--background-color);
   border: 1px solid #555;
   border-radius: 4px;
-  color: #f0f0f0;
+  color: var(--text-color);
   font-size: 1rem;
 }
 
@@ -104,8 +104,8 @@
 }
 
 .btn-primary {
-  background: #007bff;
-  color: white;
+  background: #FFC107;
+  color: #573f0a;
 }
 
 .btn-secondary, .btn-primary {

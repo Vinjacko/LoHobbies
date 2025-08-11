@@ -88,7 +88,7 @@
   border: none;
   border-radius: 4px;
   background-color: var(--primary-color);
-  color: var(--surface-color);
+  color: #000000;
   font-size: 1rem;
   cursor: pointer;
   box-sizing: border-box;

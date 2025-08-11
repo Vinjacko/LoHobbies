@@ -174,8 +174,8 @@
 }
 
 .trailer-button {
-   background-color: var(--primary-color);
-   color: var(--background-color);
+   background-color: #FFC107;
+   color: #000000;
    border: none;
    padding: 0.75rem 1.5rem;
    border-radius: 5px;
@@ -202,8 +202,8 @@
 }
 
 .watchlist-button, .diary-button {
-    background-color: var(--primary-color);
-    color: var(--background-color);
+    background-color: #FFC107;
+    color: #000000;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
