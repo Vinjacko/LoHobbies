@@ -14,7 +14,7 @@
 
 .profile-picture-modal-content {
   background-color: #141414;
-  padding: 32px;
+  padding: 2rem;
   border-radius: 10px;
   width: 90%;
   max-width: 400px;
@@ -38,12 +38,12 @@
 
 
 .profile-picture-container {
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
 .profile-picture-modal-content h2 {
   color: #fff;
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
 .profile-picture-container img {
@@ -60,7 +60,7 @@
 }
 
 .form-group {
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
 .form-group input[type="file"] {
@@ -86,8 +86,8 @@
 .button-group {
   display: flex;
   justify-content: center;
-  gap: 18px;
-  margin-top: 24px;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .button-group button {
@@ -124,5 +124,5 @@
 
 .error-message {
   color: #ffc107;
-  margin-bottom: 18px;
+  margin-bottom: 1rem;
 }
