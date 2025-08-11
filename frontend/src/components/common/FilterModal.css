@@ -13,14 +13,14 @@
 
 .filter-modal-content {
   background: #2c2c2c;
-  padding: 2rem;
+  padding: 24px;
   border-radius: 8px;
   width: 90%;
   max-width: 500px;
   color: #f0f0f0;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 18px;
 }
 
 .filter-modal-header {
@@ -28,29 +28,29 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #444;
-  padding-bottom: 1rem;
+  padding-bottom: 12px;
 }
 
 .filter-modal-header h3 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 18px;
 }
 
 .close-btn {
   background: none;
   border: none;
   color: #f0f0f0;
-  font-size: 2rem;
+  font-size: 32px;
   cursor: pointer;
 }
 
 .filter-section h4 {
   margin-top: 0;
-  margin-bottom: 0.75rem;
+  margin-bottom: 10px;
   color: #aaa;
   font-weight: 500;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 13px;
   letter-spacing: 1px;
 }
 
