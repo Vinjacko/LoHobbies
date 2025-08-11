@@ -7,19 +7,21 @@ import { useTranslation } from 'react-i18next';
 const FilterModal = ({ closeModal }) => {
     const { filters, updateFilters, resetFilters } = useFilters();
     const [availableGenres, setAvailableGenres] = useState([]);
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         const fetchGenres = async () => {
             try {
-                const genresRes = await axios.get('/api/v1/media/genres');
+                const genresRes = await axios.get('/api/v1/media/genres', {
+                    params: { language: i18n.language }
+                });
                 setAvailableGenres(genresRes.data.data[filters.mediaType] || []);
             } catch (error) {
                 console.error("Errore durante il recupero dei generi:", error);
             }
         };
         fetchGenres();
-    }, [filters.mediaType]);
+    }, [filters.mediaType, i18n.language]);
 
     const handleMediaTypeChange = (e) => {
         updateFilters({ mediaType: e.target.value, genres: [] });
