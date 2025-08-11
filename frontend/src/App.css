@@ -4,7 +4,7 @@
   --text-color-dark: #e0e0e0;
   --title-color-dark: #FFC107;
   --surface-color-dark: #000000;
-  --primary-color-dark: #bb86fc;
+  --primary-color-dark: #FFC107;
   --border-color-dark: #555555;
   --input-background-color-dark: #000000;
 
@@ -21,6 +21,7 @@
   --primary-variant-color: #3700b3;
   --secondary-color: #03dac6;
   --error-color: #cf6679;
+  --success-color: #008000;
 }
 
 [data-theme='dark'] {

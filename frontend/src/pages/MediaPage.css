@@ -103,10 +103,6 @@
     position: relative;
 }
 
-.left-column h3 {
-    /* The color is inherited from the global h3 style in App.css */
-}
-
 .right-column {
     flex: 1;
     padding: 0 2rem;
@@ -269,11 +265,11 @@
 }
 
 .notification.success {
-    background-color: #28a745; /* Green for success */
+    background-color: var(--success-color); /* Green for success */
 }
 
 .notification.error {
-    background-color: #dc3545; /* Red for removal/error */
+    background-color: var(--error-color); /* Red for removal/error */
 }
 
 .notification i {
