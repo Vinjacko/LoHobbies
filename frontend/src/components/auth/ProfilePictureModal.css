@@ -84,7 +84,7 @@
 
 .custom-file-upload:hover {
   background-color: var(--title-color);
-  color: #ffffff;
+  color: var(--input-background-color);
 }
 
 .button-group {
