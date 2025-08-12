@@ -93,6 +93,7 @@ i18n
           close:'Close',
           fetchImpossibleExplore: 'Could not fetch explore data:',
           fetchImpossibleTrending:'Could not fetch trending content data:',
+          fetchImpossibleSearch: 'Could not fetch search results:'
        }
      },
       it: {
@@ -176,6 +177,7 @@ i18n
           close:'Chiudi',
           fetchImpossibleExplore: 'Impossibile recuperare i dati di Esplora:',
           fetchImpossibleTrending:'Impossibile recuperare i dati di Contenuti di Tendenza:',
+          fetchImpossibleSearch: 'Impossibile recuperare i risultati della ricerca:',
        }
       }
      }

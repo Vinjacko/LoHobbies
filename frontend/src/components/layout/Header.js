@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
 import i18n from '../../i18n';
@@ -24,7 +24,6 @@ const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const { t } = useTranslation();
   const navigate = useNavigate();
-
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
@@ -38,7 +37,7 @@ const Header = () => {
           const res = await axios.get(`/api/v1/media/autocomplete?query=${query}&language=${i18n.language}`);
           setResults(res.data.data);
         } catch (error) {
-          console.error('Error fetching search results:', error);
+          console.error(t('fetchImpossibleSearch'), error);
           setResults([]);
         }
       } else {
@@ -48,14 +47,14 @@ const Header = () => {
 
     const timeoutId = setTimeout(() => {
       fetchResults();
-    }, 300); // Debounce time
+    }, 300);
 
     return () => clearTimeout(timeoutId);
   }, [query]);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
         setIsFocused(false);
         setResults([]);
       }
@@ -67,8 +66,8 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-      const handleClickOutside = (event) => {
-          if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+      const handleClickOutside = (e) => {
+          if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
               setIsDropdownOpen(false);
               setIsSettingsOpen(false);
           }
