@@ -96,6 +96,8 @@ i18n
           fetchImpossibleSearch: 'Could not fetch search results:',
           search:'Search movies or TV-series',
           review:'Review',
+          addComment:'Add a comment...',
+          save:'Save',
        }
      },
       it: {
@@ -182,6 +184,8 @@ i18n
           fetchImpossibleSearch: 'Impossibile recuperare i risultati della ricerca:',
           search:'Cerca film o serie-TV',
           review:'Recensione',
+          addComment:'Aggiungi un commento...',
+          save:'Salva',
        }
       }
      }

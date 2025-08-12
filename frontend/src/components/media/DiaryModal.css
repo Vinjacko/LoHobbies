@@ -1,4 +1,4 @@
-.modal-overlay {
+.diary-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,32 +12,30 @@
   backdrop-filter: blur(8px);
 }
 
-.modal-content {
-  background: #1a1a1a;
+.diary-modal-content {
+  background: var(--background-color);
   padding: 20px;
   border-radius: 20px;
-  color: #f1c40f;
+  color: var(--text-color);
   text-align: center;
   width: 90%;
   max-width: 380px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-  border: 1px solid #f1c40f;
+  border: 1px solid var(--border-color);
   box-sizing: border-box;
   overflow-x: hidden;
 }
 
-.modal-content h2 {
+.diary-modal-content h2 {
   margin-top: 0;
-  font-size: 1.8rem;
-  color: #f1c40f;
+  font-size: 1.5rem;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
-.modal-content h3 {
+.diary-modal-content h3 {
   font-size: 1.4rem;
   margin-bottom: 15px;
-  color: #ecf0f1;
 }
 
 .react-datepicker-wrapper {
@@ -58,58 +56,53 @@
   width: 100%;
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid #f1c40f;
-  background: #333;
-  color: #f1c40f;
+  border: 1px solid var(--border-color);
+  background: #cbcbcb;
+  color: black;
   text-align: center;
   font-size: 1.1rem;
   cursor: pointer;
 }
 
-.react-datepicker__current-month {
-  font-size: 1rem;
-}
-
-.rating-container {
+.diary-rating-container {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 15px 0;
   padding: 10px;
-  background: #333;
+  background: #cbcbcb;
   border-radius: 10px;
 }
 
-.rating-label {
+.diary-rating-label {
   margin-right: 10px;
   font-weight: bold;
-  color: #fff;
+  color: black;
 }
 
-.comment-box {
+.diary-comment-box {
   width: calc(100% - 20px);
   height: 100px;
   margin-top: 15px;
   padding: 10px;
   border-radius: 10px;
-  border: 1px solid #f1c40f;
-  background: #333;
-  color: #ecf0f1;
+  background: #cbcbcb;
+  color: #000000;
   resize: none;
   font-family: inherit;
 }
 
-.comment-box::placeholder {
-  color: #888;
+.diary-comment-box::placeholder {
+  color: #5e5e5e;
 }
 
-.modal-actions {
+.diary-modal-actions {
   display: flex;
   justify-content: space-around;
   margin-top: 20px;
 }
 
-.modal-actions button {
+.diary-modal-actions button {
   padding: 10px 20px;
   border: none;
   border-radius: 10px;
@@ -119,20 +112,20 @@
   transition: all 0.3s ease;
 }
 
-.modal-actions button:first-child {
-  background-color: #e74c3c;
+.diary-modal-actions button:first-child {
+  background-color: #dc1600;
   color: white;
 }
 
-.modal-actions button:first-child:hover {
-  background-color: #c0392b;
+.diary-modal-actions button:first-child:hover {
+  background-color: #ff1900;
 }
 
-.modal-actions button:last-child {
+.diary-modal-actions button:last-child {
   background-color: #f1c40f;
   color: #1a1a1a;
 }
 
-.modal-actions button:last-child:hover {
+.diary-modal-actions button:last-child:hover {
   background-color: #f39c12;
 }

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import StarRating from '../common/StarRating';
 import './DiaryModal.css';
+import { useTranslation } from 'react-i18next';
 
 const DiaryModal = ({ media, onClose, onSave }) => {
+  const { t } = useTranslation();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [watchedDate, setWatchedDate] = useState(new Date());
@@ -22,24 +24,24 @@ const DiaryModal = ({ media, onClose, onSave }) => {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <h2>Aggiungi al diario</h2>
+    <div className="diary-modal-overlay">
+      <div className="diary-modal-content">
+        <h2>{t('addToDiary')}</h2>
         <DatePicker selected={watchedDate} onChange={(date) => setWatchedDate(date)} />
         <h3>{media.title || media.name}</h3>
-        <div className="rating-container">
-          <span className="rating-label">Valutazione:</span>
+        <div className="diary-rating-container">
+          <span className="diary-rating-label">{t('rating')}:</span>
           <StarRating rating={rating} onRatingChange={setRating} />
         </div>
         <textarea
-          className="comment-box"
-          placeholder="Aggiungi un commento..."
+          className="diary-comment-box"
+          placeholder={t('addComment')}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
-        <div className="modal-actions">
-          <button onClick={onClose}>Annulla</button>
-          <button onClick={handleSave}>Salva</button>
+        <div className="diary-modal-actions">
+          <button onClick={onClose}>{t('reset')}</button>
+          <button onClick={handleSave}>{t('save')}</button>
         </div>
       </div>
     </div>
