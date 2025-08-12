@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import i18n from '../../i18n';
 import { Link } from 'react-router-dom';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import 'swiper/css';    // import dei file CSS forniti dalla libreria Swiper per gli stili
+import 'swiper/css/navigation';   // import dei file CSS forniti dalla libreria Swiper per la navigazione
 import './Trending.css';
 import { Navigation } from 'swiper';
 import axios from '../../api/axios';
@@ -16,12 +16,12 @@ const Trending = () => {
   useEffect(() => {
     const getTrending = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/trending?language=${i18n.language}`, {
+        const res = await axios.get(`/api/v1/media/trending?language=${i18n.language}`, {
           withCredentials: true,
         });
         setTrending(res.data.data);
       } catch (error) {
-        console.error("Could not fetch trending data:", error);
+        console.error(t('fetchImpossibleTrending'), error);
       }
     };
     getTrending();
@@ -33,8 +33,8 @@ const Trending = () => {
       <Swiper
         className="trending-swiper"
         modules={[Navigation]}
-        spaceBetween={16} /* Spaziatura uniforme tra le locandine */
-        slidesPerView={'auto'} /* Permette a Swiper di mostrare quante più slide possibili */
+        spaceBetween={16} 
+        slidesPerView={'auto'} /* permette a Swiper di mostrare quante più slide possibili */
         navigation
       >
         {trending.map((item) => (

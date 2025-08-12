@@ -1,39 +1,29 @@
-/*
-  Stili per la sezione "Contenuti di Tendenza"
-  Design compatto con carosello orizzontale e aspect ratio 2:3.
-*/
-
-/* Contenitore principale della sezione */
 .trending-container {
   border-bottom: 40px solid var(--border-color);
-  padding: 2rem 0; /* Aggiunto padding verticale */
+  padding: 2rem 0;
   background-color: var(--background-color);
   color: var(--text-color);
-  overflow: hidden; /* Nasconde lo scrollbar orizzontale del browser se il carosello sporge */
+  overflow: hidden; 
 }
 
-/* Titolo della sezione */
 .trending-container h2 {
-  font-size: clamp(1.5rem, 4vw, 1.8rem); /* Dimensione del font fluida */
-  font-weight: 600;
+  font-size: clamp(1.5rem, 4vw, 1.8rem);
+  font-weight: bold;
   margin-top: 0;
   margin-bottom: 2rem;
-  padding: 0 clamp(1rem, 5vw, 2rem); /* Spaziatura interna fluida */
+  padding: 0 clamp(1rem, 5vw, 2rem);
 }
 
-/* Stile per il contenitore Swiper per dare spazio ai lati */
 .trending-swiper {
-  padding: 0 clamp(1rem, 5vw, 2rem); /* Spaziatura interna fluida */
+  padding: 0 clamp(1rem, 5vw, 2rem);
 }
 
-/* Wrapper per ogni singola slide, per centrare il contenuto */
 .trending-slide {
   display: flex;
   justify-content: center;
-  width: auto; /* Permette a Swiper di calcolare la larghezza in base al contenuto */
+  width: auto;
 }
 
-/* Contenitore della locandina per aspect ratio e interazioni */
 .trending-item {
   position: relative;
   border-radius: 8px;
@@ -41,14 +31,11 @@
   cursor: pointer;
   text-decoration: none;
   color: inherit;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  /* --- Dimensioni fluide con aspect ratio --- */
-  width: clamp(150px, 25vw, 225px); /* Larghezza fluida con min e max */
-  aspect-ratio: 2 / 3; /* Mantiene l'aspect ratio di 2:3 */
+  transition: transform 0.3s, box-shadow 0.3s;
+  width: clamp(1rem, 25vw, 20rem);
+  aspect-ratio: 2 / 3; 
 }
 
-/* Effetto al passaggio del mouse */
 .trending-item:hover .trending-item-image-container .trending-item-overlay {
   opacity: 1;
 }
