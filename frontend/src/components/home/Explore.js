@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Explore.css';
 import i18n from '../../i18n';
@@ -19,7 +19,7 @@ const Explore = () => {
         setExplore(data.data);
         setTotalPages(data.pagination.total_pages);
       } catch (error) {
-        console.error("Could not fetch explore data:", error);
+        console.error(t('fetchImpossible'), error);
       }
     };
     getExplore();

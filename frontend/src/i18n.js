@@ -91,6 +91,7 @@ i18n
           to:'To',
           reset:'Reset',
           close:'Close',
+          fetchImpossible: 'Could not fetch explore data:',
        }
      },
       it: {
@@ -172,6 +173,7 @@ i18n
           to:'A',
           reset:'Annulla',
           close:'Chiudi',
+          fetchImpossible: 'Impossibile recuperare i dati di Esplora:',
        }
       }
      }
