@@ -95,6 +95,7 @@ i18n
           fetchImpossibleTrending:'Could not fetch trending content data:',
           fetchImpossibleSearch: 'Could not fetch search results:',
           search:'Search movies or TV-series',
+          review:'Review',
        }
      },
       it: {
@@ -180,6 +181,7 @@ i18n
           fetchImpossibleTrending:'Impossibile recuperare i dati di Contenuti di Tendenza:',
           fetchImpossibleSearch: 'Impossibile recuperare i risultati della ricerca:',
           search:'Cerca film o serie-TV',
+          review:'Recensione',
        }
       }
      }

@@ -1,4 +1,4 @@
-.modal-overlay {
+.comment-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,8 +11,8 @@
   z-index: 1000;
 }
 
-.modal-content {
-  background-color: #1a1a1a;
+.comment-modal-content {
+  background-color: var(--background-color);
   padding: 2rem;
   border-radius: 8px;
   max-width: 500px;
@@ -22,13 +22,26 @@
   overflow-y: auto;
 }
 
-.modal-content p {
+.comment-modal-content p {
   font-size: 1.5rem;
   word-wrap: break-word;
   color: #fff;
 }
 
-.modal-actions {
-  text-align: right;
+.comment-modal-actions {
+  text-align: center;
   margin-top: 1rem;
+}
+
+.comment-modal-actions button {
+  display: flex;
+  justify-self: center;
+  padding: 5px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+  background-color: #ffc107;
+  color: #141414;
 }
