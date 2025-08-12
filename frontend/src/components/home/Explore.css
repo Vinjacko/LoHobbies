@@ -4,13 +4,17 @@
 }
 
 .explore-container h2 {
+  font-size: clamp(1.5rem, 4vw, 1.8rem);
   margin-bottom: 1rem;
 }
 
 .explore-grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
+  padding: 1rem;
   gap: 1rem;
+  margin: 0 auto;
+  max-width: 127rem;
 }
 
 .explore-item {
