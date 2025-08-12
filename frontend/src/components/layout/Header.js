@@ -13,12 +13,7 @@ import AuthContext from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 
 const Header = () => {
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
-  const [isProfilePictureModalOpen, setIsProfilePictureModalOpen] = useState(false);
-  const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
-  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
@@ -135,23 +130,8 @@ const Header = () => {
     return '';
   }
 
-  const openAuthModal = () => setIsAuthModalOpen(true);
-  const closeAuthModal = () => setIsAuthModalOpen(false);
-
-  const openFilterModal = () => setIsFilterModalOpen(true);
-  const closeFilterModal = () => setIsFilterModalOpen(false);
-
-  const openLanguageModal = () => setIsLanguageModalOpen(true);
-  const closeLanguageModal = () => setIsLanguageModalOpen(false);
-
-  const openProfilePictureModal = () => setIsProfilePictureModalOpen(true);
-  const closeProfilePictureModal = () => setIsProfilePictureModalOpen(false);
-
-  const openThemeModal = () => setIsThemeModalOpen(true);
-  const closeThemeModal = () => setIsThemeModalOpen(false);
-
-  const openResetPasswordModal = () => setIsResetPasswordModalOpen(true);
-  const closeResetPasswordModal = () => setIsResetPasswordModalOpen(false);
+  const openModal = (modalName) => setActiveModal(modalName);
+  const closeModal = () => setActiveModal(null);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -170,7 +150,7 @@ const Header = () => {
           <form className="search-bar" onSubmit={handleSearchSubmit}>
             <input
               type="text"
-              placeholder="Cerca film o serie TV"
+              placeholder={t('search')}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setIsFocused(true)}
@@ -180,7 +160,7 @@ const Header = () => {
                 <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
               </svg>
             </button>
-            <button type="button" className="filter-button" onClick={openFilterModal}>
+            <button type="button" className="filter-button" onClick={() => openModal('filter')}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"></path>
               </svg>
@@ -191,11 +171,7 @@ const Header = () => {
               {results.map((item) => (
                 <li key={item.id} className="search-result-item">
                   <Link to={getResultLink(item)} onClick={handleResultClick}>
-                    {getResultImage(item) ? (
-                      <img src={getResultImage(item)} alt={getResultTitle(item)} />
-                    ) : (
-                      <img src={getResultImage(item)} alt={getResultTitle(item)} />
-                    )}
+                    <img src={getResultImage(item)} alt={getResultTitle(item)} />
                     <div>
                       <p className="result-title">{getResultTitle(item)} <span className="result-year">{getResultYear(item)}</span></p>
                       <p className="result-type">{item.media_type}</p>
@@ -229,10 +205,10 @@ const Header = () => {
                     </button>
                     {isSettingsOpen && (
                       <div className="settings-menu">
-                        <button onClick={openLanguageModal}>{t('language')}</button>
-                        <button onClick={openThemeModal}>{t('theme')}</button>
-                        <button onClick={openResetPasswordModal}>{t('resetPassword')}</button>
-                        <button onClick={openProfilePictureModal}>{t('profilePicture')}</button>
+                        <button onClick={() => openModal('language')}>{t('language')}</button>
+                        <button onClick={() => openModal('theme')}>{t('theme')}</button>
+                        <button onClick={() => openModal('resetPassword')}>{t('resetPassword')}</button>
+                        <button onClick={() => openModal('profilePicture')}>{t('profilePicture')}</button>
                       </div>
                     )}
                   </div>
@@ -241,16 +217,16 @@ const Header = () => {
               )}
             </div>
           ) : (
-            <button className="btn" onClick={openAuthModal}>Accedi</button>
+            <button className="log-btn" onClick={() => openModal('auth')}>{t('login')}</button>
           )}
         </div>
       </header>
-      {isAuthModalOpen && !user && <AuthModal closeModal={closeAuthModal} />}
-      {isFilterModalOpen && <FilterModal closeModal={closeFilterModal} />}
-      {isLanguageModalOpen && <LanguageModal closeModal={closeLanguageModal} />}
-      {isProfilePictureModalOpen && <ProfilePictureModal closeModal={closeProfilePictureModal} />}
-      {isThemeModalOpen && <ThemeModal closeModal={closeThemeModal} />}
-      {isResetPasswordModalOpen && <ResetPasswordModal closeModal={closeResetPasswordModal} />}
+      {activeModal === 'auth' && !user && <AuthModal closeModal={closeModal} />}
+      {activeModal === 'filter' && <FilterModal closeModal={closeModal} />}
+      {activeModal === 'language' && <LanguageModal closeModal={closeModal} />}
+      {activeModal === 'profilePicture' && <ProfilePictureModal closeModal={closeModal} />}
+      {activeModal === 'theme' && <ThemeModal closeModal={closeModal} />}
+      {activeModal === 'resetPassword' && <ResetPasswordModal closeModal={closeModal} />}
     </>
   );
 };
