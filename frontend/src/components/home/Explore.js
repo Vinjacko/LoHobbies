@@ -4,6 +4,7 @@ import './Explore.css';
 import i18n from '../../i18n';
 import { Link } from 'react-router-dom';
 import Pagination from '../common/Pagination';
+import axios from '../../api/axios';
 
 const Explore = () => {
   const { t } = useTranslation();
@@ -14,16 +15,15 @@ const Explore = () => {
   useEffect(() => {
     const getExplore = async () => {
       try {
-        const response = await fetch(`/api/v1/media/explore?page=${page}&language=${i18n.language}`);
-        const data = await response.json();
-        setExplore(data.data);
-        setTotalPages(data.pagination.total_pages);
+        const response = await axios.get(`/api/v1/media/explore?page=${page}&language=${i18n.language}`);
+        setExplore(response.data.data);
+        setTotalPages(response.data.pagination.total_pages);
       } catch (error) {
         console.error(t('fetchImpossibleExplore:'), error);
       }
     };
     getExplore();
-  }, [page]);
+  }, [page, t]);
 
   return (
     <div className="explore-container">
