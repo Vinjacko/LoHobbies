@@ -200,3 +200,5 @@ Il flusso di dati nel frontend è progettato per essere unidirezionale e prevedi
     -   Viene mostrata una notifica di successo (`SuccessModal`) all'utente.
 
 Questo approccio garantisce che lo stato dell'interfaccia utente sia sempre sincronizzato con lo stato del backend, fornendo un'esperienza fluida e reattiva.
+
+## 10. Deployment
