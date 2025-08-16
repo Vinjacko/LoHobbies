@@ -49,7 +49,7 @@ const getTrending = async (req, res, next) => {
     ];
 
     // calcola il punteggio di tendenza per ogni candidato
-    const WEIGHTS = { freshness: 0.15, popularity: 0.45, quality: 0.35, completion: 0.05 };
+    const WEIGHTS = { freshness: 0.15, popularity: 0.45, quality: 0.35, completion: 0.05 }; //completion è la percentuale di contenuto guardato
     const MAX_POPULARITY = Math.max(...candidates.map(c => c.popularity), 10000);
 
     const scoredCandidates = candidates.map((c) => {
