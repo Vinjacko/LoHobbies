@@ -62,6 +62,7 @@ const MediaPage = () => {
         const checkWatchlist = async () => {
             if (auth && auth.user) {
                 try {
+                    console.log(`${process.env.REACT_APP_API_URL}/api/v1/media/watchlist`)
                     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/watchlist`);
                     const inWatchlist = response.data.data.some(item => item.mediaId === id);
                     setIsInWatchlist(inWatchlist);

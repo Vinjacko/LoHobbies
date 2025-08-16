@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import i18n from '../i18n';
+import axios from '../api/axios';
 import './PersonPage.css';
 import MediaCarousel from '../components/media/MediaCarousel';
 
@@ -13,10 +14,8 @@ const PersonPage = () => {
     useEffect(() => {
         const fetchPerson = async () => {
             try {
-                const personRes = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/media/person/${id}?language=${i18n.language}`);
-                if (!personRes.ok) throw new Error(`HTTP error! status: ${personRes.status}`);
-                const personData = await personRes.json();
-                setPerson(personData.data);
+                const personRes = await axios.get(`/api/v1/media/person/${id}?language=${i18n.language}`);
+                setPerson(personRes.data.data);
             } catch (error) {
                 console.error("Could not fetch person data:", error);
             }

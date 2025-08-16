@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import axios from '../api/axios';
 import './Watchlist.css';
 
 const Watchlist = () => {
@@ -20,14 +21,8 @@ const Watchlist = () => {
       }
 
       try {
-        const res = await fetch('/api/v1/media/watchlist');
-
-        if (!res.ok) {
-          throw new Error('Failed to fetch watchlist');
-        }
-
-        const data = await res.json();
-        setWatchlist(data.data);
+        const res = await axios.get('/api/v1/media/watchlist');
+        setWatchlist(res.data.data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -36,7 +31,7 @@ const Watchlist = () => {
     };
 
     fetchWatchlist();
-  }, [user]);
+  }, [user, t]);
 
   if (loading) {
     return <div>{t('loading')}</div>;

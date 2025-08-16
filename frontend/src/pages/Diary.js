@@ -4,6 +4,7 @@ import AuthContext from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import StarRating from '../components/common/StarRating';
 import CommentModal from '../components/media/CommentModal';
+import axios from '../api/axios';
 import './Diary.css';
 
 const Diary = () => {
@@ -17,17 +18,8 @@ const Diary = () => {
   useEffect(() => {
     const fetchDiary = async () => {
       try {
-        const res = await fetch('/api/v1/media/diary', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        const data = await res.json();
-        if (data.success) {
-          setDiary(data.data);
-        } else {
-          setError(data.error);
-        }
+        const res = await axios.get('/api/v1/media/diary');
+        setDiary(res.data.data);
       } catch (err) {
         setError('Server Error');
       } finally {
