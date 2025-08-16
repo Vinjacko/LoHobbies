@@ -85,6 +85,7 @@ sequenceDiagram
         B-->>F: 401 Unauthorized
         F-->>U: Mostra messaggio di errore
     end
+    ## NON È COMPLETO MA CONTIENE SOLO L'AUTH
 ```
 
 ---
@@ -126,7 +127,7 @@ Descrizione dettagliata degli endpoint principali.
 
 ## 6. Componenti React (Frontend)
 
-Analisi della struttura dei componenti e del flusso di dati.
+Analisi della struttura dei componenti e del flusso di dati.  (DA AGGIORNARE OGNI VOLTA CH SI AGGIORNA IL FRONTEND)
 
 ### 6.1 Flusso dei Dati e Gestione dello Stato
 L'applicazione fa un uso estensivo della React Context API per evitare il "prop drilling".
