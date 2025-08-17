@@ -99,13 +99,8 @@
 }
 
 .left-column {
-    flex: 2;
+    width: 100%;
     position: relative;
-}
-
-.right-column {
-    flex: 1;
-    padding: 0 2rem;
 }
 
 .cast-swiper {

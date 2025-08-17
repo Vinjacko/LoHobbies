@@ -1,27 +1,96 @@
 .comments-section {
     margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: var(--background-color);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    justify-self: center;
+    margin: 2rem;
+}
+
+.comments-section h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    margin-top: auto;
+    color: var(--text-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
 }
 
 .comment {
-    background-color: #2c2c2c;
-    border-radius: 8px;
-    padding: 1rem;
+    background-color: var(--background-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+}
+
+.comment:hover {
+    transform: translateY(-5px);
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1rem;
 }
 
 .comment-author {
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
 }
 
 .comment-author img {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 12px;
+    border: 2px solid var(--border-color);
 }
 
 .comment-author span {
     font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+.comment-date {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.comment-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-color-secondary);
+}
+.comments-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+/* Custom Scrollbar Styles */
+.comments-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.comments-list::-webkit-scrollbar-track {
+    background: var(--background-color);
+    border-radius: 10px;
+}
+
+.comments-list::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 10px;
+    border: 2px solid var(--background-color);
+}
+
+.comments-list::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-variant-color);
 }
