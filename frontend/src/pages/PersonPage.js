@@ -28,7 +28,9 @@ const PersonPage = () => {
         return <div>{t('loading')}</div>;
     }
 
-    const knownFor = [...person.movie_credits.cast, ...person.tv_credits.cast, ...person.movie_credits.crew.filter(c => c.job === 'Director'), ...person.tv_credits.crew.filter(c => c.job === 'Director')]
+    const combinedKnownFor = [...person.movie_credits.cast, ...person.tv_credits.cast, ...person.movie_credits.crew.filter(c => c.job === 'Director'), ...person.tv_credits.crew.filter(c => c.job === 'Director')];
+    const uniqueKnownFor = combinedKnownFor.filter((item, index, self) => index === self.findIndex(t => t.id === item.id));
+    const knownFor = uniqueKnownFor
         .sort((a, b) => b.popularity - a.popularity)
         .slice(0, 20)
         .map(item => ({ ...item, media_type: item.media_type || (item.title ? 'movie' : 'tv') }));
