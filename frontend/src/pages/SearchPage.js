@@ -60,7 +60,7 @@ const SearchPage = () => {
             <div className="page-header">
                 <h1>{t('resultsfor')} "{filters.searchQuery}"</h1>
                 <div className="sort-by-container">
-                    <label htmlFor="sort-by">{t('orderfor')}</label>
+                    <label htmlFor="sort-by">{t('orderby')}</label>
                     <select id="sort-by" value={filters.sortBy} onChange={(e) => updateFilters({ sortBy: e.target.value })}>
                         <option value="popularity.desc">{t('popularity')} (Disc)</option>
                         <option value="popularity.asc">{t('popularity')} (Asc)</option>

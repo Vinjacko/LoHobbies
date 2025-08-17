@@ -104,7 +104,7 @@ i18n
           addedtodiary: 'Content added to Diary',
           resultsfor: 'Results for:',
           noresult:'No result founded',
-          orderfor: 'Order for:',
+          orderby: 'Order by:',
           popularity: 'Popularity'
        }
      },
@@ -200,7 +200,7 @@ i18n
           addedtodiary: 'Titolo aggiunto al Diario',
           resultsfor: 'Risultati per:',
           noresult: 'Nessun risultato trovato',
-          orderfor: 'Ordina per:',
+          orderby: 'Ordina per:',
           popularity: 'Popolarità'
        }
       }
