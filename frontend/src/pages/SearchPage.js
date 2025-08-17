@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useTransition } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from '../api/axios';
 import { useFilters } from '../context/FilterContext';
 import './SearchPage.css';
+import { useTranslation } from 'react-i18next';
 
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);
 }
 
 const SearchPage = () => {
+    const{t} = useTranslation();
     const { results, loading, filters, updateFilters } = useFilters();
     const [genreMap, setGenreMap] = useState({});
     const query = useQuery().get('q');
@@ -30,7 +32,7 @@ const SearchPage = () => {
                 }, {});
                 setGenreMap(map);
             } catch (error) {
-                console.error("Error fetching genre map:", error);
+                console.error("Errore durante il recupero dei generi", error);
             }
         };
         fetchGenreMap();
@@ -50,22 +52,22 @@ const SearchPage = () => {
     const getResultTitle = (item) => item.title || item.name;
 
     if (loading) {
-        return <div className="loading">Caricamento...</div>;
+        return <div className="loading">{t('loading')}</div>;
     }
 
     return (
         <div className="search-page-container">
             <div className="page-header">
-                <h1>Risultati per: "{filters.searchQuery}"</h1>
+                <h1>{t('resultsfor')} "{filters.searchQuery}"</h1>
                 <div className="sort-by-container">
-                    <label htmlFor="sort-by">Ordina per:</label>
+                    <label htmlFor="sort-by">{t('orderfor')}</label>
                     <select id="sort-by" value={filters.sortBy} onChange={(e) => updateFilters({ sortBy: e.target.value })}>
-                        <option value="popularity.desc">Popolarità (Disc)</option>
-                        <option value="popularity.asc">Popolarità (Asc)</option>
-                        <option value="release_date.desc">Data di Uscita (Disc)</option>
-                        <option value="release_date.asc">Data di Uscita (Asc)</option>
-                        <option value="vote_average.desc">Valutazione (Disc)</option>
-                        <option value="vote_average.asc">Valutazione (Asc)</option>
+                        <option value="popularity.desc">{t('popularity')} (Disc)</option>
+                        <option value="popularity.asc">{t('popularity')} (Asc)</option>
+                        <option value="release_date.desc">{t('releaseYear')} (Disc)</option>
+                        <option value="release_date.asc">{t('releaseYear')}(Asc)</option>
+                        <option value="vote_average.desc">{t('rating')}(Disc)</option>
+                        <option value="vote_average.asc">{t('rating')} (Asc)</option>
                     </select>
                 </div>
             </div>
@@ -103,7 +105,7 @@ const SearchPage = () => {
                         </div>
                     ))
                 ) : (
-                    <p>Nessun risultato trovato.</p>
+                    <p>{t('noresult')}</p>
                 )}
             </div>
         </div>

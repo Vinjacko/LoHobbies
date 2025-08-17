@@ -101,7 +101,11 @@ i18n
           save:'Save',
           comments: 'Comments',
           nocomments: 'No comment for this title',
-          addedtodiary: 'Content added to Diary'
+          addedtodiary: 'Content added to Diary',
+          resultsfor: 'Results for:',
+          noresult:'No result founded',
+          orderfor: 'Order for:',
+          popularity: 'Popularity'
        }
      },
       it: {
@@ -193,7 +197,11 @@ i18n
           save:'Salva',
           comments: 'Commenti',
           nocomments: 'Nessun commento per questo contenuto.',
-          addedtodiary: 'Titolo aggiunto al Diario'
+          addedtodiary: 'Titolo aggiunto al Diario',
+          resultsfor: 'Risultati per:',
+          noresult: 'Nessun risultato trovato',
+          orderfor: 'Ordina per:',
+          popularity: 'Popolarità'
        }
       }
      }
