@@ -19,7 +19,8 @@ const Diary = () => {
     const fetchDiary = async () => {
       try {
         const res = await axios.get('/api/v1/media/diary');
-        setDiary(res.data.data);
+        const sortedDiary = res.data.data.sort((a, b) => new Date(b.watchedDate) - new Date(a.watchedDate));
+        setDiary(sortedDiary);
       } catch (err) {
         setError (t('servererror'));
       } finally {
