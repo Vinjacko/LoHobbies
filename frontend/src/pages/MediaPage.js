@@ -280,7 +280,7 @@ const MediaPage = () => {
             </div>
 
             <div className="media-details">
-                <div className="left-column">
+                <div className="column">
                     <CastCarousel cast={cast} title={t('cast')} />
                     <Comments comments={comments} />
                     <MediaCarousel media={recommendations} title={t('recommendations')} />

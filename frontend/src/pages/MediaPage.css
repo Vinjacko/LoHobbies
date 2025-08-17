@@ -30,13 +30,6 @@
     border-radius: 8px;
 }
 
-.no-poster {
-    width: 300px;
-    height: 450px; /* Same as poster image */
-    background-color: var(--surface-color);
-    border-radius: 8px;
-}
-
 .media-info h1 {
     margin-top: 0;
     color: #fff;
@@ -73,7 +66,7 @@
 }
 
 .overview {
-    max-width: 80ch; /* Limita la larghezza per una migliore leggibilità */
+    max-width: 600px;
 }
 
 .rating {
@@ -99,74 +92,9 @@
     margin: 0 auto;
 }
 
-.left-column {
+.column {
     width: 100%;
     position: relative;
-}
-
-.cast-swiper {
-    padding: 0 2rem;
-}
-
-.right-column p {
-    color: #fff;
-}
-
-.cast-swiper .swiper-slide {
-    width: 150px !important;
-    height: auto;
-}
-
-.cast-swiper .swiper-button-next,
-.cast-swiper .swiper-button-prev {
-  color: var(--text-color);
-  background-color: var(--surface-color);
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: background-color 0.2s ease;
-}
-
-.cast-swiper .swiper-button-next:hover,
-.cast-swiper .swiper-button-prev:hover {
-  background-color: var(--background-color);
-}
-
-.cast-swiper .swiper-button-next::after,
-.cast-swiper .swiper-button-prev::after {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.actor p {
-    margin: 0.5rem 0 0;
-}
-
-.actor-card {
-    background-color: var(--surface-color);
-    border-radius: 8px;
-    padding: 1rem;
-    text-align: center;
-    height: 100%;
-    color: #fff;
-}
-
-.actor-card img {
-    width: 100%;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-}
-
-.horizontal-grids {
-    display: flex;
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.horizontal-grids > * {
-    flex: 1;
 }
 
 .trailer-button {
@@ -197,7 +125,8 @@
     align-items: center;
 }
 
-.watchlist-button, .diary-button {
+.watchlist-button,
+.diary-button {
     background-color: #FFC107;
     color: #000000;
     border: none;
@@ -209,11 +138,13 @@
     justify-content: center;
 }
 
-.watchlist-button:hover, .diary-button:hover {
+.watchlist-button:hover, 
+.diary-button:hover {
     background-color: var(--primary-variant-color);
 }
 
-.watchlist-button i, .diary-button i {
+.watchlist-button i, 
+.diary-button i {
     margin-right: 8px;
 }
 
@@ -245,7 +176,7 @@
 
 .notification {
     position: fixed;
-    top: 80px; /* Adjusted to be below the header */
+    top: 80px; 
     right: 20px;
     padding: 1rem 1.5rem;
     border-radius: 8px;
@@ -261,11 +192,11 @@
 }
 
 .notification.success {
-    background-color: var(--success-color); /* Green for success */
+    background-color: var(--success-color);
 }
 
 .notification.error {
-    background-color: var(--error-color); /* Red for removal/error */
+    background-color: var(--error-color); 
 }
 
 .notification i {
@@ -307,7 +238,7 @@
    font-weight: bold;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 770px) {
     .media-header-overlay {
         padding: 1rem;
     }
