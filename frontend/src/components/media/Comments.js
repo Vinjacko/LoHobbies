@@ -1,10 +1,10 @@
-import React from 'react';
 import './Comments.css';
-
+import { useTranslation } from 'react-i18next';
 const Comments = ({ comments }) => {
+    const {t} = useTranslation();
     return (
         <div className="comments-section">
-            <h2>Commenti</h2>
+            <h2>{t('comments')}</h2>
             {comments && comments.length > 0 ? (
                 <div className="comments-list">
                     {comments.map(comment => (
@@ -19,7 +19,7 @@ const Comments = ({ comments }) => {
                     ))}
                 </div>
             ) : (
-                <p>Nessun commento per questo contenuto.</p>
+                <p>{t('nocomments')}</p>
             )}
         </div>
     );

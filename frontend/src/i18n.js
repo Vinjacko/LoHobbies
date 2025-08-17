@@ -98,6 +98,8 @@ i18n
           review:'Review',
           addComment:'Add a comment...',
           save:'Save',
+          comments: 'Comments',
+          nocomments: 'No comment for this title'
        }
      },
       it: {
@@ -186,6 +188,8 @@ i18n
           review:'Recensione',
           addComment:'Aggiungi un commento...',
           save:'Salva',
+          comments: 'Commenti',
+          nocomments: 'Nessun commento per questo contenuto.'
        }
       }
      }
