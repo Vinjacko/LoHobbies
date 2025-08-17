@@ -1,3 +1,23 @@
+/* Custom Scrollbar Styles */
+.comments-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.comments-list::-webkit-scrollbar-track {
+    background: var(--background-color);
+    border-radius: 10px;
+}
+
+.comments-list::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 10px;
+    border: 2px solid var(--background-color);
+}
+
+.comments-list::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-variant-color);
+}
+
 .comments-section {
     margin-top: 2rem;
     padding: 1.5rem;
@@ -26,9 +46,13 @@
     margin-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s;
 }
+
+.comment p {
+    align-self: flex-start;
+}
+
 
 .comment:hover {
     transform: translateY(-5px);
@@ -44,6 +68,7 @@
 .comment-author {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .comment-author img {
@@ -60,37 +85,15 @@
     color: var(--text-color);
 }
 
-.comment-date {
-    font-size: 0.9rem;
-    color: #aaa;
+.comment-author span:last-child {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: gray;
+
 }
 
-.comment-content {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--text-color-secondary);
-}
 .comments-list {
     max-height: 400px;
     overflow-y: auto;
     padding-right: 1rem;
-}
-/* Custom Scrollbar Styles */
-.comments-list::-webkit-scrollbar {
-    width: 8px;
-}
-
-.comments-list::-webkit-scrollbar-track {
-    background: var(--background-color);
-    border-radius: 10px;
-}
-
-.comments-list::-webkit-scrollbar-thumb {
-    background-color: var(--border-color);
-    border-radius: 10px;
-    border: 2px solid var(--background-color);
-}
-
-.comments-list::-webkit-scrollbar-thumb:hover {
-    background-color: var(--primary-variant-color);
 }

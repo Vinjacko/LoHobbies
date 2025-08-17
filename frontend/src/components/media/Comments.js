@@ -12,6 +12,7 @@ const Comments = ({ comments }) => {
                             <div className="comment-author">
                                 <img src={comment.user.profilePicture ? (comment.user.profilePicture.startsWith('http') ? comment.user.profilePicture : `${process.env.REACT_APP_API_URL}/${comment.user.profilePicture}`) : '/img/Actor_Placeholder.png'} alt={comment.user.username} />
                                 <span>{comment.user.name}</span>
+                                <span className="comment-date">{new Date(comment.createdAt).toLocaleDateString()}</span>
                             </div>
                             <p>{comment.content}</p>
                         </div>
