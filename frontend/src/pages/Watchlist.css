@@ -9,11 +9,11 @@
 }
 
 .watchlist-item {
-  background-color: #1a1a1a;
+  background-color: var(--background-color);
   border-radius: 8px;
   overflow: hidden;
-  position: relative;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ;
+  border: 1px solid var(--border-color);
 }
 
 .watchlist-item:hover {
@@ -22,7 +22,7 @@
 
 .watchlist-item a {
   text-decoration: none;
-  color: #fff;
+  color: var(--text-color);
 }
 
 .watchlist-item img {
@@ -38,11 +38,11 @@
 .watchlist-item-info h3 {
   margin: 0 0 0.5rem 0;
   font-size: 1rem;
-  color: #fff;
+  color:var(--text-color);
 }
 
 .watchlist-item-info p {
   margin: 0;
   font-size: 0.9rem;
-  color: #aaa;
+  color:var(--text-color);
 }
