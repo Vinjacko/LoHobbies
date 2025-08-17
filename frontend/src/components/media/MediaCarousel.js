@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import './MediaCarousel.css';
+import './Carousel.css';
 
 const MediaCarousel = ({ media, title }) => {
   const mediaData = useMemo(() => media || [], [media]);
@@ -9,7 +9,8 @@ const MediaCarousel = ({ media, title }) => {
   const [isAtEnd, setIsAtEnd] = useState(false);
 
   const handleScroll = () => {
-    if (!viewportRef.current) return;
+    if (!viewportRef.current) 
+      return;
     const { scrollLeft, scrollWidth, clientWidth } = viewportRef.current;
     const scrollEnd = scrollWidth - clientWidth;
     
@@ -48,8 +49,8 @@ const MediaCarousel = ({ media, title }) => {
   }
 
   return (
-    <section className="media-carousel-section" aria-labelledby="media-carousel-title">
-      <h2 id="media-carousel-title" className="media-carousel-title">{title}</h2>
+    <section className="carousel-section" aria-labelledby="carousel-title">
+      <h2 id="carousel-title" className="carousel-title">{title}</h2>
       <div className="carousel-container">
         <button
           className="carousel-arrow prev"

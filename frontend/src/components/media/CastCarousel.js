@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import './CastCarousel.css';
+import './Carousel.css';
 
 const CastCarousel = ({ cast, title = "Cast" }) => {
   const castData = useMemo(() => cast || [], [cast]);
@@ -48,20 +48,20 @@ const CastCarousel = ({ cast, title = "Cast" }) => {
   }
 
   return (
-    <section className="cast-carousel-section" aria-labelledby="cast-carousel-title">
-      <h2 id="cast-carousel-title" className="cast-carousel-title">{title}</h2>
-      <div className="cast-carousel-container">
+    <section className="carousel-section" aria-labelledby="carousel-title">
+      <h2 id="carousel-title" className="carousel-title">{title}</h2>
+      <div className="carousel-container">
         <button
-          className="cast-carousel-arrow prev"
+          className="carousel-arrow prev"
           onClick={() => scroll('prev')}
           disabled={isAtStart}
           aria-label="Previous"
         >
           &#10094;
         </button>
-        <div className="cast-carousel-viewport" ref={viewportRef}>
+        <div className="carousel-viewport" ref={viewportRef}>
           {castData.map((actor, index) => (
-            <Link to={`/person/${actor.id}`} key={index} className="cast-carousel-card" role="group" aria-label={`${actor.nomeAttore} as ${actor.nomePersonaggio}`}>
+            <Link to={`/person/${actor.id}`} key={index} className="carousel-card" role="group" aria-label={`${actor.nomeAttore} as ${actor.nomePersonaggio}`}>
               <img
                 src={actor.urlImmagine || '/img/Actor_Placeholder.png'}
                 alt={actor.nomeAttore}
@@ -70,7 +70,7 @@ const CastCarousel = ({ cast, title = "Cast" }) => {
                   e.target.src = '/img/Actor_Placeholder.png';
                 }}
               />
-              <div className="cast-carousel-card-info">
+              <div className="carousel-card-info">
                 <p className="actor-name">{actor.nomeAttore}</p>
                 <p className="character-name">{actor.nomePersonaggio}</p>
               </div>
@@ -78,7 +78,7 @@ const CastCarousel = ({ cast, title = "Cast" }) => {
           ))}
         </div>
         <button
-          className="cast-carousel-arrow next"
+          className="carousel-arrow next"
           onClick={() => scroll('next')}
           disabled={isAtEnd}
           aria-label="Next"

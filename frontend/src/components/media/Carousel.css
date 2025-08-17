@@ -1,4 +1,4 @@
-.cast-carousel-section {
+.carousel-section {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px 0;
@@ -6,7 +6,7 @@
   width: 100%;
 }
 
-.cast-carousel-title {
+.carousel-title {
   font-size: 1.5rem;
   font-weight: bold;
   color: var(--text-color);
@@ -15,24 +15,24 @@
   
 }
 
-.cast-carousel-container {
+.carousel-container {
   position: relative;
   width: 100%;
   box-sizing: border-box;
 }
 
-.cast-carousel-viewport {
+.carousel-viewport {
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
   padding: 1rem; 
 }
 
-.cast-carousel-viewport::-webkit-scrollbar {
+.carousel-viewport::-webkit-scrollbar {
   display: none; 
 }
 
-.cast-carousel-card {
+.carousel-card {
   flex: 0 0 185px;
   margin-right: 15px;
   border-radius: 8px;
@@ -46,23 +46,23 @@
   text-decoration: none;
 }
 
-.cast-carousel-card:last-child {
+.carousel-card:last-child {
   margin-right: 0;
 }
 
-.cast-carousel-card:hover {
+.carousel-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
-.cast-carousel-card img {
+.carousel-card img {
   width: 100%;
   height: 278px;
   object-fit: cover;
   display: block;
 }
 
-.cast-carousel-card-info {
+.carousel-card-info {
   padding: 12px;
   background-color: #b3b3b3;
 }
@@ -86,7 +86,7 @@
   text-overflow: ellipsis;
 }
 
-.cast-carousel-arrow {
+.carousel-arrow {
   position: absolute;
   top: calc(50% - 20px); 
   transform: translateY(-50%);
@@ -105,19 +105,19 @@
   transition: background-color 0.3s, opacity 0.3s;
 }
 
-.cast-carousel-arrow:hover {
+.carousel-arrow:hover {
   background: #ffffff;
 }
 
-.cast-carousel-arrow.prev {
+.carousel-arrow.prev {
   left: 5px;
 }
 
-.cast-carousel-arrow.next {
+.carousel-arrow.next {
   right: 5px;
 }
 
-.cast-carousel-arrow:disabled {
+.carousel-arrow:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
