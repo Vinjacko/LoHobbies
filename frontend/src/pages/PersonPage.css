@@ -44,34 +44,24 @@
 }
 
 @media (max-width: 770px) {
-    .media-header-overlay {
-        padding: 1rem;
-    }
-
-    .media-header-content {
+    .person-header-content {
         flex-direction: column;
         align-items: center;
         text-align: center;
     }
 
-    .media-header-content img {
-        width: 70%;
-        max-width: 250px;
+    .person-header-content img {
+        width: 50%;
+        max-width: 200px;
         margin-bottom: 1rem;
     }
 
-    .media-info h1 {
+    .person-info h1 {
         font-size: 1.5rem;
     }
 
-    .genres {
-        justify-content: center;
-    }
-
-    .media-details {
-        flex-direction: column;
+    .person-details {
         padding: 1rem;
-        gap: 1rem;
     }
 
 }
