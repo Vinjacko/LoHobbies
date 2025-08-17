@@ -31,7 +31,8 @@ export const FilterProvider = ({ children }) => {
         }).toString();
         
         const res = await axios.get(`/api/v1/media/search?${params}`);
-        setResults(res.data.data);
+        const filteredResults = res.data.data.filter(item => item.media_type !== 'person');
+        setResults(filteredResults);
       } catch (error) {
         console.error("Errore durante il recupero dei risultati:", error);
         setResults([]);

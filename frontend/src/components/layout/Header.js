@@ -30,7 +30,8 @@ const Header = () => {
       if (query.length > 2) {
         try {
           const res = await axios.get(`/api/v1/media/autocomplete?query=${query}&language=${i18n.language}`);
-          setResults(res.data.data);
+          const filteredResults = res.data.data.filter(item => item.media_type !== 'person');
+          setResults(filteredResults);
         } catch (error) {
           console.error(t('fetchImpossibleSearch'), error);
           setResults([]);
