@@ -101,6 +101,7 @@ i18n
           save:'Save',
           comments: 'Comments',
           nocomments: 'No comment for this title',
+          addedtodiary: 'Content added to Diary'
        }
      },
       it: {
@@ -191,7 +192,8 @@ i18n
           addComment:'Aggiungi un commento...',
           save:'Salva',
           comments: 'Commenti',
-          nocomments: 'Nessun commento per questo contenuto.'
+          nocomments: 'Nessun commento per questo contenuto.',
+          addedtodiary: 'Titolo aggiunto al Diario'
        }
       }
      }

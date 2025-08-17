@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import i18n from '../i18n';
@@ -29,7 +29,6 @@ const MediaPage = () => {
     const [notificationType, setNotificationType] = useState('');
 
     useEffect(() => {
-        // Reset state when dependencies change to show loading state
         setMedia(null);
         setRecommendations([]);
         setSimilarByGenre([]);
@@ -37,19 +36,15 @@ const MediaPage = () => {
 
         const fetchMedia = async () => {
             try {
-                // Fetch main media details
                 const mediaRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/${media_type}/${id}?language=${i18n.language}`);
                 setMedia(mediaRes.data.data);
 
-                // Fetch recommendations
                 const recommendationsRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/${media_type}/${id}/recommendations?language=${i18n.language}`);
                 setRecommendations(recommendationsRes.data.data.slice(0, 12));
 
-                // Fetch comments
                 const commentsRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/${media_type}/${id}/comments`);
                 setComments(commentsRes.data.data);
 
-                // Fetch similar media by genre
                 if (mediaRes.data.data.genres && mediaRes.data.data.genres.length > 0) {
                     const genreId = mediaRes.data.data.genres[0].id;
                     const similarRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/discover?genres=${genreId}&mediaType=${media_type}&language=${i18n.language}`);
@@ -59,7 +54,7 @@ const MediaPage = () => {
                     setSimilarByGenre(filteredSimilar);
                 }
             } catch (error) {
-                console.error("Could not fetch media data:", error);
+                console.error("Non è stato possibile recuperare i dati dei titoli", error);
             }
         };
 
@@ -84,12 +79,11 @@ const MediaPage = () => {
         const checkWatchlist = async () => {
             if (auth && auth.user) {
                 try {
-                    console.log(`${process.env.REACT_APP_API_URL}/api/v1/media/watchlist`)
                     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/watchlist`);
                     const inWatchlist = response.data.data.some(item => item.mediaId === id);
                     setIsInWatchlist(inWatchlist);
                 } catch (error) {
-                    console.error("Failed to fetch watchlist", error);
+                    console.error("Errore nel caricamento della watchlist", error);
                 }
             }
         };
@@ -104,7 +98,7 @@ const MediaPage = () => {
                     const inFavourites = response.data.data.some(item => item.mediaId === id);
                     setIsInFavourites(inFavourites);
                 } catch (error) {
-                    console.error("Failed to fetch favourites", error);
+                    console.error("Errore nel caricamento dei preferiti", error);
                 }
             }
         };
@@ -162,7 +156,7 @@ const MediaPage = () => {
             setShowNotification(true);
             setTimeout(() => setShowNotification(false), 3000);
         } catch (error) {
-            console.error("Failed to toggle watchlist", error);
+            console.error("Impossibile aggiornare la Watchlist", error);
         }
     };
 
@@ -191,7 +185,7 @@ const MediaPage = () => {
             setShowNotification(true);
             setTimeout(() => setShowNotification(false), 3000);
         } catch (error) {
-            console.error("Failed to toggle favourite", error);
+            console.error("Impossibile aggiornare i Preferiti", error);
         }
     };
 
@@ -211,9 +205,12 @@ const MediaPage = () => {
                 comment: comment,
                 watchedDate: watchedDate,
             });
-            // Optionally, show a notification
+                setNotificationMessage(t('addedtodiary'));
+                setNotificationType('success');
+                setShowNotification(true);
+                setTimeout(() => setShowNotification(false), 3000);
         } catch (error) {
-            console.error("Failed to add to diary", error);
+            console.error("Impossibile aggiornare il Diario", error);
         }
     };
 

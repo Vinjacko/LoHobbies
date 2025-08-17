@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from '../api/axios';
 import AuthContext from '../context/AuthContext';
@@ -17,7 +17,7 @@ const Favourites = () => {
                     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/favourites`);
                     setFavourites(response.data.data);
                 } catch (error) {
-                    console.error("Failed to fetch favourites", error);
+                    console.error("Errore nel tentativo di recuperare i preferiti", error);
                 }
             }
         };
