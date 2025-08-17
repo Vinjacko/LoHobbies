@@ -55,7 +55,7 @@
 
 .diary-entry-buttons {
   display: flex;
-  gap: 0.5rem;
+  justify-content: space-between;
   margin-top: 0.5rem;
 }
 
