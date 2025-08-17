@@ -54,7 +54,7 @@ const Diary = () => {
               </Link>
               <div className="diary-entry-content">
                 <h2>{entry.title}</h2>
-                <p>{t('watchedOn')}: {new Date(entry.watchedDate).toLocaleDateString()}</p>
+                <p>{t('watchedOn')}: {new Date(entry.watchedDate).toLocaleDateString('it-IT')}</p>
                 <StarRating rating={entry.rating} />
                 <button className="review-button" onClick={() => setSelectedComment(entry.comment)}>{t('review')}</button>
               </div>

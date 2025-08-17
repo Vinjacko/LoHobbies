@@ -27,7 +27,7 @@ const DiaryModal = ({ media, onClose, onSave }) => {
     <div className="diary-modal-overlay">
       <div className="diary-modal-content">
         <h2>{t('addToDiary')}</h2>
-        <DatePicker selected={watchedDate} onChange={(date) => setWatchedDate(date)} />
+        <DatePicker selected={watchedDate} onChange={(date) => setWatchedDate(date)} dateFormat="dd-MM-yyyy" />
         <h3>{media.title || media.name}</h3>
         <div className="diary-rating-container">
           <span className="diary-rating-label">{t('rating')}:</span>
