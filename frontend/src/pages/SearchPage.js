@@ -65,8 +65,8 @@ const SearchPage = () => {
                         <option value="popularity.desc">{t('popularity')} (Disc)</option>
                         <option value="popularity.asc">{t('popularity')} (Asc)</option>
                         <option value="release_date.desc">{t('releaseYear')} (Disc)</option>
-                        <option value="release_date.asc">{t('releaseYear')}(Asc)</option>
-                        <option value="vote_average.desc">{t('rating')}(Disc)</option>
+                        <option value="release_date.asc">{t('releaseYear')} (Asc)</option>
+                        <option value="vote_average.desc">{t('rating')} (Disc)</option>
                         <option value="vote_average.asc">{t('rating')} (Asc)</option>
                     </select>
                 </div>
