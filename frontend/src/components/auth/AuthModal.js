@@ -5,7 +5,7 @@ import axios from '../../api/axios';
 import './AuthModal.css';
 import AuthContext from '../../context/AuthContext';
 
-const AuthModal = ({ closeModal }) => {
+const AuthModal = ({ onClose }) => {
   const { login } = useContext(AuthContext);
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('login');
@@ -36,7 +36,7 @@ const AuthModal = ({ closeModal }) => {
         { withCredentials: true }
       );
       login(data.user);
-      closeModal(); // chiusura della modal dopo il login
+      onClose(); // chiusura della modal dopo il login
     } catch (err) {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
@@ -59,7 +59,7 @@ const AuthModal = ({ closeModal }) => {
         { withCredentials: true }
       );
       login(data.user);
-      closeModal();
+      onClose();
     } catch (err) {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
@@ -72,7 +72,7 @@ const AuthModal = ({ closeModal }) => {
 
   // utilizzato per generare un pop-up
   return ReactDOM.createPortal(
-   <div className="auth-modal-overlay" onClick={closeModal}>   {/* sfondo trasparente del pop-up */}
+   <div className="auth-modal-overlay" onClick={onClose}>   {/* sfondo trasparente del pop-up */}
       <div className="auth-modal-content" onClick={(e) => e.stopPropagation()}>   {/* pop-up */}
         <div className="auth-modal-tabs">  {/* scheda Accedi/Registrati */}
           {/* bottone accedi */}

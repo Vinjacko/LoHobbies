@@ -11,14 +11,15 @@ const AuthContext = createContext({
   loadUser: async () => {},
 });
 
-//  componente il cui scopo è condividere dati e funzioni relative all'autenticazione con tutti i componenti che ne hanno bisogno, 
+//  componente il cui scopo è condividere dati e funzioni relative all'autenticazione con tutti i componenti che ne hanno bisogno,
 // senza dover passare le props manualmente attraverso ogni livello dell'albero dei componenti
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const navigate = useNavigate();   // utilizzato per reindirizzare l'utente ad un diverso URL
 
-  // gestione dei side effects 
+  // gestione dei side effects
   useEffect(() => {
     const responseInterceptor = axios.interceptors.response.use(
       // risposta andata a buon fine
@@ -76,7 +77,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, loadUser }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, loadUser, showAuthModal, setShowAuthModal }}>
       {children}
     </AuthContext.Provider>
   );

@@ -139,6 +139,7 @@ const MediaPage = () => {
 
     const handleToggleWatchlist = async () => {
         if (!auth || !auth.user) {
+            auth.setShowAuthModal(true);
             return;
         }
         try {
@@ -167,7 +168,7 @@ const MediaPage = () => {
 
     const handleToggleFavourite = async () => {
         if (!auth || !auth.user) {
-            // Handle case where user is not logged in
+            auth.setShowAuthModal(true);
             return;
         }
         try {
@@ -196,6 +197,7 @@ const MediaPage = () => {
 
     const handleSaveToDiary = async (rating, comment, watchedDate) => {
         if (!auth || !auth.user) {
+            auth.setShowAuthModal(true);
             return;
         }
         try {
@@ -264,7 +266,13 @@ const MediaPage = () => {
                                     <button className="watchlist-button" onClick={handleToggleWatchlist}>
                                         <i className={`fas ${isInWatchlist ? 'fa-check' : 'fa-plus'}`}></i> {isInWatchlist ? t('alreadyInWatchlist') : t('addToWatchlist')}
                                     </button>
-                                    <button className="diary-button" onClick={() => setShowDiaryModal(true)}>
+                                    <button className="diary-button" onClick={() => {
+                                        if (!auth || !auth.user) {
+                                            auth.setShowAuthModal(true);
+                                        } else {
+                                            setShowDiaryModal(true);
+                                        }
+                                    }}>
                                         <i className="fas fa-book"></i> {t('addToDiary')}
                                     </button>
                                 </div>
