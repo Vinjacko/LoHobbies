@@ -42,6 +42,7 @@ i18n
           myDiary: 'My Diary',
           loading: 'Loading...',
           error: 'Error',
+          servererror: 'Server Error',
           noDiaryItems: 'You have not added anything to your diary yet.',
           watchedOn: 'Watched on',
           review: 'Review',
@@ -99,7 +100,7 @@ i18n
           addComment:'Add a comment...',
           save:'Save',
           comments: 'Comments',
-          nocomments: 'No comment for this title'
+          nocomments: 'No comment for this title',
        }
      },
       it: {
@@ -132,6 +133,7 @@ i18n
           myDiary: 'Il mio diario',
           loading: 'Caricamento...',
           error: 'Errore',
+          servererror: 'Errore del server',
           noDiaryItems: 'Non hai ancora aggiunto nulla al tuo diario.',
           watchedOn: 'Visto il',
           review: 'Recensione',

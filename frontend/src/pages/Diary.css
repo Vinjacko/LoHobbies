@@ -9,10 +9,10 @@
 }
 
 .diary-entry {
-  background-color: #1a1a1a;
+  background-color: var(--background-color);
   border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s;
 }
 
 .diary-entry:hover {
@@ -30,15 +30,15 @@
 }
 
 .diary-entry-content h2 {
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin-bottom: 0.5rem;
-  color: #fff;
+  color: var(--text-color);
 }
 
 .diary-entry-content p {
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
-  color: #ccc;
+  color:var(--text-color);
 }
 
 .review-button {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthContext from '../context/AuthContext';
 import { Link } from 'react-router-dom';
@@ -21,7 +21,7 @@ const Diary = () => {
         const res = await axios.get('/api/v1/media/diary');
         setDiary(res.data.data);
       } catch (err) {
-        setError('Server Error');
+        setError (t('servererror'));
       } finally {
         setLoading(false);
       }
