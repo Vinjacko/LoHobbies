@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import i18n from '../i18n';
@@ -17,7 +17,7 @@ const PersonPage = () => {
                 const personRes = await axios.get(`/api/v1/media/person/${id}?language=${i18n.language}`);
                 setPerson(personRes.data.data);
             } catch (error) {
-                console.error("Could not fetch person data:", error);
+                console.error("Non è stato possibile recuperare i dati del membro del cast", error);
             }
         };
 
@@ -31,7 +31,7 @@ const PersonPage = () => {
     const knownFor = [...person.movie_credits.cast, ...person.tv_credits.cast, ...person.movie_credits.crew.filter(c => c.job === 'Director'), ...person.tv_credits.crew.filter(c => c.job === 'Director')]
         .sort((a, b) => b.popularity - a.popularity)
         .slice(0, 20)
-        .map(item => ({...item, media_type: item.media_type || (item.title ? 'movie' : 'tv')}));
+        .map(item => ({ ...item, media_type: item.media_type || (item.title ? 'movie' : 'tv') }));
 
     return (
         <div className="person-page">
