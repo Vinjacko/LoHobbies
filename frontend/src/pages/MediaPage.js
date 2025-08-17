@@ -7,6 +7,7 @@ import AuthContext from '../context/AuthContext';
 import './MediaPage.css';
 import CastCarousel from '../components/media/CastCarousel';
 import MediaCarousel from '../components/media/MediaCarousel';
+import Comments from '../components/media/Comments';
 import TrailerModal from '../components/media/TrailerModal';
 import DiaryModal from '../components/media/DiaryModal';
 
@@ -16,6 +17,7 @@ const MediaPage = () => {
     const [showDiaryModal, setShowDiaryModal] = useState(false);
     const [recommendations, setRecommendations] = useState([]);
     const [similarByGenre, setSimilarByGenre] = useState([]);
+    const [comments, setComments] = useState([]);
     const { media_type, id } = useParams();
     const auth = useContext(AuthContext);
     const { t } = useTranslation();
@@ -30,6 +32,7 @@ const MediaPage = () => {
         setMedia(null);
         setRecommendations([]);
         setSimilarByGenre([]);
+        setComments([]);
 
         const fetchMedia = async () => {
             try {
@@ -40,6 +43,10 @@ const MediaPage = () => {
                 // Fetch recommendations
                 const recommendationsRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/${media_type}/${id}/recommendations?language=${i18n.language}`);
                 setRecommendations(recommendationsRes.data.data.slice(0, 12));
+
+                // Fetch comments
+                const commentsRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/${media_type}/${id}/comments`);
+                setComments(commentsRes.data.data);
 
                 // Fetch similar media by genre
                 if (mediaRes.data.data.genres && mediaRes.data.data.genres.length > 0) {
@@ -255,6 +262,7 @@ const MediaPage = () => {
             <div className="media-details">
                 <div className="left-column">
                     <CastCarousel cast={cast} title={t('cast')} />
+                    <Comments comments={comments} />
                     <MediaCarousel media={recommendations} title={t('recommendations')} />
                     <MediaCarousel media={similarByGenre} title={t('sameGenre')} />
                 </div>

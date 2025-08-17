@@ -17,7 +17,8 @@ const {
     getDiary, 
     addToFavourites, 
     getFavourites, 
-    removeFromFavourites } = require('../controllers/mediaController');
+    removeFromFavourites,
+    getComments } = require('../controllers/mediaController');
 const { protect } = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -32,6 +33,7 @@ router.get('/movie/:id', getMovieDetails);
 router.get('/tv/:id', getTvShowDetails);
 router.get('/:media_type/:id/recommendations', getRecommendations);
 router.get('/person/:id', getPersonDetails);
+router.get('/:mediaType/:mediaId/comments', getComments);
 router.post('/watchlist', protect, addToWatchlist);
 router.get('/watchlist', protect, getWatchlist);
 router.delete('/watchlist/:mediaId', protect, removeFromWatchlist);

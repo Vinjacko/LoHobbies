@@ -1,5 +1,6 @@
 const tmdb = require('../utils/tmdb');
 const User = require('../models/User');
+const Comment = require('../models/Comment');
 
 /*Lo scopo è risolvere un problema comune nei sistemi di valutazione: 
   come confrontare un film con un punteggio di 9/10 basato su 1.000 voti con un film che ha un punteggio di 10/10 ma solo 5 voti? 
@@ -525,6 +526,16 @@ const addToDiary = async (req, res, next) => {
         user.diary.push(diaryEntry);
         await user.save();
 
+        if (comment && comment.trim() !== '') {
+            const newComment = new Comment({
+                user: userId,
+                mediaId,
+                mediaType,
+                content: comment,
+            });
+            await newComment.save();
+        }
+
         res.status(200).json({ success: true, data: user.diary });
     } catch (error) {
         console.error(error);
@@ -610,6 +621,17 @@ const removeFromFavourites = async (req, res, next) => {
   }
 };
 
+const getComments = async (req, res, next) => {
+  try {
+    const { mediaType, mediaId } = req.params;
+    const comments = await Comment.find({ mediaType, mediaId }).populate('user', 'name username profilePicture');
+    res.status(200).json({ success: true, data: comments });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Errore del server' });
+  }
+};
+
 module.exports = {
   getTrending,
   getExplore,
@@ -629,4 +651,5 @@ module.exports = {
   addToFavourites,
   getFavourites,
   removeFromFavourites,
+  getComments,
 };
