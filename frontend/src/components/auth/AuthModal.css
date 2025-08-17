@@ -19,6 +19,7 @@
   width: 400px;
   max-width: 90%;
   position: relative;
+  border: 1px solid var(--border-color);
 }
 
 .auth-modal-tabs {
