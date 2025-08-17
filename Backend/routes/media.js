@@ -14,9 +14,10 @@ const {
     getWatchlist, 
     removeFromWatchlist, 
     addToDiary, 
-    getDiary, 
-    addToFavourites, 
-    getFavourites, 
+    getDiary,
+    removeFromDiary,
+    addToFavourites,
+    getFavourites,
     removeFromFavourites,
     getComments } = require('../controllers/mediaController');
 const { protect } = require('../middleware/authMiddleware');
@@ -39,6 +40,7 @@ router.get('/watchlist', protect, getWatchlist);
 router.delete('/watchlist/:mediaId', protect, removeFromWatchlist);
 router.post('/diary', protect, addToDiary);
 router.get('/diary', protect, getDiary);
+router.delete('/diary/:id', protect, removeFromDiary);
 router.post('/favourites', protect, addToFavourites);
 router.get('/favourites', protect, getFavourites);
 router.delete('/favourites/:mediaId', protect, removeFromFavourites);

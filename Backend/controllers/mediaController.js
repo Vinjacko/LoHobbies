@@ -559,6 +559,39 @@ const getDiary = async (req, res, next) => {
   }
 };
 
+// metodo per rimuovere un contenuto dal diario
+const removeFromDiary = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'Utente non trovato' });
+    }
+
+    const diaryEntry = user.diary.find(item => item._id.toString() === id);
+
+    if (diaryEntry && diaryEntry.comment) {
+      await Comment.findOneAndDelete({
+        user: userId,
+        mediaId: diaryEntry.mediaId,
+        mediaType: diaryEntry.mediaType,
+        content: diaryEntry.comment,
+      });
+    }
+
+    user.diary = user.diary.filter(item => item._id.toString() !== id);
+    await user.save();
+
+    res.status(200).json({ success: true, data: user.diary });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Errore del server!' });
+  }
+};
+
 // metodo per aggiungere un contenuto ai preferiti
 const addToFavourites = async (req, res, next) => {
   try {
@@ -650,6 +683,7 @@ module.exports = {
   removeFromWatchlist,
   addToDiary,
   getDiary,
+  removeFromDiary,
   addToFavourites,
   getFavourites,
   removeFromFavourites,

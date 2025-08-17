@@ -31,7 +31,16 @@ const Diary = () => {
     if (user) {
       fetchDiary();
     }
-  }, [user]);
+  }, [user, t]);
+
+  const handleRemove = async (id) => {
+    try {
+      await axios.delete(`/api/v1/media/diary/${id}`);
+      setDiary(diary.filter((entry) => entry._id !== id));
+    } catch (err) {
+      setError(t('servererror'));
+    }
+  };
 
   if (loading) {
     return <div>{t('loading')}</div>;
@@ -49,7 +58,7 @@ const Diary = () => {
       ) : (
         <div className="diary-grid">
           {diary.map((entry) => (
-            <div key={entry.mediaId} className="diary-entry">
+            <div key={entry._id} className="diary-entry">
               <Link to={`/media/${entry.mediaType}/${entry.mediaId}`}>
                 <img src={`https://image.tmdb.org/t/p/w500${entry.posterPath}`} alt={entry.title} />
               </Link>
@@ -57,7 +66,10 @@ const Diary = () => {
                 <h2>{entry.title}</h2>
                 <p>{t('watchedOn')}: {new Date(entry.watchedDate).toLocaleDateString('it-IT')}</p>
                 <StarRating rating={entry.rating} />
-                <button className="review-button" onClick={() => setSelectedComment(entry.comment)}>{t('review')}</button>
+                <div className="diary-entry-buttons">
+                  <button className="review-button" onClick={() => setSelectedComment(entry.comment)}>{t('review')}</button>
+                  <button className="remove-button" onClick={() => handleRemove(entry._id)}>{t('remove')}</button>
+                </div>
               </div>
             </div>
           ))}
