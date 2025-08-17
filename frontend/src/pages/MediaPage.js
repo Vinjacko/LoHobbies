@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import i18n from '../i18n';
+import io from 'socket.io-client';
 import axios from '../api/axios';
 import AuthContext from '../context/AuthContext';
 import './MediaPage.css';
@@ -64,6 +65,20 @@ const MediaPage = () => {
 
         fetchMedia();
     }, [media_type, id, i18n.language]);
+
+    useEffect(() => {
+        const socket = io(process.env.REACT_APP_API_URL);
+
+        socket.on('new_comment', (newComment) => {
+            if (newComment.mediaType === media_type && newComment.mediaId === id) {
+                setComments((prevComments) => [newComment, ...prevComments]);
+            }
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, [media_type, id]);
 
     useEffect(() => {
         const checkWatchlist = async () => {

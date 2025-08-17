@@ -534,6 +534,8 @@ const addToDiary = async (req, res, next) => {
                 content: comment,
             });
             await newComment.save();
+            const populatedComment = await Comment.findById(newComment._id).populate('user', 'name username profilePicture');
+            req.io.emit('new_comment', populatedComment);
         }
 
         res.status(200).json({ success: true, data: user.diary });
@@ -624,7 +626,7 @@ const removeFromFavourites = async (req, res, next) => {
 const getComments = async (req, res, next) => {
   try {
     const { mediaType, mediaId } = req.params;
-    const comments = await Comment.find({ mediaType, mediaId }).populate('user', 'name username profilePicture');
+    const comments = await Comment.find({ mediaType, mediaId }).sort({ createdAt: -1 }).populate('user', 'name username profilePicture');
     res.status(200).json({ success: true, data: comments });
   } catch (error) {
     console.error(error);

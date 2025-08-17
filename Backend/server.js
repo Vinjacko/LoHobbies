@@ -22,15 +22,34 @@ app.use(cors({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/v1/media', require('./routes/media'));
-app.use('/api/v1/auth', require('./routes/auth'));
-
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(
   PORT,
   console.log(`Server in esecuzione sulla porta: ${PORT}`)
 );
+
+const io = require('socket.io')(server, {
+  cors: {
+    origin: ['http://34.154.124.100:3001', 'http://localhost:3001'],
+    credentials: true
+  }
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
+app.use('/api/v1/media', require('./routes/media'));
+app.use('/api/v1/auth', require('./routes/auth'));
+
+io.on('connection', (socket) => {
+  console.log('Utente collegato');
+  socket.on('disconnect', () => {
+    console.log('Utente scollegato');
+  });
+});
 
 // codice per la gestione di errori imprevisti di operazioni asincrone
 process.on('unhandledRejection', (err, promise) => {
