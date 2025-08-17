@@ -7,7 +7,6 @@ import Explore from './components/home/Explore';
 import AuthContext, { AuthProvider } from './context/AuthContext';
 import { FilterProvider } from './context/FilterContext';
 import { ThemeProvider } from './context/ThemeContext';
-import ResetPassword from './pages/ResetPassword';
 import Diary from './pages/Diary';
 import Favourites from './pages/Favourites';
 import Watchlist from './pages/Watchlist';
@@ -25,7 +24,6 @@ function AppContent() {
       {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
       <Routes>
         <Route path="/" element={<><Trending /><Explore /></>} />
-        <Route path="/resetpassword/:resettoken" element={<ResetPassword />} />
         <Route path="/diary" element={<Diary />} />
         <Route path="/favourites" element={<Favourites />} />
         <Route path="/watchlist" element={<Watchlist />} />
