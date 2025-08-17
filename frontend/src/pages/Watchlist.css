@@ -22,7 +22,6 @@
 
 .watchlist-item a {
   text-decoration: none;
-  color: var(--text-color);
 }
 
 .watchlist-item img {
