@@ -25,10 +25,7 @@
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
   padding: 1rem; 
-  scrollbar-width: none; 
 }
 
 .cast-carousel-viewport::-webkit-scrollbar {
