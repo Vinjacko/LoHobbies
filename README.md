@@ -41,6 +41,7 @@ LoHobbies è un'applicazione web completa per la gestione e la scoperta di conte
 - **API Esterne**: Integrazione completa con le API di The Movie Database (TMDB) per ottenere informazioni dettagliate su film, serie TV e persone
 - **Real-time**: Socket.IO per le funzionalità di commenti in tempo reale
 - **Gestione File**: Multer per il caricamento sicuro delle immagini profilo degli utenti
+- **Analytics**: Google Analytics 4 (react-ga4) per il monitoraggio del comportamento degli utenti.
 
 ## Struttura dell'Applicazione
 L'applicazione è suddivisa in due parti principali:

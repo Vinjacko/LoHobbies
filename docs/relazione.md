@@ -266,3 +266,19 @@ Il backend si basa su un ecosistema di pacchetti Node.js per fornire le sue funz
 -   **`dotenv`**: Per la gestione delle variabili d'ambiente.
 -   **`multer`**: Per la gestione del caricamento di file (immagini del profilo).
 -   **`socket.io`**: Per la comunicazione in tempo reale.
+
+
+---
+
+## 11. Monitoraggio e Analytics
+
+Per comprendere il comportamento degli utenti e migliorare l'esperienza sulla piattaforma, LoHobbies integra Google Analytics 4 (GA4), una soluzione di analisi di nuova generazione che permette di misurare il traffico e l'engagement su siti web e applicazioni.
+
+### 11.1 Configurazione e Integrazione
+-   **Inizializzazione**: Google Analytics è stato integrato nel frontend React tramite il pacchetto `react-ga4`. La configurazione viene inizializzata nel file principale dell'applicazione (`App.js`), utilizzando un Measurement ID univoco fornito da Google.
+-   **Tracciamento delle Pagine Viste**: `react-ga4` traccia automaticamente le visualizzazioni di pagina ogni volta che la cronologia di navigazione del browser cambia, grazie all'integrazione con `react-router-dom`. Questo permette di raccogliere dati su quali pagine vengono visitate più frequentemente.
+
+### 11.2 Limiti dell'Integrazione Attuale
+L'attuale integrazione di Google Analytics si limita al tracciamento automatico delle pagine viste. Sebbene questo fornisca dati utili sulla popolarità delle diverse sezioni dell'applicazione, non vengono monitorate interazioni specifiche degli utenti come login, registrazioni o aggiunte alle liste personali.
+
+Per ottenere una comprensione più approfondita del comportamento degli utenti, sarebbe necessario implementare eventi personalizzati. Questi eventi permetterebbero di raccogliere dati granulari su quali funzionalità vengono utilizzate più di frequente, aiutando a guidare le future decisioni di sviluppo e a ottimizzare l'esperienza utente.
