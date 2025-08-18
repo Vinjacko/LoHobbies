@@ -1,5 +1,7 @@
-import { useContext } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import reportWebVitals from './reportWebVitals';
+import ReactGA from 'react-ga4';
 import './App.css';
 import Header from './components/layout/Header';
 import Trending from './components/home/Trending';
@@ -15,11 +17,22 @@ import PersonPage from './pages/PersonPage';
 import SearchPage from './pages/SearchPage';
 import AuthModal from './components/auth/AuthModal';
 
+function RouteChangeTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: location.pathname + location.search });
+  }, [location]);
+
+  return null;
+}
+
 function AppContent() {
   const { showAuthModal, setShowAuthModal } = useContext(AuthContext);
 
   return (
     <>
+      <RouteChangeTracker />
       <Header />
       {showAuthModal && <AuthModal closeModal={() => setShowAuthModal(false)} />}
       <Routes>
@@ -36,6 +49,10 @@ function AppContent() {
 }
 
 function App() {
+  useEffect(() => {
+    reportWebVitals();
+  }, []);
+
   return (
     <Router>
       <AuthProvider>
