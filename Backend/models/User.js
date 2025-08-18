@@ -103,7 +103,7 @@ const userSchema = new mongoose.Schema({
     }
   ]
 }, {
-  timestamps: true,   // tenere traccia delle modifiche
+  timestamps: true,
 });
 
 const User = mongoose.model('User', userSchema);

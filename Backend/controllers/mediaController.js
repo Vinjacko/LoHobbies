@@ -20,7 +20,7 @@ const wilsonScore = (p, n) => {
 
 // calcola un punteggio di tendenza
 const getTrending = async (req, res, next) => {
-  const { language = 'it-IT' } = req.query;   // permette di ottenere i risultati di TMDB basati sul mercato italiano
+  const { language = 'it-IT' } = req.query;
   try {
     // recupera un insieme più ampio di contenuti popolari da TMDB
     const movieResponse = await tmdb.get('/discover/movie', {
@@ -214,7 +214,6 @@ const getRecommendations = async (req, res, next) => {
     res.status(200).json({ success: true, data: results });
   } catch (error) {
     if (error.response && error.response.status === 404) {
-      // se il contenuto non esiste viene ugualmente riscontrato un esito positivo ma restituito un array vuoto
       return res.status(200).json({ success: true, data: [] });   
     }
     console.error(error);
@@ -246,7 +245,6 @@ const searchAll = async (req, res, next) => {
     const { query, mediaType, sortBy = 'popularity.desc', genres, yearFrom, yearTo, language = 'it-IT' } = req.query;
     let results = [];
     const searchPromises = [];
-    // se viene fornito un mediaType specifico lo usa altrimenti cerca entrambi
     const typesToSearch = mediaType ? [mediaType] : ['movie', 'tv'];
 
     if (typesToSearch.includes('movie')) {
@@ -320,7 +318,7 @@ const discoverMedia = async (req, res, next) => {
     const params = {
       page,
       sort_by: sortBy,
-      'vote_count.gte': 100, // filtra gli oggetti con almeno 100 voti
+      'vote_count.gte': 100,
       language,
     };
 
@@ -414,7 +412,7 @@ const autocompleteSearch = async (req, res, next) => {
 
     const sortedResults = scoredResults.sort((a, b) => {
         if (a.relevanceScore !== b.relevanceScore) {
-            return b.relevanceScore - a.relevanceScore;   // ordina i risultati in base al relevanceScore dal più alto al più basso
+            return b.relevanceScore - a.relevanceScore;
         }
         return b.popularity - a.popularity;
     });
@@ -427,7 +425,7 @@ const autocompleteSearch = async (req, res, next) => {
          (item.media_type === 'tv' && item.poster_path) ||
          (item.media_type === 'person' && item.profile_path))
       )
-      .slice(0, 7); // Limit to 7 results
+      .slice(0, 7);
 
     res.status(200).json({ success: true, data: finalResults });
   } catch (error) {

@@ -19,7 +19,6 @@ const AuthModal = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // funzione per la gestione della registrazione
   const handleRegister = async (e) => {
     e.preventDefault();
     if (registerPassword !== confirmPassword) {
@@ -29,14 +28,13 @@ const AuthModal = ({ onClose }) => {
     setLoading(true);
     setError('');
     try {
-      // estrarre il campo data dalla risposta alla post
       const { data } = await axios.post(
         '/api/v1/auth/register',
         { name: registerName, email: registerEmail, password: registerPassword },
         { withCredentials: true }
       );
       login(data.user);
-      onClose(); // chiusura della modal dopo il login
+      onClose(); 
     } catch (err) {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
@@ -47,7 +45,6 @@ const AuthModal = ({ onClose }) => {
     setLoading(false);
   };
 
-  //  funzione per la gestione del login
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -70,19 +67,16 @@ const AuthModal = ({ onClose }) => {
     setLoading(false);
   };
 
-  // utilizzato per generare un pop-up
   return ReactDOM.createPortal(
-   <div className="auth-modal-overlay" onClick={onClose}>   {/* sfondo trasparente del pop-up */}
-      <div className="auth-modal-content" onClick={(e) => e.stopPropagation()}>   {/* pop-up */}
-        <div className="auth-modal-tabs">  {/* scheda Accedi/Registrati */}
-          {/* bottone accedi */}
+   <div className="auth-modal-overlay" onClick={onClose}>   
+      <div className="auth-modal-content" onClick={(e) => e.stopPropagation()}>   
+        <div className="auth-modal-tabs"> 
           <button
             className={`tab-button ${activeTab === 'login' ? 'active' : ''}`}   
             onClick={() => setActiveTab('login')}
           >
             {t('login')}
           </button>
-          {/* bottone registrati */}
           <button
             className={`tab-button ${activeTab === 'register' ? 'active' : ''}`}
             onClick={() => setActiveTab('register')}
@@ -90,23 +84,19 @@ const AuthModal = ({ onClose }) => {
             {t('register')}
           </button>
         </div>
-        <div className="auth-modal-body">   {/* scheda del form */}
-          {/* caricamento del form di Accedi */}
+        <div className="auth-modal-body">  
           {activeTab === 'login' ? (
             <div className="login-form">
               <h2>{t('login')}</h2>
               <form onSubmit={handleLogin}>
-                {/* campo E-mail del form di Accedi */}
                 <div className="auth-form-group">
                   <label htmlFor="login-email">{t('emailAddress')}</label>
                   <input type="email" id="login-email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} required />
                 </div>
-                {/* campo password del form di Accedi */}
                 <div className="auth-form-group">
                   <label htmlFor="login-password">{t('password')}</label>
                   <input type="password" id="login-password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required />
                 </div>
-                {/* campo per l'opzione Ricordami */}
                 <div className="auth-form-group-row">
                   <div className="remember-me">
                     <input
@@ -128,22 +118,22 @@ const AuthModal = ({ onClose }) => {
             <div className="register-form">
               <h2>{t('register')}</h2>
               <form onSubmit={handleRegister}>
-                {/* campo Nome utente del form di Registrati */}
+
                 <div className="auth-form-group">
                   <label htmlFor="register-name">{t('name')}</label>
                   <input type="text" id="register-name" value={registerName} onChange={(e) => setRegisterName(e.target.value)} required />
                 </div>
-                {/* campo E-mail del form di Registrati */}
+
                 <div className="auth-form-group">
                   <label htmlFor="register-email">{t('emailAddress')}</label>
                   <input type="email" id="register-email" value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} required />
                 </div>
-                {/* campo password del form di Registrati */}
+
                 <div className="auth-form-group">
                   <label htmlFor="register-password">{t('password')}</label>
                   <input type="password" id="register-password" value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} required />
                 </div>
-                {/* campo conferma password del form di Registrati */}
+
                 <div className="auth-form-group">
                   <label htmlFor="confirm-password">{t('confirmPassword')}</label>
                   <input type="password" id="confirm-password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
@@ -158,7 +148,7 @@ const AuthModal = ({ onClose }) => {
         </div>
       </div>
     </div>,
-    document.body   // usato come destinazione per garantire che la modale appaia correttamente sopra a tutto il resto
+    document.body
   );
 };
 

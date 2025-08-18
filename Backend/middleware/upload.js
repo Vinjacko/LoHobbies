@@ -4,13 +4,11 @@ const path = require('path');
 // crea un motore di archiviazione per salvare i file sul disco del server
 const storage = multer.diskStorage({
   destination: './public/uploads/',
-  // funzione per stabilire come nominare il file
   filename: function(req, file, callback){
     callback(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
 });
 
-// verifica del tipo di file
 function checkFileType(file, callback){
   const filetypes = /jpeg|jpg|png|gif/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());

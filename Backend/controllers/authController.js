@@ -1,8 +1,8 @@
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');   // permette di criptare le password in modo sicuro ed è usata con login e registrazione utenti
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const fs = require('fs');       // modulo nativo di Node.js che permette di: leggere file, scrivere file, creare, rinominare o cancellare file e cartelle, lavorare con path e file system in generale
-const path = require('path');   // modulo path di Node.js che permette di lavorare facilmente con percorsi di file e cartelle nel filesystem
+const fs = require('fs');       
+const path = require('path');   
 
 // funzione per generare i token e settare i cookies
 const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
@@ -33,7 +33,7 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
 
   const accessTokenCookieOptions = {
     ...cookieOptions,
-    maxAge: 15 * 60 * 1000  // 15 minuti
+    maxAge: 15 * 60 * 1000
   };
 
   const refreshTokenCookieOptions = {
@@ -42,7 +42,7 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
   };
 
   if (rememberMe) {
-    refreshTokenCookieOptions.maxAge = 7 * 24 * 60 * 60 * 1000; // 7 giorni
+    refreshTokenCookieOptions.maxAge = 7 * 24 * 60 * 60 * 1000;
   }
 
   res
@@ -50,7 +50,7 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
     .cookie('accessToken', accessToken, accessTokenCookieOptions)   // (nome, valore, opzioni)
     .cookie('refreshToken', refreshToken, refreshTokenCookieOptions)
     .json({
-      success: true,  // esito positivo
+      success: true,
       user: {
         _id: user._id,
         name: user.name,
@@ -191,8 +191,8 @@ const deleteProfilePicture = async (req, res) => {
     }
 
     if (user.profilePicture) {
-      const filename = path.basename(user.profilePicture);    // nome dell'immagine
-      const imagePath = path.join(__dirname, '..', 'public', 'uploads', filename);    // percorso dell'immagine
+      const filename = path.basename(user.profilePicture);   
+      const imagePath = path.join(__dirname, '..', 'public', 'uploads', filename);  
       
       fs.unlink(imagePath, (err) => {   // .unlink è un metodo di fs che elimina il contenuto di imagePath
         if (err) {
@@ -271,7 +271,6 @@ const resetPassword = async (req, res) => {
   }
 };
 
-// esportiamo tutte i metodi definiti
 module.exports = {
   registerUser,
   loginUser,
