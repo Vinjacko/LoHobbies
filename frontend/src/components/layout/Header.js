@@ -222,7 +222,7 @@ const Header = () => {
           )}
         </div>
       </header>
-      {activeModal === 'auth' && !user && <AuthModal closeModal={closeModal} />}
+      {activeModal === 'auth' && !user && <AuthModal onClose={closeModal} />}
       {activeModal === 'filter' && <FilterModal closeModal={closeModal} />}
       {activeModal === 'language' && <LanguageModal closeModal={closeModal} />}
       {activeModal === 'profilePicture' && <ProfilePictureModal closeModal={closeModal} />}
