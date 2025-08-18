@@ -7,52 +7,51 @@ LoHobbies è un'applicazione web completa per la gestione e la scoperta di conte
 ### Autenticazione e Gestione Utenti
 - **Registrazione e Accesso**: Sistema completo di autenticazione con registrazione, login e logout
 - **Gestione del Profilo**: Possibilità di caricare e modificare l'immagine del profilo
-- **Persistenza della Sessione**: Supporto per il "Ricordami" durante il login
-- **Sicurezza**: Protezione delle password con bcrypt e token JWT per l'autenticazione
+- **Persistenza della Sessione**: Supporto per il "Ricordami" durante il login con token di refresh
+- **Sicurezza**: Protezione delle password con bcrypt e autenticazione basata su token JWT
 
 ### Esplorazione dei Contenuti
-- **Contenuti in Tendenza**: Sezione dedicata ai contenuti più popolari con algoritmo di ranking personalizzato
-- **Esplora**: Catalogo completo di film e serie TV ordinati per valutazione
-- **Ricerca Avanzata**: Barra di ricerca con autocompletamento e filtri per genere, anno di uscita e ordinamento
-- **Dettagli dei Contenuti**: Pagine dedicate per film e serie TV con informazioni dettagliate, cast, trailer e immagini
+- **Contenuti in Tendenza**: Sezione dedicata ai contenuti più popolari con algoritmo di ranking personalizzato che considera fattori come freschezza, popolarità, qualità percepita e tasso di completamento
+- **Esplora**: Catalogo completo di film e serie TV ordinati per valutazione, con paginazione
+- **Ricerca Avanzata**: Barra di ricerca con autocompletamento e filtri per genere, anno di uscita e ordinamento (per popolarità, anno di rilascio o valutazione)
+- **Dettagli dei Contenuti**: Pagine dedicate per film e serie TV con informazioni dettagliate, cast completo, trailer e immagini
 
 ### Interazione con i Contenuti
-- **Watchlist**: Possibilità di aggiungere contenuti a una lista dei desideri personalizzata
-- **Preferiti**: Sistema di preferiti per salvare i contenuti preferiti
-- **Diario Personale**: Funzionalità per registrare i contenuti visti con valutazioni e commenti
-- **Commenti**: Sistema di commenti in tempo reale sui contenuti
+- **Watchlist**: Possibilità di aggiungere contenuti a una lista dei desideri personalizzata con salvataggio delle informazioni essenziali
+- **Preferiti**: Sistema di preferiti per salvare i contenuti preferiti con persistenza nel database utente
+- **Diario Personale**: Funzionalità per registrare i contenuti visti con valutazioni a stelle, commenti e data di visione
+- **Commenti**: Sistema di commenti in tempo reale sui contenuti con notifica istantanea agli utenti connessi
 
 ### Funzionalità Social e di Condivisione
-- **Valutazioni**: Sistema di valutazione a stelle per i contenuti
-- **Commenti in Tempo Reale**: Chat in tempo reale per i commenti sui contenuti
-- **Contenuti Consigliati**: Sezione con raccomandazioni personalizzate basate sui contenuti visualizzati
-- **Contenuti per Genere**: Visualizzazione di contenuti simili per genere
+- **Valutazioni**: Sistema di valutazione a stelle per i contenuti con salvataggio nel diario personale
+- **Commenti in Tempo Reale**: Chat in tempo reale per i commenti sui contenuti con aggiornamento istantaneo
+- **Contenuti Consigliati**: Sezione con raccomandazioni personalizzate basate sui contenuti visualizzati, ottenute direttamente dalle API di TMDB
+- **Contenuti per Genere**: Visualizzazione di contenuti simili per genere principale del contenuto visualizzato
 
 ### Esperienza Utente
-- **Interfaccia Responsive**: Design adattivo per dispositivi mobili e desktop
-- **Supporto Multilingua**: Interfaccia disponibile in italiano e inglese
-- **Temi Personalizzabili**: Supporto per temi chiari e scuri
-- **Navigazione Intuitiva**: Interfaccia utente pulita e facile da usare
+- **Interfaccia Responsiva**: Design adattivo per dispositivi mobili e desktop con componenti ottimizzati per diverse dimensioni dello schermo
+- **Supporto Multilingua**: Interfaccia disponibile in italiano e inglese con rilevamento automatico della lingua del browser
+- **Temi Personalizzabili**: Supporto per temi chiari e scuri con persistenza della preferenza dell'utente
+- **Navigazione Intuitiva**: Interfaccia utente pulita e facile da usare con menu di navigazione e breadcrumb
 
 ### Tecnologie Utilizzate
-- **Frontend**: React, React Router, i18next per l'internazionalizzazione
-- **Backend**: Node.js con Express, MongoDB per il database
-- **Autenticazione**: JWT (JSON Web Tokens) con refresh token
-- **API Esterne**: Integrazione con le API di The Movie Database (TMDB)
-- **Real-time**: Socket.IO per le funzionalità in tempo reale
-- **Gestione File**: Multer per il caricamento delle immagini profilo
+- **Frontend**: React con React Router per la navigazione, i18next per l'internazionalizzazione, Swiper per caroselli interattivi
+- **Backend**: Node.js con Express per le API RESTful, MongoDB con Mongoose per il database documentale
+- **Autenticazione**: JWT (JSON Web Tokens) con token di accesso a breve scadenza e token di refresh per sessioni prolungate
+- **API Esterne**: Integrazione completa con le API di The Movie Database (TMDB) per ottenere informazioni dettagliate su film, serie TV e persone
+- **Real-time**: Socket.IO per le funzionalità di commenti in tempo reale
+- **Gestione File**: Multer per il caricamento sicuro delle immagini profilo degli utenti
 
 ## Struttura dell'Applicazione
 L'applicazione è suddivisa in due parti principali:
-1. **Frontend**: Interfaccia utente React con componenti modulari
-2. **Backend**: API RESTful con Express per la gestione dei dati e l'autenticazione
+1. **Frontend**: Interfaccia utente React con componenti modulari organizzati per funzionalità
+2. **Backend**: API RESTful con Express per la gestione dei dati utente, autenticazione e integrazione con TMDB
 
 ## Funzionalità di Personalizzazione
-- **Temi**: Supporto per temi chiari e scuri
-- **Lingue**: Supporto multilingua (italiano e inglese)
-- **Filtri Avanzati**: Opzioni di filtraggio per genere, anno e ordinamento
+- **Temi**: Supporto per temi chiari e scuri con cambio immediato e persistenza della preferenza
+- **Lingue**: Supporto multilingua (italiano e inglese) con rilevamento automatico e selezione manuale
+- **Filtri Avanzati**: Opzioni di filtraggio per genere, anno di rilascio/uscita e ordinamento per popolarità, data o valutazione
 
 ## Sicurezza
-- **Protezione delle Password**: Hashing con bcrypt
-- **Autenticazione JWT**: Token di accesso e refresh per sessioni sicure
-- **Protezione CSRF**: Implementazione di misure di sicurezza per proteggere le richieste
+- **Protezione delle Password**: Hashing con bcrypt per salvare le password in modo sicuro nel database
+- **Autenticazione JWT**: Token di accesso con scadenza breve (15 minuti) e token di refresh per sessioni prolungate (7 giorni)
