@@ -78,7 +78,7 @@ const Diary = () => {
       {selectedComment && (
         <CommentModal
           comment={selectedComment}
-          onClose={() => setSelectedComment(null)}
+          closeModal={() => setSelectedComment(null)}
         />
       )}
     </div>

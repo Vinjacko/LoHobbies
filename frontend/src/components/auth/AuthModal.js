@@ -5,7 +5,7 @@ import axios from '../../api/axios';
 import './AuthModal.css';
 import AuthContext from '../../context/AuthContext';
 
-const AuthModal = ({ onClose }) => {
+const AuthModal = ({ closeModal }) => {
   const { login } = useContext(AuthContext);
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('login');
@@ -34,7 +34,7 @@ const AuthModal = ({ onClose }) => {
         { withCredentials: true }
       );
       login(data.user);
-      onClose(); 
+      closeModal(); 
     } catch (err) {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
@@ -56,7 +56,7 @@ const AuthModal = ({ onClose }) => {
         { withCredentials: true }
       );
       login(data.user);
-      onClose();
+      closeModal();
     } catch (err) {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
@@ -68,7 +68,7 @@ const AuthModal = ({ onClose }) => {
   };
 
   return ReactDOM.createPortal(
-   <div className="auth-modal-overlay" onClick={onClose}>   
+   <div className="auth-modal-overlay" onClick={closeModal}>   
       <div className="auth-modal-content" onClick={(e) => e.stopPropagation()}>   
         <div className="auth-modal-tabs"> 
           <button

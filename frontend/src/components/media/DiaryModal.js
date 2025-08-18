@@ -5,7 +5,7 @@ import StarRating from '../common/StarRating';
 import './DiaryModal.css';
 import { useTranslation } from 'react-i18next';
 
-const DiaryModal = ({ media, onClose, onSave }) => {
+const DiaryModal = ({ media, closeModal, onSave }) => {
   const { t } = useTranslation();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
@@ -20,7 +20,7 @@ const DiaryModal = ({ media, onClose, onSave }) => {
 
   const handleSave = () => {
     onSave(rating, comment, watchedDate);
-    onClose();
+    closeModal();
   };
 
   return (
@@ -40,7 +40,7 @@ const DiaryModal = ({ media, onClose, onSave }) => {
           onChange={(e) => setComment(e.target.value)}
         />
         <div className="diary-modal-actions">
-          <button onClick={onClose}>{t('reset')}</button>
+          <button onClick={closeModal}>{t('reset')}</button>
           <button onClick={handleSave}>{t('save')}</button>
         </div>
       </div>

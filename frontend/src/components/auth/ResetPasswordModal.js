@@ -5,7 +5,7 @@ import './ResetPasswordModal.css';
 import { useNavigate } from 'react-router-dom';
 import SuccessModal from '../common/SuccessModal';
 
-const ResetPasswordModal = ({ onClose }) => {
+const ResetPasswordModal = ({ closeModal }) => {
   const { t } = useTranslation();
   const [step, setStep] = useState('verify'); 
   const [password, setPassword] = useState('');
@@ -53,8 +53,8 @@ const ResetPasswordModal = ({ onClose }) => {
 
   return (
     <>
-      {successMessage && <SuccessModal message={successMessage} onClose={() => { setSuccessMessage(''); onClose(); }} />}
-      <div className="reset-password-modal-overlay" onClick={onClose}>
+      {successMessage && <SuccessModal message={successMessage} closeModal={() => { setSuccessMessage(''); closeModal(); }} />}
+      <div className="reset-password-modal-overlay" onClick={closeModal}>
         <div className="reset-password-modal-content" onClick={(e) => e.stopPropagation()}>
           <h2>{t('resetPassword')}</h2>
           {step === 'verify' ? (

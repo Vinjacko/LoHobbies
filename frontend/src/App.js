@@ -21,7 +21,7 @@ function AppContent() {
   return (
     <>
       <Header />
-      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
+      {showAuthModal && <AuthModal closeModal={() => setShowAuthModal(false)} />}
       <Routes>
         <Route path="/" element={<><Trending /><Explore /></>} />
         <Route path="/diary" element={<Diary />} />

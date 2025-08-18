@@ -4,7 +4,7 @@ import axios from '../../api/axios';
 import './ProfilePictureModal.css';
 import AuthContext from '../../context/AuthContext';
 
-const ProfilePictureModal = ({ onClose }) => {
+const ProfilePictureModal = ({ closeModal }) => {
   const { user, loadUser } = useContext(AuthContext);
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ const ProfilePictureModal = ({ onClose }) => {
         },
       });
       await loadUser();
-      onClose();
+      closeModal();
     } catch (err) {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
@@ -48,7 +48,7 @@ const ProfilePictureModal = ({ onClose }) => {
     try {
       await axios.delete('/api/v1/auth/profile-picture');
       await loadUser();
-      onClose();
+      closeModal();
     } catch (err) {
       setError(t('removeError'));
     }
@@ -57,7 +57,7 @@ const ProfilePictureModal = ({ onClose }) => {
 
   return (
     <>
-      <div className="profile-picture-modal-overlay" onClick={onClose}>
+      <div className="profile-picture-modal-overlay" onClick={closeModal}>
         <div className="profile-picture-modal-content" onClick={(e) => e.stopPropagation()}>
           <h2>{t('profilePicture')}</h2>
           <div className="profile-picture-container">

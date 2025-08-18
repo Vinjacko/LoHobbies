@@ -288,12 +288,12 @@ const MediaPage = () => {
                 </div>
             </div>
             {showTrailer && trailer && (
-                <TrailerModal trailerKey={trailer.key} onClose={() => setShowTrailer(false)} />
+                <TrailerModal trailerKey={trailer.key} closeModal={() => setShowTrailer(false)} />
             )}
             {showDiaryModal && (
                 <DiaryModal
                     media={media}
-                    onClose={() => setShowDiaryModal(false)}
+                    closeModal={() => setShowDiaryModal(false)}
                     onSave={handleSaveToDiary}
                 />
             )}
