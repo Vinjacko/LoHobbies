@@ -21,7 +21,7 @@ L'architettura è basata sul modello a tre livelli (Three-Tier Architecture), ch
 
 -   **Frontend (Livello di Presentazione)**:
     -   **Framework**: React (v19)
-    -   **Routing**: `react-router-dom` per la navigazione client-side in una Single Page Application (SPA).
+    -   **Routing**: `react-router-dom` per la navigazione client-side in una Single Page Application.
     -   **State Management**: React Context API (`AuthContext`, `FilterContext`, `ThemeContext`) per la gestione dello stato globale (autenticazione, filtri, tema).
     -   **Chiamate API**: `axios` per le comunicazioni HTTP con il backend, con un'istanza pre-configurata e interceptor per la gestione automatica del refresh dei token.
     -   **Styling**: CSS puro con un approccio modulare per componente.
@@ -129,7 +129,8 @@ Il database MongoDB utilizza una singola collection `users` per memorizzare tutt
 -   `refreshToken`: (String) - Token utilizzato per rinnovare la sessione senza richiedere un nuovo login.
 -   `profilePicture`: (String) - Path dell'immagine del profilo caricata sul server.
 -   `watchlist`, `diary`, `favourites`: (Array di Sub-documenti) - Ognuno di questi array contiene oggetti con una struttura definita, che include non solo l'ID del media ma anche metadati come `title` e `posterPath` per ridurre la necessità di chiamate API aggiuntive quando si visualizzano le liste.
-    -   **Sottodocumento `diary`**: Include campi aggiuntivi come `rating` (Number), `comment` (String) e `watchedDate` (Date) per una registrazione dettagliata.
+    -   **Sottodocumento `watchlist` e `favourites`**: Contengono i campi base per identificare il media (`mediaId`, `mediaType`, `title`, `posterPath`, `releaseDate`) e la data di aggiunta (`addedAt`). La struttura è ottimizzata per una rapida visualizzazione delle liste.
+    -   **Sottodocumento `diary`**: Oltre ai campi base, include campi aggiuntivi come `rating` (Number), `comment` (String) e `watchedDate` (Date) per una registrazione dettagliata della visione.
 -   `timestamps`: (Boolean: true) - Aggiunge automaticamente i campi `createdAt` e `updatedAt` a ogni documento.
 
 ---
@@ -169,7 +170,7 @@ L'applicazione fa un uso estensivo della React Context API per evitare il "prop 
 ### 6.2 Descrizione dei Componenti Chiave
 -   **`Header.js`**: Componente principale per la navigazione, include la barra di ricerca con suggerimenti live, link alle sezioni principali e un menu utente per l'accesso a watchlist, diario, preferiti e impostazioni.
 -   **`Carousel.js`**: Componente versatile per la visualizzazione di media in caroselli orizzontali. Utilizzato per mostrare i titoli di tendenza, i risultati della ricerca e le raccomandazioni.
--   **`AuthModal.js`**: Modale che gestisce sia la registrazione che il login, con validazione dei dati in tempo reale e opzioni per il recupero della password.
+-   **`AuthModal.js`**: Modale che gestisce sia la registrazione che il login con validazione dei dati in tempo reale.
 -   **`MediaPage.js`**: Pagina di dettaglio per film e serie TV. Carica e visualizza informazioni complete, tra cui trama, cast, trailer e commenti.
 -   **`CommentModal.js`**: Permette agli utenti di aggiungere commenti, che vengono poi visualizzati in tempo reale grazie a `socket.io`.
 -   **`FilterModal.js`**: Offre opzioni di filtro avanzate per la sezione "Esplora", consentendo agli utenti di affinare la ricerca per genere, anno e popolarità.
@@ -183,9 +184,7 @@ La sicurezza è un aspetto fondamentale dell'applicazione, implementata sia a li
 -   **Autenticazione basata su Token (JWT)**: L'accesso alle risorse protette è controllato tramite JSON Web Tokens. L'Access Token ha una breve durata per minimizzare i rischi in caso di compromissione, mentre il Refresh Token, memorizzato in un cookie `httpOnly` per prevenire attacchi XSS, permette di rinnovare la sessione in modo sicuro.
 -   **Hashing delle Password**: Le password degli utenti non vengono mai memorizzate in chiaro. Viene utilizzato l'algoritmo `bcrypt` per creare un hash sicuro della password prima di salvarla nel database.
 -   **Protezione degli Endpoint**: Il backend utilizza un middleware (`authMiddleware.js`) che viene applicato a tutte le rotte che richiedono l'autenticazione. Questo middleware verifica la validità del JWT presente nell'header della richiesta.
--   **CORS (Cross-Origin Resource Sharing)**: La configurazione CORS sul backend è restrittiva e permette richieste solo da origini fidate (l'URL del frontend),
-
- impedendo richieste non autorizzate da altri domini.
+-   **CORS (Cross-Origin Resource Sharing)**: La configurazione CORS sul backend è restrittiva e permette richieste solo da origini fidate (l'URL del frontend), impedendo richieste non autorizzate da altri domini.
 -   **Validazione dell'Input**: Viene eseguita una validazione di base sull'input dell'utente per prevenire attacchi comuni.
 
 ### 7.2 Gestione degli Errori
@@ -246,14 +245,14 @@ L'applicazione è deployata su una Virtual Machine (VM) di Google Cloud Platform
 
 ### 10.1 Configurazione dell'Ambiente
 -   **Istanza VM**: È stata creata un'istanza su Google Compute Engine con un sistema operativo Linux (Ubuntu).
--   **Software Requisiti**: Sulla VM sono stati installati Node.js, npm e Nginx.
+-   **Requisiti Software**: Sulla VM sono stati installati Node.js, npm e Nginx.
 -   **Database**: Il database MongoDB è ospitato su MongoDB Atlas, un servizio di database gestito che garantisce alta disponibilità e backup automatici.
 
 ### 10.2 Deployment del Backend
 1.  **Clonazione del Repository**: Il codice sorgente del backend è stato clonato dal repository Git sulla VM.
 2.  **Installazione delle Dipendenze**: Le dipendenze sono state installate tramite il comando `npm install`.
-3.  **Configurazione delle Variabili d'Ambiente**: È stato creato un file `.env` per configurare le variabili d'ambiente, inclusa la stringa di connessione a MongoDB Atlas e i segreti per JWT.
-4.  **Esecuzione con PM2**: Il server Node.js è gestito tramite PM2, un process manager che garantisce che l'applicazione rimanga attiva in modo continuo e si riavvii automaticamente in caso di errori.
+3.  **Configurazione delle Variabili d'Ambiente**: È stato creato un file `.env` per configurare le variabili d'ambiente, inclusa la stringa di connessione a MongoDB Atlas e i secrets per JWT.
+
 
 ### 10.3 Dipendenze Chiave del Backend
 Il backend si basa su un ecosistema di pacchetti Node.js per fornire le sue funzionalità:
@@ -277,8 +276,15 @@ Per comprendere il comportamento degli utenti e migliorare l'esperienza sulla pi
 ### 11.1 Configurazione e Integrazione
 -   **Inizializzazione**: Google Analytics è stato integrato nel frontend React tramite il pacchetto `react-ga4`. La configurazione viene inizializzata nel file principale dell'applicazione (`App.js`), utilizzando un Measurement ID univoco fornito da Google.
 -   **Tracciamento delle Pagine Viste**: `react-ga4` traccia automaticamente le visualizzazioni di pagina ogni volta che la cronologia di navigazione del browser cambia, grazie all'integrazione con `react-router-dom`. Questo permette di raccogliere dati su quali pagine vengono visitate più frequentemente.
+-   **Core Web Vitals**: Oltre al tracciamento delle pagine viste, l'integrazione è stata configurata per inviare a Google Analytics i dati relativi ai Core Web Vitals. Questi indicatori, misurati tramite la libreria `web-vitals`, forniscono insight cruciali sulle performance reali dell'applicazione dal punto di vista dell'utente:
+    -   **LCP (Largest Contentful Paint)**: Misura la velocità di caricamento, indicando quando l'elemento più grande della pagina diventa visibile.
+    -   **FID (First Input Delay)**: Misura l'interattività, calcolando il tempo che intercorre tra la prima interazione dell'utente e la risposta del browser.
+    -   **CLS (Cumulative Layout Shift)**: Misura la stabilità visiva, quantificando gli spostamenti inaspettati degli elementi della pagina durante il caricamento.
+    -   **TTFB (Time to First Byte)**: Misura il tempo che intercorre tra la richiesta di una risorsa e l'arrivo del primo byte della risposta.
+    -   **FCP (First Contentful Paint)**: Misura il momento in cui il primo contenuto (testo, immagine, ecc.) viene visualizzato sullo schermo.
+    Questi dati permettono di identificare e risolvere problemi di performance che potrebbero compromettere l'esperienza utente.
 
 ### 11.2 Limiti dell'Integrazione Attuale
 L'attuale integrazione di Google Analytics si limita al tracciamento automatico delle pagine viste. Sebbene questo fornisca dati utili sulla popolarità delle diverse sezioni dell'applicazione, non vengono monitorate interazioni specifiche degli utenti come login, registrazioni o aggiunte alle liste personali.
 
-Per ottenere una comprensione più approfondita del comportamento degli utenti, sarebbe necessario implementare eventi personalizzati. Questi eventi permetterebbero di raccogliere dati granulari su quali funzionalità vengono utilizzate più di frequente, aiutando a guidare le future decisioni di sviluppo e a ottimizzare l'esperienza utente.
+Per ottenere una comprensione più approfondita del comportamento degli utenti, ci poniamo favorevoli all'implementazione futura di sistemi che permettono il tracciamento di eventi personalizzati (ad esempio quante volte un titolo è stato aggiunto ad una determinata lista o quante volte un utente ha cliccato sul logo del sito per tornare alla homepage). Questi eventi ci permetterebbero di raccogliere dati granulari su quali funzionalità vengono utilizzate più di frequente, aiutando a guidare le future decisioni di sviluppo e a ottimizzare l'esperienza utente.
