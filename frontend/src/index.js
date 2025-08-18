@@ -4,17 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './i18n';
-import { useTranslation } from 'react-i18next';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const {t} = useTranslation();
 root.render(
   <React.StrictMode>
-    <React.Suspense fallback={t('loading')}>
+    <React.Suspense fallback='Loading'>
       <App />
     </React.Suspense>
   </React.StrictMode>
 );
 
 reportWebVitals(console.log);
-reportWebVitals(sendToAnalytics);
