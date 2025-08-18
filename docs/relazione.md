@@ -28,6 +28,7 @@ L'architettura è basata sul modello a tre livelli (Three-Tier Architecture), ch
 
 -   **Backend (Livello Logico)**:
     -   **Framework**: Node.js con Express.js per la creazione di un'API RESTful robusta.
+    -   **Comunicazione Real-time**: `socket.io` per la gestione dei commenti in tempo reale.
     -   **Gestione Asincrona**: Utilizzo di `async/await` per operazioni non bloccanti, specialmente nelle interazioni con il database e le API esterne.
     -   **Sicurezza**: Middleware `authMiddleware` per proteggere gli endpoint che richiedono autenticazione tramite la verifica di JSON Web Tokens (JWT).
     -   **Integrazione Esterna**: Un modulo dedicato (`tmdb.js`) gestisce tutte le chiamate verso l'API di The Movie Database (TMDB) per l'arricchimento dei dati.
@@ -60,7 +61,7 @@ graph TD
     end
 ```
 
-### 3.2 Diagramma di Sequenza (Login Utente)
+### 3.2 Diagramma di Sequenza (Interazioni Principali)
 
 ```mermaid
 sequenceDiagram
@@ -68,24 +69,50 @@ sequenceDiagram
     participant F as Frontend
     participant B as Backend
     participant DB as Database
+    participant TMDB as TMDB API
 
-    U->>F: Inserisce email e password e clicca Login
-    F->>B: POST /api/v1/auth/login (con credenziali)
-    B->>DB: findOne({ email: email })
-    DB-->>B: Restituisce dati utente (incluso hash password)
-    B->>B: Confronta hash password fornita con quella salvata
-    alt Credenziali Corrette
-        B->>B: Genera Access Token (JWT) e Refresh Token
-        B->>DB: Salva Refresh Token per l'utente
-        DB-->>B: Conferma salvataggio
-        B-->>F: 200 OK con dati utente e Access Token
-        F->>F: Salva stato utente nel Context
-        F-->>U: Reindirizza alla Homepage e mostra profilo
-    else Credenziali Errate
-        B-->>F: 401 Unauthorized
-        F-->>U: Mostra messaggio di errore
-    end
-    ## NON È COMPLETO MA CONTIENE SOLO L'AUTH
+    U->>F: Esegue il Login
+    F->>B: POST /api/v1/auth/login
+    B-->>F: OK (JWT Token)
+    F->>F: Salva Token
+
+    U->>F: Esegue una ricerca
+    F->>B: GET /api/v1/media/search?query={testo}
+    B->>TMDB: GET /search/multi?query={testo}
+    TMDB-->>B: Risultati di ricerca
+    B-->>F: Lista di media
+
+    U->>F: Clicca su un film
+    F->>B: GET /api/v1/media/movie/{id}
+    B->>TMDB: GET /movie/{id} (dettagli, cast, video)
+    TMDB-->>B: Dettagli completi
+    B-->>F: Dati del film
+
+    U->>F: Aggiunge a Watchlist
+    F->>B: POST /api/v1/media/watchlist
+    B->>DB: Aggiorna utente (aggiunge a watchlist)
+    DB-->>B: Conferma
+    B-->>F: OK
+
+    U->>F: Aggiunge al Diario
+    F->>B: POST /api/v1/media/diary
+    B->>DB: Aggiorna utente (aggiunge a diario)
+    DB-->>B: Conferma
+    B-->>F: OK
+
+    U->>F: Aggiunge ai Preferiti
+    F->>B: POST /api/v1/media/favourites
+    B->>DB: Aggiorna utente (aggiunge a preferiti)
+    DB-->>B: Conferma
+    B-->>F: OK
+
+    U->>F: Aggiunge un commento
+    F->>B: POST /api/v1/media/comment
+    B->>DB: Salva commento
+    DB-->>B: Conferma
+    B->>B: Emette evento 'new_comment' via Socket.io
+    B-->>F: OK (HTTP)
+    F->>F: Riceve 'new_comment' e aggiorna UI
 ```
 
 ---
@@ -116,18 +143,22 @@ Descrizione dettagliata degli endpoint principali.
 -   `POST /login`: Body: `{ email, password }`. Autentica l'utente e restituisce `accessToken` e dati utente. Imposta un `httpOnly` cookie con il `refreshToken`.
 -   `GET /`: (Protetta) Endpoint usato per verificare la validità del token e caricare i dati dell'utente all'avvio dell'app.
 -   `POST /profile-picture`: (Protetta) Accetta `multipart/form-data` per il caricamento di un'immagine.
+-   `DELETE /profile-picture`: (Protetta) Rimuove l'immagine del profilo.
+-   `POST /verify-password`: (Protetta) Verifica la password corrente.
+-   `POST /reset-password`: (Protetta) Reimposta la password.
 
 ### 5.2 Media (`/media`)
 -   `GET /discover`: Query params: `?genre=28&sort_by=popularity.desc`. Permette una ricerca filtrata.
 -   `GET /search`: Query params: `?query=matrix`. Restituisce una lista di film, serie TV e persone.
 -   `POST /watchlist`: (Protetta) Body: `{ mediaId, mediaType, title, ... }`. Aggiunge un elemento alla watchlist.
 -   `DELETE /watchlist/:mediaId`: (Protetta) Rimuove un elemento specifico dalla watchlist. Logica simile per `diary` e `favourites`.
+-   `GET /:mediaType/:mediaId/comments`: Restituisce i commenti per un media specifico.
 
 ---
 
 ## 6. Componenti React (Frontend)
 
-Analisi della struttura dei componenti e del flusso di dati.  (DA AGGIORNARE OGNI VOLTA CH SI AGGIORNA IL FRONTEND)
+Analisi della struttura dei componenti e del flusso di dati. 
 
 ### 6.1 Flusso dei Dati e Gestione dello Stato
 L'applicazione fa un uso estensivo della React Context API per evitare il "prop drilling".
@@ -136,11 +167,12 @@ L'applicazione fa un uso estensivo della React Context API per evitare il "prop 
 -   **`ThemeContext`**: Permette di cambiare il tema (es. da chiaro a scuro) e applica le classi CSS corrispondenti al `div` principale dell'app.
 
 ### 6.2 Descrizione dei Componenti Chiave
--   **`Header.js`**: Componente complesso che include la barra di ricerca con autocompletamento, i link di navigazione e un menu a tendina per l'utente loggato (con link a Profilo, Diary, Watchlist, Favourites e Logout).
--   **`MediaCarousel.js`**: Componente riutilizzabile (basato sulla libreria Swiper) per visualizzare caroselli orizzontali di media, utilizzato in `Trending`,e nelle raccomandazioni. (DA CAMBIARE)
--   **`AuthModal.js`**: Contiene sia il form di Login che quello di Registrazione, con logica per passare da uno all'altro. Include la validazione dei campi e la gestione della visualizzazione della password.
--   **`MediaPage.js`**: Una delle pagine più complesse. Al mount, esegue chiamate API multiple per ottenere i dettagli del media, il cast, i video (trailer) e le raccomandazioni. Renderizza queste informazioni usando altri componenti riutilizzabili come `CastCarousel` e `RecommendationsGrid`.
-
+-   **`Header.js`**: Componente principale per la navigazione, include la barra di ricerca con suggerimenti live, link alle sezioni principali e un menu utente per l'accesso a watchlist, diario, preferiti e impostazioni.
+-   **`Carousel.js`**: Componente versatile per la visualizzazione di media in caroselli orizzontali. Utilizzato per mostrare i titoli di tendenza, i risultati della ricerca e le raccomandazioni.
+-   **`AuthModal.js`**: Modale che gestisce sia la registrazione che il login, con validazione dei dati in tempo reale e opzioni per il recupero della password.
+-   **`MediaPage.js`**: Pagina di dettaglio per film e serie TV. Carica e visualizza informazioni complete, tra cui trama, cast, trailer e commenti.
+-   **`CommentModal.js`**: Permette agli utenti di aggiungere commenti, che vengono poi visualizzati in tempo reale grazie a `socket.io`.
+-   **`FilterModal.js`**: Offre opzioni di filtro avanzate per la sezione "Esplora", consentendo agli utenti di affinare la ricerca per genere, anno e popolarità.
 
 ---
 
@@ -172,6 +204,7 @@ graph TD
     Frontend -->|Chiamate API| Backend{"Backend (Node.js/Express)"};
     Backend -->|Query| Database[(MongoDB)];
     Backend -->|Chiamata API Esterna| ExternalAPI[TMDB API];
+    Frontend <-->|Socket.io| Backend;
 
     style User fill:#,stroke:#333,stroke-width:2px;
     style Frontend fill:#,stroke:#333,stroke-width:2px;
@@ -202,4 +235,34 @@ Il flusso di dati nel frontend è progettato per essere unidirezionale e prevedi
 
 Questo approccio garantisce che lo stato dell'interfaccia utente sia sempre sincronizzato con lo stato del backend, fornendo un'esperienza fluida e reattiva.
 
+3.  **Comunicazione Real-time con Socket.io**:
+    -   Quando un utente aggiunge un commento, il frontend invia una richiesta `POST` al backend.
+    -   Il backend salva il commento nel database e, tramite `socket.io`, notifica a tutti i client connessi che è stato aggiunto un nuovo commento.
+    -   Il frontend, in ascolto sull'evento `socket.io`, riceve il nuovo commento e aggiorna dinamicamente l'interfaccia utente senza la necessità di un refresh della pagina.
+
 ## 10. Deployment
+
+L'applicazione è deployata su una Virtual Machine (VM) di Google Cloud Platform, seguendo un approccio che separa frontend e backend per garantire scalabilità e manutenibilità.
+
+### 10.1 Configurazione dell'Ambiente
+-   **Istanza VM**: È stata creata un'istanza su Google Compute Engine con un sistema operativo Linux (Ubuntu).
+-   **Software Requisiti**: Sulla VM sono stati installati Node.js, npm e Nginx.
+-   **Database**: Il database MongoDB è ospitato su MongoDB Atlas, un servizio di database gestito che garantisce alta disponibilità e backup automatici.
+
+### 10.2 Deployment del Backend
+1.  **Clonazione del Repository**: Il codice sorgente del backend è stato clonato dal repository Git sulla VM.
+2.  **Installazione delle Dipendenze**: Le dipendenze sono state installate tramite il comando `npm install`.
+3.  **Configurazione delle Variabili d'Ambiente**: È stato creato un file `.env` per configurare le variabili d'ambiente, inclusa la stringa di connessione a MongoDB Atlas e i segreti per JWT.
+4.  **Esecuzione con PM2**: Il server Node.js è gestito tramite PM2, un process manager che garantisce che l'applicazione rimanga attiva in modo continuo e si riavvii automaticamente in caso di errori.
+
+### 10.3 Dipendenze Chiave del Backend
+Il backend si basa su un ecosistema di pacchetti Node.js per fornire le sue funzionalità:
+-   **`express`**: Framework web per la creazione dell'API RESTful.
+-   **`mongoose`**: ODM per l'interazione con il database MongoDB.
+-   **`bcryptjs`**: Per l'hashing sicuro delle password.
+-   **`jsonwebtoken`**: Per la creazione e la verifica dei token JWT.
+-   **`cookie-parser`**: Per la gestione dei cookie, utilizzato per il refresh token.
+-   **`cors`**: Per abilitare le richieste cross-origin dal frontend.
+-   **`dotenv`**: Per la gestione delle variabili d'ambiente.
+-   **`multer`**: Per la gestione del caricamento di file (immagini del profilo).
+-   **`socket.io`**: Per la comunicazione in tempo reale.
