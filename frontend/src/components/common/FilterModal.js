@@ -4,7 +4,7 @@ import { useFilters } from '../../context/FilterContext.js';
 import './FilterModal.css';
 import { useTranslation } from 'react-i18next';
 
-const FilterModal = ({ closeModal }) => {
+const FilterModal = ({ onClose }) => {
     const { filters, updateFilters, resetFilters } = useFilters();
     const [availableGenres, setAvailableGenres] = useState([]);
     const { t, i18n } = useTranslation();
@@ -41,11 +41,11 @@ const FilterModal = ({ closeModal }) => {
     };
 
     return (
-        <div className="filter-modal-overlay" onClick={closeModal}>
+        <div className="filter-modal-overlay" onClick={onClose}>
             <div className="filter-modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="filter-modal-header">
                     <h3>{t('advancedFilters')}</h3>
-                    <button onClick={closeModal} className="close-btn">&times;</button>
+                    <button onClick={onClose} className="close-btn">&times;</button>
                 </div>
 
                 <div className="filter-section">
@@ -87,7 +87,7 @@ const FilterModal = ({ closeModal }) => {
 
                 <div className="filter-modal-footer">
                     <button onClick={resetFilters} className="btn-secondary">{t('reset')}</button>
-                    <button onClick={closeModal} className="btn-primary">{t('close')}</button>
+                    <button onClick={onClose} className="btn-primary">{t('close')}</button>
                 </div>
             </div>
         </div>

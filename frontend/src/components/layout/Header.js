@@ -132,7 +132,7 @@ const Header = () => {
   }
 
   const openModal = (modalName) => setActiveModal(modalName);
-  const closeModal = () => setActiveModal(null);
+  const onClose = () => setActiveModal(null);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -222,12 +222,12 @@ const Header = () => {
           )}
         </div>
       </header>
-      {activeModal === 'auth' && !user && <AuthModal onClose={closeModal} />}
-      {activeModal === 'filter' && <FilterModal closeModal={closeModal} />}
-      {activeModal === 'language' && <LanguageModal closeModal={closeModal} />}
-      {activeModal === 'profilePicture' && <ProfilePictureModal closeModal={closeModal} />}
-      {activeModal === 'theme' && <ThemeModal closeModal={closeModal} />}
-      {activeModal === 'resetPassword' && <ResetPasswordModal closeModal={closeModal} />}
+      {activeModal === 'auth' && !user && <AuthModal onClose={onClose} />}
+      {activeModal === 'filter' && <FilterModal onClose={onClose} />}
+      {activeModal === 'language' && <LanguageModal onClose={onClose} />}
+      {activeModal === 'profilePicture' && <ProfilePictureModal onClose={onClose} />}
+      {activeModal === 'theme' && <ThemeModal onClose={onClose} />}
+      {activeModal === 'resetPassword' && <ResetPasswordModal onClose={onClose} />}
     </>
   );
 };

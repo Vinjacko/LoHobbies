@@ -3,17 +3,17 @@ import { useTranslation } from 'react-i18next';
 import './ThemeModal.css';
 import ThemeContext from '../../context/ThemeContext';
 
-const ThemeModal = ({ closeModal }) => {
+const ThemeModal = ({ onClose }) => {
   const { t } = useTranslation();
   const { theme, setTheme } = useContext(ThemeContext);
 
   const handleSetTheme = (selectedTheme) => {
     setTheme(selectedTheme);
-    closeModal();
+    onClose();
   };
 
   return (
-    <div className="theme-modal-overlay" onClick={closeModal}>
+    <div className="theme-modal-overlay" onClick={onClose}>
       <div className="theme-modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>{t('theme')}</h2>
         <div className="theme-options">
