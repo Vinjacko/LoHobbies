@@ -16,6 +16,7 @@ const Header = () => {
   const [activeModal, setActiveModal] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -147,79 +148,84 @@ const Header = () => {
         <Link to="/" className="header__logo">
           <img src="/img/logo.png" alt="LoHobbies Logo" />
         </Link>
-        <div className="search-container" ref={searchRef}>
-          <form className="search-bar" onSubmit={handleSearchSubmit}>
-            <input
-              type="text"
-              placeholder={t('search')}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onFocus={() => setIsFocused(true)}
-            />
-            <button type="submit" className="search-button">
-              <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
-              </svg>
-            </button>
-            <button type="button" className="filter-button" onClick={() => openModal('filter')}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"></path>
-              </svg>
-            </button>
-          </form>
-          {isFocused && results.length > 0 && (
-            <ul className="search-results">
-              {results.map((item) => (
-                <li key={item.id} className="search-result-item">
-                  <Link to={getResultLink(item)} onClick={handleResultClick}>
-                    <img src={getResultImage(item)} alt={getResultTitle(item)} />
-                    <div>
-                      <p className="result-title">{getResultTitle(item)} <span className="result-year">{getResultYear(item)}</span></p>
-                      <p className="result-type">{item.media_type}</p>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <div className="header__nav">
-          {user ? (
-            <div className="user-menu" ref={userMenuRef} onClick={toggleDropdown}>
-              <span>{user.name}</span>
-              <div className="profile-icon">
-                {user.profilePicture ? (
-                  <img src={user.profilePicture} alt="Profile" className="profile-picture" />
-                ) : (
-                  user.name.charAt(0).toUpperCase()
-                )}
-              </div>
-              {isDropdownOpen && (
-                <div className="dropdown-menu">
-                  <Link to="/">{t('home')}</Link>
-                  <Link to="/diary">{t('diary')}</Link>
-                  <Link to="/favourites">{t('favourites')}</Link>
-                  <Link to="/watchlist">{t('watchlist')}</Link>
-                  <div className="dropdown-submenu">
-                    <button onClick={(e) => { e.stopPropagation(); setIsSettingsOpen(!isSettingsOpen); }}>
-                      {t('settings')}
-                    </button>
-                    {isSettingsOpen && (
-                      <div className="settings-menu">
-                        <button onClick={() => openModal('language')}>{t('language')}</button>
-                        <button onClick={() => openModal('theme')}>{t('theme')}</button>
-                        <button onClick={() => openModal('resetPassword')}>{t('resetPassword')}</button>
-                        <button onClick={() => openModal('profilePicture')}>{t('profilePicture')}</button>
-                      </div>
+        <button className="hamburger-button" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+        </button>
+        <div className={`header-right-content ${isMenuOpen ? 'open' : ''}`}>
+            <div className="search-container" ref={searchRef}>
+            <form className="search-bar" onSubmit={handleSearchSubmit}>
+                <input
+                type="text"
+                placeholder={t('search')}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onFocus={() => setIsFocused(true)}
+                />
+                <button type="submit" className="search-button">
+                <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                </svg>
+                </button>
+                <button type="button" className="filter-button" onClick={() => openModal('filter')}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"></path>
+                </svg>
+                </button>
+            </form>
+            {isFocused && results.length > 0 && (
+                <ul className="search-results">
+                {results.map((item) => (
+                    <li key={item.id} className="search-result-item">
+                    <Link to={getResultLink(item)} onClick={handleResultClick}>
+                        <img src={getResultImage(item)} alt={getResultTitle(item)} />
+                        <div>
+                        <p className="result-title">{getResultTitle(item)} <span className="result-year">{getResultYear(item)}</span></p>
+                        <p className="result-type">{item.media_type}</p>
+                        </div>
+                    </Link>
+                    </li>
+                ))}
+                </ul>
+            )}
+            </div>
+            <div className="header__nav">
+            {user ? (
+                <div className="user-menu" ref={userMenuRef} onClick={toggleDropdown}>
+                  <span>{user.name}</span>
+                  <div className="profile-icon">
+                    {user.profilePicture ? (
+                      <img src={user.profilePicture} alt="Profile" className="profile-picture" />
+                    ) : (
+                      user.name.charAt(0).toUpperCase()
                     )}
                   </div>
-                  <button onClick={logout}>{t('logout')}</button>
+                {isDropdownOpen && (
+                    <div className="dropdown-menu">
+                    <Link to="/">{t('home')}</Link>
+                    <Link to="/diary">{t('diary')}</Link>
+                    <Link to="/favourites">{t('favourites')}</Link>
+                    <Link to="/watchlist">{t('watchlist')}</Link>
+                    <div className="dropdown-submenu">
+                        <button onClick={(e) => { e.stopPropagation(); setIsSettingsOpen(!isSettingsOpen); }}>
+                        {t('settings')}
+                        </button>
+                        {isSettingsOpen && (
+                        <div className="settings-menu">
+                            <button onClick={() => openModal('language')}>{t('language')}</button>
+                            <button onClick={() => openModal('theme')}>{t('theme')}</button>
+                            <button onClick={() => openModal('resetPassword')}>{t('resetPassword')}</button>
+                            <button onClick={() => openModal('profilePicture')}>{t('profilePicture')}</button>
+                        </div>
+                        )}
+                    </div>
+                    <button onClick={logout}>{t('logout')}</button>
+                    </div>
+                )}
                 </div>
-              )}
+            ) : (
+                <button className="log-btn" onClick={() => openModal('auth')}>{t('login')}</button>
+            )}
             </div>
-          ) : (
-            <button className="log-btn" onClick={() => openModal('auth')}>{t('login')}</button>
-          )}
         </div>
       </header>
       {activeModal === 'auth' && !user && <AuthModal closeModal={closeModal} />}

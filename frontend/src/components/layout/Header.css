@@ -1,6 +1,7 @@
 .header {
   display: flex;
   justify-content: space-between;
+  position: relative;
   align-items: center;
   padding: 1rem 2rem;
   background-color: var(--surface-color);
@@ -247,4 +248,83 @@
   opacity: 0.8;
   text-transform: capitalize;
   margin: 0;
+}
+.hamburger-button {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburger-button svg {
+  fill: var(--text-color);
+}
+
+.header-right-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+@media (max-width: 770px) {
+  .header {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .hamburger-button {
+    display: block;
+  }
+
+  .header__logo img {
+    height: 6rem;
+  }
+
+  .header-right-content {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    background-color: var(--surface-color);
+    padding: 1rem 0;
+  }
+
+  .header-right-content.open {
+    display: flex;
+  }
+
+  .search-container {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .header__nav {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .user-menu {
+      width: 100%;
+      justify-content: flex-start;
+  }
+
+  .user-menu .profile-icon {
+    order: 1;
+  }
+
+  .user-menu > span {
+    order: 2;
+  }
+
+  .dropdown-menu {
+      top: 100%;
+      left:0;
+      margin-right: 40rem;
+      margin-top: 1rem;
+  }
+
+  .settings-menu{
+    left: 9.4rem;
+  }
 }
