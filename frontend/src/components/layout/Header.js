@@ -47,7 +47,7 @@ const Header = () => {
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [query]);
+  }, [query, t]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
