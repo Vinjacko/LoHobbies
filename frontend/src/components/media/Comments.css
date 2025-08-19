@@ -24,8 +24,7 @@
     border-radius: 12px;
     border: 1px solid var(--border-color);
     width: 60%;
-    justify-self: center;
-    margin: 2rem;
+    margin: 2rem auto;
 }
 
 .comments-section h2 {
