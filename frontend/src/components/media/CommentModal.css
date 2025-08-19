@@ -25,7 +25,7 @@
 .comment-modal-content p {
   font-size: 1.5rem;
   word-wrap: break-word;
-  color: #fff;
+  color: var(--text-color);
 }
 
 .comment-modal-actions {
