@@ -17,7 +17,6 @@
   border-radius: 8px;
   max-width: 500px;
   width: 90%;
-  color: #fff;
   max-height: 80vh;
   overflow-y: auto;
 }
@@ -25,7 +24,7 @@
 .comment-modal-content p {
   font-size: 1.5rem;
   word-wrap: break-word;
-  color: #fff;
+  color: var(--text-color);
 }
 
 .comment-modal-actions {
