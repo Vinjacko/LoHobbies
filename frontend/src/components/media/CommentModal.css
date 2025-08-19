@@ -19,6 +19,7 @@
   width: 90%;
   max-height: 80vh;
   overflow-y: auto;
+  border: 1px solid var(--border-color);
 }
 
 .comment-modal-content p {
@@ -28,13 +29,12 @@
 }
 
 .comment-modal-actions {
-  text-align: center;
+  display: flex;
+  justify-content: center;
   margin-top: 1rem;
 }
 
 .comment-modal-actions button {
-  display: flex;
-  justify-self: center;
   padding: 5px 10px;
   border: 1px solid var(--border-color);
   border-radius: 5px;
