@@ -41,9 +41,9 @@ function sendToGoogleAnalytics({ name, delta, id }) {
 
 const reportWebVitals = () => {
   import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-    getCLS(sendToGoogleAnalytics);  //  misura la velocità di caricamento
+    getCLS(sendToGoogleAnalytics);  //  misura la stabilità visiva
     getFID(sendToGoogleAnalytics);  //  misura l'interattività
-    getFCP(sendToGoogleAnalytics);  //  misura la stabilità visiva
+    getFCP(sendToGoogleAnalytics);  //  misura la velocità di caricamento 
     getLCP(sendToGoogleAnalytics);  //  misura il momento in cui il primo contenuto (testo, immagine, ecc.) viene visualizzato sullo schermo
     getTTFB(sendToGoogleAnalytics); //  misura il tempo che intercorre tra la richiesta di una risorsa e l'arrivo del primo byte della risposta 
   });
