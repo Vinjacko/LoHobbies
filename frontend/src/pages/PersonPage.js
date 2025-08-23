@@ -47,7 +47,7 @@ const PersonPage = () => {
                     <div className="person-info">
                         <h1>{person.name}</h1>
                         <h3>{t('biography')}</h3>
-                        <p>{person.biography || 'Biografia non disponibile '}</p>
+                        <p>{person.biography || t('notbiography')}</p>
                     </div>
                 </div>
             </div>
