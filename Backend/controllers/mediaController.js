@@ -89,9 +89,6 @@ const getTrending = async (req, res, next) => {
     const genreCounts = {};
     const MAX_GENRE = 3;
 
-    sortedCandidates.forEach((candidate) => {
-
-});
     let stop = false;
 
     sortedCandidates.forEach((candidate) => {
