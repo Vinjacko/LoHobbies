@@ -9,6 +9,8 @@ const Favourites = () => {
     const { t } = useTranslation();
     const [favourites, setFavourites] = useState([]);
     const auth = useContext(AuthContext);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchFavourites = async () => {
@@ -16,8 +18,10 @@ const Favourites = () => {
                 try {
                     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/favourites`);
                     setFavourites(response.data.data);
-                } catch (error) {
-                    console.error("Errore nel tentativo di recuperare i preferiti", error);
+                } catch (err) {
+                    setError(err.message);
+                } finally {
+                    setLoading(false);
                 }
             }
         };
@@ -27,6 +31,14 @@ const Favourites = () => {
 
     if (!auth.user) {
         return <div>{t('mustBeLoggedIn')}</div>;
+    }
+
+    if (loading) {
+        return <div>{t('loading')}</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
     }
 
     return (
