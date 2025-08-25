@@ -17,7 +17,6 @@ const ResetPasswordModal = ({ closeModal }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const navigate = useNavigate();
 
   const handleVerifyPassword = async (e) => {
     e.preventDefault();
