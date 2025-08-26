@@ -224,7 +224,6 @@ const verifyPassword = async (req, res) => {
   }
 };
 
-// permette di resettare la password
 const resetPassword = async (req, res) => {
   const { newPassword } = req.body;
 
