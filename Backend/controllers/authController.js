@@ -84,7 +84,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-// procedura di login per un utente
 const loginUser = async (req, res) => {
   const { email, password, rememberMe } = req.body;
 
@@ -108,7 +107,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-//  restituisce le informazioni sull'utente
 const getMe = async (req, res) => {
   try {
     // req.user è settato da authMiddleware
@@ -120,7 +118,6 @@ const getMe = async (req, res) => {
   }
 };
 
-// aggiorna il refreshToken
 const refreshToken = async (req, res) => {
   const { refreshToken } = req.cookies;
 
