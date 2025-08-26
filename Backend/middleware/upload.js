@@ -1,10 +1,10 @@
-const multer = require('multer'); // libreria utilizzata per l'upload di file
+const multer = require('multer');
 const path = require('path');
 
 // crea un motore di archiviazione per salvare i file sul disco del server
 const storage = multer.diskStorage({
   destination: './public/uploads/',
-  filename: function(req, file, callback){
+  filename: function( file, callback){
     callback(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
 });
@@ -21,11 +21,10 @@ function checkFileType(file, callback){
   }
 }
 
-// inizializzazione e configurazione del middleware multer
 const upload = multer({
   storage: storage,
   limits:{fileSize: 1000000},
-  fileFilter: function(req, file, callback){
+  fileFilter: function( file, callback){
     checkFileType(file, callback);
   }
 }).single('profilePicture');  // viene caricato solo un file dal modulo HTML 'profilePicture'

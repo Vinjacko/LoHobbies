@@ -36,13 +36,11 @@ const io = require('socket.io')(server, {
   }
 });
 
-app.use((req, res, next) => {
+// crea un'istanza di socket.io che permette di non importarlo ogni volta
+app.use((req, next) => {
   req.io = io;
   next();
 });
-
-app.use('/api/v1/media', require('./routes/media'));
-app.use('/api/v1/auth', require('./routes/auth'));
 
 io.on('connection', (socket) => {
   console.log('Utente collegato');
@@ -51,7 +49,9 @@ io.on('connection', (socket) => {
   });
 });
 
-// codice per la gestione di errori imprevisti di operazioni asincrone
+app.use('/api/v1/media', require('./routes/media'));
+app.use('/api/v1/auth', require('./routes/auth'));
+
 process.on('unhandledRejection', (err, promise) => {
   console.log(`Error: ${err.message}`);
   server.close(() => process.exit(1));

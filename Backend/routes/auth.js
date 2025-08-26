@@ -22,7 +22,6 @@ router.get('/', protect, getMe);
 router.post('/refresh', refreshToken);
 router.post('/logout', logoutUser);
 
-// utilizzata per gestire gli errori di multer in modo personalizzato prima di passare il controllo al controller finale
 const handleUpload = (req, res, next) => {
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {

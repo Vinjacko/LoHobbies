@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 
 const protect = (req, res, next) => {
-  // prende il token dal cookie
   const token = req.cookies.accessToken;
 
   if (!token) {
