@@ -2,12 +2,11 @@ const tmdb = require('../utils/tmdb');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
 
-/*Lo scopo è risolvere un problema comune nei sistemi di valutazione: 
-  come confrontare un film con un punteggio di 9/10 basato su 1.000 voti con un film che ha un punteggio di 10/10 ma solo 5 voti? 
-  Un semplice punteggio medio favorirebbe il secondo film, ma intuitivamente sappiamo che il primo risultato è più affidabile. 
-  Il Wilson Score affronta questo problema calcolando un limite inferiore "pessimistico" del punteggio che un elemento probabilmente otterrebbe se tutti avessero votato. 
-  In questo modo, penalizza gli elementi con un numero inferiore di voti, fornendo un ordinamento più equo e affidabile.
+/*
+Wilson score ci permette di comparare correttamente elementi con valutazioni diverse 
+basate su numeri di voti molto diversi (es. 9/10 con 1.000 voti vs 10/10 con solo 5 voti).
 */
+
 const wilsonScore = (p, n) => {
   const z = 1.96;   // 95% di confidenza
   if (n === 0) return 0;
@@ -18,15 +17,13 @@ const wilsonScore = (p, n) => {
   return score;
 };
 
-// calcola un punteggio di tendenza
 const getTrending = async (req, res, next) => {
   const { language = 'it-IT' } = req.query;
   try {
-    // recupera un insieme più ampio di contenuti popolari da TMDB
     const movieResponse = await tmdb.get('/discover/movie', {
       params: {
         sort_by: 'popularity.desc',
-        'vote_count.gte': 150, // filtro per rilevanza (almeno 150 voti)
+        'vote_count.gte': 150,
         page: 1,
         'primary_release_date.lte': new Date().toISOString().split('T')[0],   // filtro sulla data, converte la data in formato ISO e prende solo la parte che corrisponde a gg/mm/aaaa
         language,
@@ -43,33 +40,29 @@ const getTrending = async (req, res, next) => {
       },
     });
 
-    // aggiunge l'attributo media_type a film e serie-TV
     const candidates = [
       ...movieResponse.data.results.map((m) => ({ ...m, media_type: 'movie' })),
       ...tvResponse.data.results.map((t) => ({ ...t, media_type: 'tv' })),
     ];
 
-    // calcola il punteggio di tendenza per ogni candidato
-    const WEIGHTS = { freshness: 0.15, popularity: 0.45, quality: 0.35, completion: 0.05 }; //completion è la percentuale di contenuto guardato
+    // calcola il punteggio di tendenza per ogni titolo
+    const WEIGHTS = { freshness: 0.15, popularity: 0.45, quality: 0.35, completion: 0.05 };
     const MAX_POPULARITY = Math.max(...candidates.map(c => c.popularity), 10000);
 
     const scoredCandidates = candidates.map((c) => {
-      // freschezza: misura quanto è recente il film (nel nostro caso 5 giorni)
       const releaseDate = new Date(c.release_date || c.first_air_date);
       const hoursSinceRelease = (new Date() - releaseDate) / (1000 * 60 * 60);
-      const score_freshness = hoursSinceRelease <= 120 ? 1.0 : Math.exp(-0.00577 * (hoursSinceRelease - 120));
+      const score_freshness = hoursSinceRelease <= 120 ? 1.0 : Math.exp(-0.00577 * (hoursSinceRelease - 120)); //-0.00577 fattore di decadimento
 
-      // popolarità di TMDB: questo valore viene normalizzato con una funzione logaritmica per evitare che titoli estremamente virali dominino la classifica.
+      // con la funzione logaritimica si evita che i titoli estramamente virali siano sempre nelle prime posizioni
       const score_popularity = Math.log(1 + c.popularity) / Math.log(1 + MAX_POPULARITY);
 
-      // qualità percepita da TMDB: calcola un punteggio di qualità statisticamente robusto usando la media voti (vote_average) e il numero di voti (vote_count) di TMDB.
-      // Utilizza la formula dell'intervallo di confidenza di Wilson per dare più peso ai titoli con un numero significativo di recensioni
+      //applicazione del ragionamento di Wilson
       const p_hat = c.vote_average / 10.0;
       const score_quality = wilsonScore(p_hat, c.vote_count);
       
-      // tasso di completamento visione: metrica interna che misura la percentuale media di un film che gli utenti guardano. 
-      // Premia i titoli che mantengono gli spettatori incollati allo schermo fino alla fine
-      const score_completion = 0.75; // Placeholder value
+      // completion è una metrica interna che misura la percentuale media di un film che gli utenti guardano. Settato ad un valore fisso
+      const score_completion = 0.75; 
 
       // punteggio di tendenza finale
       const trendingScore =
@@ -81,7 +74,6 @@ const getTrending = async (req, res, next) => {
       return { ...c, trendingScore };
     });
 
-    // ordina con il nuovo punteggio di tendenza
     const sortedCandidates = scoredCandidates.sort((a, b) => b.trendingScore - a.trendingScore);
 
     // diversifica i risultati
@@ -115,8 +107,7 @@ const getTrending = async (req, res, next) => {
   }
 };
 
-// metodo per ottenere il contenuto della sezione esplora
-const getExplore = async (req, res, next) => {
+const getExplore = async (req, res) => {
   try {
     const { page = 1, language = 'it-IT' } = req.query;
 
@@ -152,7 +143,7 @@ const getExplore = async (req, res, next) => {
       success: true,
       data: results,
       pagination: {
-        page: parseInt(page, 10),   // pagina corrente convertita da stringa a numero intero
+        page: parseInt(page, 10),
         total_pages,
         total_results,
       },
@@ -163,14 +154,12 @@ const getExplore = async (req, res, next) => {
   }
 };
 
-// metodo per ottenere i dettagli di film e serie-TV
-const getMovieDetails = async (req, res, next) => {
+const getMovieDetails = async (req, res) => {
   try {
     const { id } = req.params;
     const { language = 'it-IT' } = req.query;
     const response = await tmdb.get(`/movie/${id}`, {
       params: {
-        // permette di richiedere tutte le informazioni sul contenuto
         append_to_response: 'credits,videos,images',    
         language
       }
@@ -182,7 +171,7 @@ const getMovieDetails = async (req, res, next) => {
   }
 };
 
-const getTvShowDetails = async (req, res, next) => {
+const getTvShowDetails = async (req, res) => {
   try {
     const { id } = req.params;
     const { language = 'it-IT' } = req.query;
@@ -199,16 +188,17 @@ const getTvShowDetails = async (req, res, next) => {
   }
 };
 
-// metodo per ottenere i contenuti consigliati nella sezione 'potrebbero piacerti anche'
-const getRecommendations = async (req, res, next) => {
+const getRecommendations = async (req, res) => {
   try {
     const { media_type, id } = req.params;
     const { language = 'it-IT' } = req.query;
+
     const response = await tmdb.get(`/${media_type}/${id}/recommendations`, {
       params: { language }
     });
     const results = response.data.results.map((m) => ({ ...m, media_type }));
     res.status(200).json({ success: true, data: results });
+
   } catch (error) {
     if (error.response && error.response.status === 404) {
       return res.status(200).json({ success: true, data: [] });   
@@ -218,11 +208,11 @@ const getRecommendations = async (req, res, next) => {
   }
 };
 
-// metodo per ottenere le informazioni sul cast
-const getPersonDetails = async (req, res, next) => {
+const getPersonDetails = async (req, res) => {
   try {
     const { id } = req.params;
     const { language = 'it-IT' } = req.query;
+
     const response = await tmdb.get(`/person/${id}`, {
       params: {
         append_to_response: 'movie_credits,tv_credits',
@@ -230,16 +220,16 @@ const getPersonDetails = async (req, res, next) => {
       }
     });
     res.status(200).json({ success: true, data: response.data });
+
   } catch (error) {
     console.error(error);
     res.status(400).json({ success: false, error: 'Errore del server!' });
   }
 };
 
-// metodo per gestire la barra di ricerca
-const searchAll = async (req, res, next) => {
+const searchAll = async (req, res) => {
   try {
-    const { query, mediaType, sortBy = 'popularity.desc', genres, yearFrom, yearTo, language = 'it-IT' } = req.query;
+    const { query, mediaType, sortBy = 'popularity.desc', genres, yearFrom, language = 'it-IT' } = req.query;
     let results = [];
     const searchPromises = [];
     const typesToSearch = mediaType ? [mediaType] : ['movie', 'tv'];
@@ -262,15 +252,14 @@ const searchAll = async (req, res, next) => {
         results.push(...responseArray);
     });
 
-    // filtra il genere se fornito
     if (genres) {
       const genreArray = genres.split(',');
       results = results.filter(item =>
         item.genre_ids && item.genre_ids.some(genreId => genreArray.includes(genreId.toString()))
+        // controlla se c'è l'id di genere in un titolo e se appartiene all'array dei generi selezionati nei filtri
       );
     }
 
-    // ordina i risultati
     const [sortKey, sortOrder] = sortBy.split('.');
     results.sort((a, b) => {
       let valA, valB;
@@ -299,8 +288,7 @@ const searchAll = async (req, res, next) => {
   }
 };
 
-// metodo per gestire i filtri di ricerca
-const discoverMedia = async (req, res, next) => {
+const discoverMedia = async (req, res) => {
   try {
     const {
       mediaType = 'movie',
@@ -315,7 +303,7 @@ const discoverMedia = async (req, res, next) => {
     const params = {
       page,
       sort_by: sortBy,
-      'vote_count.gte': 100,
+      'vote_count.gte': 150,
       language,
     };
 
@@ -352,8 +340,7 @@ const discoverMedia = async (req, res, next) => {
   }
 };
 
-// metodo per ottenere i generi nei filtri
-const getGenres = async (req, res, next) => {
+const getGenres = async (req, res) => {
   try {
     const { language = 'it-IT' } = req.query;
     const movieGenresPromise = tmdb.get('/genre/movie/list', { params: { language } });
@@ -367,14 +354,14 @@ const getGenres = async (req, res, next) => {
     };
 
     res.status(200).json({ success: true, data: genres });
+
   } catch (error) {
     console.error(error);
     res.status(400).json({ success: false, error: 'Errore del server!' });
   }
 };
 
-// metodo legato all'autocompletamento della barra di ricerca
-const autocompleteSearch = async (req, res, next) => {
+const autocompleteSearch = async (req, res) => {
   try {
     const { query, language = 'it-IT' } = req.query;
 
@@ -431,8 +418,7 @@ const autocompleteSearch = async (req, res, next) => {
   }
 };
 
-// metodo per aggiungere i titoli alla watchlist
-const addToWatchlist = async (req, res, next) => {
+const addToWatchlist = async (req, res) => {
   try {
     const { mediaId, mediaType, posterPath, title, releaseDate } = req.body;
     const userId = req.user.id;
@@ -453,28 +439,28 @@ const addToWatchlist = async (req, res, next) => {
     await user.save();
 
     res.status(200).json({ success: true, data: user.watchlist });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'Errore del server!' });
   }
 };
 
-// metodo per ottenere il contenuto della watchlist
-const getWatchlist = async (req, res, next) => {
+const getWatchlist = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ success: false, error: 'Utente non trovato' });
     }
     res.status(200).json({ success: true, data: user.watchlist });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'Errore del server!' });
   }
 };
 
-// metodo per rimuovere il contenuto dalla watchlist
-const removeFromWatchlist = async (req, res, next) => {
+const removeFromWatchlist = async (req, res) => {
   try {
     const { mediaId } = req.params;
     const userId = req.user.id;
@@ -482,21 +468,21 @@ const removeFromWatchlist = async (req, res, next) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ success: false, error: 'Utente non troavato' });
+      return res.status(404).json({ success: false, error: 'Utente non trovato' });
     }
 
     user.watchlist = user.watchlist.filter(item => item.mediaId !== mediaId);
     await user.save();
 
     res.status(200).json({ success: true, data: user.watchlist });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'Errore del server!' });
   }
 };
 
-// metodo per aggiungere un contenuto al diario
-const addToDiary = async (req, res, next) => {
+const addToDiary = async (req, res) => {
     try {
         const { mediaId, mediaType, posterPath, title, releaseDate, rating, comment, watchedDate } = req.body;
         const userId = req.user.id;
@@ -534,14 +520,14 @@ const addToDiary = async (req, res, next) => {
         }
 
         res.status(200).json({ success: true, data: user.diary });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, error: 'Errore del server!' });
     }
 };
 
-// metodo per ottenere il contenuto del diario
-const getDiary = async (req, res, next) => {
+const getDiary = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
@@ -554,8 +540,7 @@ const getDiary = async (req, res, next) => {
   }
 };
 
-// metodo per rimuovere un contenuto dal diario
-const removeFromDiary = async (req, res, next) => {
+const removeFromDiary = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
@@ -581,14 +566,14 @@ const removeFromDiary = async (req, res, next) => {
     await user.save();
 
     res.status(200).json({ success: true, data: user.diary });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'Errore del server!' });
   }
 };
 
-// metodo per aggiungere un contenuto ai preferiti
-const addToFavourites = async (req, res, next) => {
+const addToFavourites = async (req, res) => {
   try {
     const { mediaId, mediaType, posterPath, title, releaseDate } = req.body;
     const userId = req.user.id;
@@ -609,28 +594,28 @@ const addToFavourites = async (req, res, next) => {
     await user.save();
 
     res.status(200).json({ success: true, data: user.favourites });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'Errore del server' });
   }
 };
 
-// metodo per ottenere il contenuto dei preferiti
-const getFavourites = async (req, res, next) => {
+const getFavourites = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ success: false, error: 'Utente non trovato!' });
     }
     res.status(200).json({ success: true, data: user.favourites });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'Errore del server' });
   }
 };
 
-// metodo per rimuovere un contenuto dai preferiti
-const removeFromFavourites = async (req, res, next) => {
+const removeFromFavourites = async (req, res) => {
   try {
     const { mediaId } = req.params;
     const userId = req.user.id;
@@ -645,17 +630,19 @@ const removeFromFavourites = async (req, res, next) => {
     await user.save();
 
     res.status(200).json({ success: true, data: user.favourites });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'Errore del server' });
   }
 };
 
-const getComments = async (req, res, next) => {
+const getComments = async (req, res) => {
   try {
     const { mediaType, mediaId } = req.params;
     const comments = await Comment.find({ mediaType, mediaId }).sort({ createdAt: -1 }).populate('user', 'name username profilePicture');
     res.status(200).json({ success: true, data: comments });
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'Errore del server' });
