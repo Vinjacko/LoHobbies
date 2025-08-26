@@ -109,7 +109,6 @@ const loginUser = async (req, res) => {
 
 const getMe = async (req, res) => {
   try {
-    // req.user è settato da authMiddleware
     const user = await User.findById(req.user.id).select('-password');
     res.json(user);
   } catch (err) {
@@ -126,8 +125,8 @@ const refreshToken = async (req, res) => {
   }
 
   try {
-    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);   // decodifica del refreshToken
-    const user = await User.findById(decoded.id);   // ricerca dell'utente tramite ID del token
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+    const user = await User.findById(decoded.id);  
 
     if (!user || user.refreshToken !== refreshToken) {
       return res.status(401).json({ msg: 'Refresh Token non valido!' });
@@ -140,7 +139,6 @@ const refreshToken = async (req, res) => {
   }
 };
 
-// effettuare il logout dell'utente e cancellare entrambi i token
 const logoutUser = async (req, res) => {
   res.cookie('accessToken', 'none', {
     expires: new Date(Date.now() + 5 * 1000),
@@ -153,7 +151,6 @@ const logoutUser = async (req, res) => {
   res.status(200).json({ success: true });
 };
 
-// consente di caricare una foto profilo
 const uploadProfilePicture = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -173,7 +170,6 @@ const uploadProfilePicture = async (req, res) => {
   }
 };
 
-// consente di eliminare una foto profilo
 const deleteProfilePicture = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -185,7 +181,7 @@ const deleteProfilePicture = async (req, res) => {
       const filename = path.basename(user.profilePicture);   
       const imagePath = path.join(__dirname, '..', 'public', 'uploads', filename);  
       
-      fs.unlink(imagePath, (err) => {   // .unlink è un metodo di fs che elimina il contenuto di imagePath
+      fs.unlink(imagePath, (err) => {
         if (err) {
           console.error('Error deleting file:', err);
         }
@@ -201,40 +197,29 @@ const deleteProfilePicture = async (req, res) => {
   }
 };
 
-// esegue la verifica della password
 const verifyPassword = async (req, res) => {
-  console.log('Verifica della password');
-  console.log('Request Body: ', req.body);
   const { password } = req.body;
-  console.log('Password from body:', password); 
 
   if (!password) {
-    console.log('Errore: nessuna password nel body della richiesta.');
     return res.status(400).json({ msg: 'Password richiesta!' });
   }
 
   try {
-    console.log('ID Utente dal token:', req.user.id);
     const user = await User.findById(req.user.id).select('+password');
 
     if (!user) {
-      console.log('Errore: utente non trovato nel DB.');
       return res.status(404).json({ msg: 'Utente non trovato' });
     }
     
-    console.log('Utente trovato. Confrontando le password...');
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log('Risultato del confronto tra le password: ', isMatch);
 
     if (!isMatch) {
-      console.log('Errore: confronto delle password fallito.');
       return res.status(400).json({ msg: 'Credenziali non valide!' });
     }
 
     res.status(200).json({ success: true, msg: 'Password verificata correttamente!' });
   } catch (err) {
-    console.error('Errore durante la verifica della password');
-    console.error(err);
+    console.error(err.message);
     res.status(500).send('Errore del server');
   }
 };

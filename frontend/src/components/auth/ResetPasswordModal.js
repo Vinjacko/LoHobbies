@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from '../../api/axios';
 import './ResetPasswordModal.css';
-import { useNavigate } from 'react-router-dom';
 import SuccessModal from '../common/SuccessModal';
 
 const ResetPasswordModal = ({ closeModal }) => {
@@ -77,7 +76,7 @@ const ResetPasswordModal = ({ closeModal }) => {
                 </div>
                 {error && <p className="error-message">{error}</p>}
               </div>
-                <button class="btn" type="submit" disabled={loading}>
+                <button className="btn" type="submit" disabled={loading}>
                   {loading ? t('loading') : t('continue')}
                 </button>
             </form>
@@ -120,7 +119,7 @@ const ResetPasswordModal = ({ closeModal }) => {
                 </div>
               </div>
               {error && <p className="error-message">{error}</p>}
-                <button class="btn" type="submit" disabled={loading}>
+                <button className="btn" type="submit" disabled={loading}>
                   {loading ? t('loading') : t('resetPassword')}
                 </button>
             </form>
