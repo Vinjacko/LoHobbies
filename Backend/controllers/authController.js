@@ -4,27 +4,23 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');       
 const path = require('path');   
 
-// funzione per generare i token e settare i cookies
 const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
-  // crea l'access token
+  
   const accessToken = jwt.sign(
     { id: user._id }, 
     process.env.JWT_SECRET, 
     {expiresIn: '15m'}
   );
 
-  // crea il refresh token
   const refreshToken = jwt.sign(
     { id: user._id }, 
     process.env.JWT_REFRESH_SECRET, 
     {expiresIn: '7d'}
   );
 
-  // conserva il refresh token nel DB
   user.refreshToken = refreshToken;
   user.save();
 
-  // crea il cookie
   const cookieOptions = {
     httpOnly: true,
     secure: false,
@@ -38,7 +34,7 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
 
   const refreshTokenCookieOptions = {
     ...cookieOptions,
-    path: '/api/auth/refresh'   // specifica a quale percorso del server il cookie deve essere inviato
+    path: '/api/auth/refresh'
   };
 
   if (rememberMe) {
@@ -60,7 +56,6 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
     });
 };
 
-// registra un nuovo utente
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   
@@ -77,7 +72,6 @@ const registerUser = async (req, res) => {
       password,
     });
 
-    // encoding della password
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 

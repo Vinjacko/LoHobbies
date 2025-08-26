@@ -7,7 +7,7 @@ const connectDB = async () => {
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`Error: ${error.message}`);
-    process.exit(1);  //  interrompe l'esecuzione dell'applicazione Node.js con un codice di uscita 1 che indica un errore fatale
+    process.exit(1);  // errore fatale
   }
 };
 
