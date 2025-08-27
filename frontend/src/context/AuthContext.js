@@ -2,7 +2,6 @@ import { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 
-//  utilizziamo un 'contenitore' che serve a condividere dati e funzioni tra più componenti senza dover passare continuamente le props
 const AuthContext = createContext({
   user: null,
   loading: true,
@@ -11,27 +10,23 @@ const AuthContext = createContext({
   loadUser: async () => {},
 });
 
-//  componente il cui scopo è condividere dati e funzioni relative all'autenticazione con tutti i componenti che ne hanno bisogno,
-// senza dover passare le props manualmente attraverso ogni livello dell'albero dei componenti
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const navigate = useNavigate();   // utilizzato per reindirizzare l'utente ad un diverso URL
+  const navigate = useNavigate();   
 
-  // gestione dei side effects
   useEffect(() => {
     const responseInterceptor = axios.interceptors.response.use(
       // risposta andata a buon fine
       response => response,
-      // crea un sistema che alla scadenza di un access token, tenta automaticamente di ottenerne uno nuovo e di ripetere l'operazione fallita
       async (error) => {
-        const originalRequest = error.config; // copia della configurazione della richiesta originale
+        const originalRequest = error.config; 
         if (error.response.status === 401 && originalRequest.url !== '/api/v1/auth/refresh' && !originalRequest._retry) {
           originalRequest._retry = true;
           try {
             await axios.post('/api/v1/auth/refresh');
-            return axios(originalRequest);    // riesecuzione della richiesta originale 
+            return axios(originalRequest);     
           } catch (refreshError) {
             setUser(null);
             return Promise.reject(refreshError);
@@ -41,7 +36,6 @@ export const AuthProvider = ({ children }) => {
       }
     );
 
-    //  funzione di cleanup, eseguita quando il componente (AuthProvider) viene smontato, per rimuovere l'intercettore di risposta (deve esisterne solo 1)
     return () => {
       axios.interceptors.response.eject(responseInterceptor);
     };
@@ -49,8 +43,9 @@ export const AuthProvider = ({ children }) => {
 
   const loadUser = async () => {
     try {
-      const res = await axios.get(`/api/v1/auth?t=${new Date().getTime()}`);  // utilizzato per far in modo che il browser invii ogni volta una nuova richiesta al server
+      const res = await axios.get(`/api/v1/auth?t=${new Date().getTime()}`);  
       setUser(res.data);
+
     } catch (err) {
       setUser(null);
     }
@@ -71,6 +66,7 @@ export const AuthProvider = ({ children }) => {
       await axios.post('/api/v1/auth/logout');
       setUser(null);
       navigate('/');
+      
     } catch (err) {
       console.error('Logout fallito', err);
     }

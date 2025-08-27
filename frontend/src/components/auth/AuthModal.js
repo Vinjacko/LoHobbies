@@ -35,6 +35,7 @@ const AuthModal = ({ closeModal }) => {
       );
       login(data.user);
       closeModal(); 
+
     } catch (err) {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
@@ -57,6 +58,7 @@ const AuthModal = ({ closeModal }) => {
       );
       login(data.user);
       closeModal();
+      
     } catch (err) {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
