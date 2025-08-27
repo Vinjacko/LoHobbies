@@ -37,7 +37,7 @@ const io = require('socket.io')(server, {
 });
 
 // crea un'istanza di socket.io che permette di non importarlo ogni volta
-app.use((req, next) => {
+app.use((req,res,next) => {
   req.io = io;
   next();
 });
