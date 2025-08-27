@@ -19,9 +19,7 @@ const ProfilePictureModal = ({ closeModal }) => {
     if (!selectedFile) return;
     setLoading(true);
     setError('');
-    // creo un contenitore per inviare dati via HTTP
-    const formData = new FormData();
-    // inserisco il file nel contenitore   
+    const formData = new FormData();   
     formData.append('profilePicture', selectedFile);
 
     try {

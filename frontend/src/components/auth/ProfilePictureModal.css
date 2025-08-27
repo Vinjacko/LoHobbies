@@ -71,10 +71,7 @@
   display: inline-block;
   padding: 10px 20px;
   cursor: pointer;
-  background-color: transparent;
-  color: #ffc107;
   border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
   text-align: center;
 }
 
@@ -101,7 +98,6 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.3s;
 }
 
 .button-group button:disabled {

@@ -4,7 +4,7 @@ const path = require('path');
 // crea un motore di archiviazione per salvare i file sul disco del server
 const storage = multer.diskStorage({
   destination: './public/uploads/',
-  filename: function( file, callback){
+  filename: function(req, file, callback){
     callback(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
 });
@@ -24,7 +24,7 @@ function checkFileType(file, callback){
 const upload = multer({
   storage: storage,
   limits:{fileSize: 1000000},
-  fileFilter: function( file, callback){
+  fileFilter: function(req, file, callback){
     checkFileType(file, callback);
   }
 }).single('profilePicture');  // viene caricato solo un file dal modulo HTML 'profilePicture'
