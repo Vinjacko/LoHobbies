@@ -1,7 +1,16 @@
+import { useEffect } from 'react';
 import './CommentModal.css';
 import { useTranslation } from 'react-i18next';
 
 const CommentModal = ({ comment, closeModal }) => {
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
   const { t } = useTranslation();
   if (!comment) {
     return null;

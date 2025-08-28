@@ -10,6 +10,13 @@ const FilterModal = ({ closeModal }) => {
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+        document.body.style.overflow = 'unset';
+        };
+    }, []);
+
+    useEffect(() => {
         const fetchGenres = async () => {
             try {
                 const genresRes = await axios.get('/api/v1/media/genres', {

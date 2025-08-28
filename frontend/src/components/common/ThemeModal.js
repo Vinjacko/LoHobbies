@@ -1,9 +1,18 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './ThemeModal.css';
 import ThemeContext from '../../context/ThemeContext';
 
 const ThemeModal = ({ closeModal }) => {
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+    
+  }, []);
+
   const { t } = useTranslation();
   const { theme, setTheme } = useContext(ThemeContext);
 

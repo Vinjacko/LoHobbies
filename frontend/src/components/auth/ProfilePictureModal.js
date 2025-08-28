@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from '../../api/axios';
 import './ProfilePictureModal.css';
@@ -10,6 +10,13 @@ const ProfilePictureModal = ({ closeModal }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);

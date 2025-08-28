@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from '../../api/axios';
 import './ResetPasswordModal.css';
@@ -16,6 +16,13 @@ const ResetPasswordModal = ({ closeModal }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
   const handleVerifyPassword = async (e) => {
     e.preventDefault();

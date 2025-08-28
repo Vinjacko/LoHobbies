@@ -1,8 +1,17 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './LanguageModal.css';
 
 const LanguageModal = ({ closeModal }) => {
   const { i18n, t } = useTranslation();
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);

@@ -1,8 +1,17 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './SuccessModal.css';
 
 const SuccessModal = ({ message, closeModal }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+    
+  }, []);
 
   return (
     <div className="success-modal-overlay" onClick={closeModal}>
