@@ -43,7 +43,7 @@
     margin: 0 auto;
 }
 
-@media (max-width: 770px) {
+@media (max-width: 1272px) {
     .person-header-content {
         flex-direction: column;
         align-items: center;
