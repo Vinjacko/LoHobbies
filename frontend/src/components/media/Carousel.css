@@ -19,7 +19,7 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
-  border-radius: 8px;;
+  border-radius: 8px;
 }
 
 .carousel-swiper {
@@ -29,39 +29,6 @@
 .carousel-slide {
   width: 185px;
   flex-shrink: 0;
-}
-
-.carousel-viewport {
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 1rem; 
-}
-
-.carousel-viewport::-webkit-scrollbar {
-  display: none; 
-}
-
-.carousel-card {
-  flex: 0 0 185px;
-  margin-right: 15px;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: var(--background-color);
-  color: #333;
-  transition: transform 0.3s, box-shadow 0.3s;
-  scroll-snap-align: start;
-  position: relative;
-  text-decoration: none;
-}
-
-.carousel-card:last-child {
-  margin-right: 0;
-}
-
-.carousel-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .carousel-card img {
@@ -96,12 +63,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* Swiper navigation styles */
-.swiper-button-next,
-.swiper-button-prev {
-  display: none !important;
 }
 
 .carousel-container .carousel-arrow.prev,
