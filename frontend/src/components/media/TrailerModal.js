@@ -1,6 +1,17 @@
+import { useEffect } from 'react';
+
 import './TrailerModal.css';
 
 const TrailerModal = ({ trailerKey, closeModal }) => {
+
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+        document.body.style.overflow = 'unset';
+        };
+    }, []);
+
+
     if (!trailerKey) return null;
 
     return (
