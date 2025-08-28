@@ -33,7 +33,7 @@ const Trending = () => {
       <Swiper
         className="trending-swiper"
         modules={[Navigation]}
-        spaceBetween={16} 
+        spaceBetween={15} 
         slidesPerView={'auto'}
         navigation
       >
