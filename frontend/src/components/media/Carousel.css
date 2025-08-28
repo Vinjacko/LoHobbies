@@ -21,6 +21,15 @@
   box-sizing: border-box;
 }
 
+.carousel-swiper {
+  padding: 1rem;
+}
+
+.carousel-slide {
+  width: 185px;
+  flex-shrink: 0;
+}
+
 .carousel-viewport {
   display: flex;
   overflow-x: auto;
@@ -39,7 +48,6 @@
   overflow: hidden;
   background-color: var(--background-color);
   color: #333;
-  border: 1px solid var(--text-color);
   transition: transform 0.3s, box-shadow 0.3s;
   scroll-snap-align: start;
   position: relative;
@@ -60,11 +68,14 @@
   height: 278px;
   object-fit: cover;
   display: block;
+  border-radius: 15px;
 }
 
 .carousel-card-info {
   padding: 12px;
   background-color: #b3b3b3;
+  margin-top: 5px;
+  border-radius: 15px;
 }
 
 .actor-name {
@@ -86,7 +97,14 @@
   text-overflow: ellipsis;
 }
 
-.carousel-arrow {
+/* Swiper navigation styles */
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important;
+}
+
+.carousel-container .carousel-arrow.prev,
+.carousel-container .carousel-arrow.next {
   position: absolute;
   top: calc(50% - 20px); 
   transform: translateY(-50%);
@@ -105,20 +123,15 @@
   transition: background-color 0.3s, opacity 0.3s;
 }
 
-.carousel-arrow:hover {
+.carousel-container .carousel-arrow.prev:hover,
+.carousel-container .carousel-arrow.next:hover {
   background: #ffffff;
 }
 
-.carousel-arrow.prev {
+.carousel-container .carousel-arrow.prev {
   left: 5px;
 }
 
-.carousel-arrow.next {
+.carousel-container .carousel-arrow.next {
   right: 5px;
-}
-
-.carousel-arrow:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
 }
