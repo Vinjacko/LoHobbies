@@ -34,7 +34,7 @@ const Trending = () => {
         className="trending-swiper"
         modules={[Navigation]}
         spaceBetween={16} 
-        slidesPerView={'auto'} /* permette a Swiper di mostrare quante più slide possibili */
+        slidesPerView={'auto'}
         navigation
       >
         {trending.map((item) => (
