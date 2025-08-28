@@ -25,6 +25,7 @@
     border: 1px solid var(--border-color);
     width: 60%;
     margin: 2rem auto;
+    max-width: 1000px;
 }
 
 .comments-section h2 {
@@ -48,6 +49,9 @@
 
 .comment p {
     align-self: flex-start;
+    max-width: 950px;
+    word-wrap: break-word;
+    text-align: left;
 }
 
 
