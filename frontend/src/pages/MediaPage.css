@@ -238,7 +238,7 @@
    font-weight: bold;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 770px) {
     .media-header-overlay {
         padding: 1rem;
     }
