@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import i18n from '../../i18n';
 import { Link } from 'react-router-dom';
-import 'swiper/css';    // import dei file CSS forniti dalla libreria Swiper per gli stili
-import 'swiper/css/navigation';   // import dei file CSS forniti dalla libreria Swiper per la navigazione
+import 'swiper/css';
+import 'swiper/css/navigation'; 
 import './Trending.css';
 import { Navigation } from 'swiper';
 import axios from '../../api/axios';
