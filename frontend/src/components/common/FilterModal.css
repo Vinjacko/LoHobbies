@@ -26,7 +26,7 @@
 
 .filter-modal-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   border-bottom: 1px solid #444;
   padding-bottom: 1rem;
@@ -35,14 +35,6 @@
 .filter-modal-header h3 {
   margin: 0;
   font-size: 1.5rem;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  color: #000000;
-  font-size: 2rem;
-  cursor: pointer;
 }
 
 .filter-section h4 {

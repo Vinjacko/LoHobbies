@@ -149,7 +149,7 @@ const MediaPage = () => {
                     title: media.title || media.name,
                     releaseDate: media.release_date || media.first_air_date
                 });
-                setNotificationMessage(t('addToWatchlist'));
+                setNotificationMessage(t('addedToWatchlist'));
                 setNotificationType('success');
             }
             setIsInWatchlist(!isInWatchlist);

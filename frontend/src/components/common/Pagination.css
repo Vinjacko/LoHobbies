@@ -4,7 +4,6 @@
   align-items: center;
   padding: 1.5rem;
   background-color: var(--surface-color);
-  color: var(--text-color);
 }
 
 .pagination button {

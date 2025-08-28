@@ -17,7 +17,7 @@ const FilterModal = ({ closeModal }) => {
                 });
                 setAvailableGenres(genresRes.data.data[filters.mediaType] || []);
             } catch (error) {
-                console.error("Errore durante il recupero dei generi:", error);
+                console.error(t('fetchImpossibleFilters'), error);
             }
         };
         fetchGenres();
@@ -45,7 +45,6 @@ const FilterModal = ({ closeModal }) => {
             <div className="filter-modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="filter-modal-header">
                     <h3>{t('advancedFilters')}</h3>
-                    <button onClick={closeModal} className="close-btn">&times;</button>
                 </div>
 
                 <div className="filter-section">

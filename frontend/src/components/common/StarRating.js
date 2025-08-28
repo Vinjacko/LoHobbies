@@ -6,7 +6,6 @@ const StarRating = ({ rating, onRatingChange }) => {
   const stars = [1, 2, 3, 4, 5];
   const isInteractive = !!onRatingChange;
 
-  // gestisce la visualizzazione delle stelline per la valutazione
   const handleMouseMove = (e, star) => {
     const rect = e.currentTarget.getBoundingClientRect(); // restituisce un oggetto con le dimensioni e la posizione rispetto alla viewport
     const percent = (e.clientX - rect.left) / rect.width;
