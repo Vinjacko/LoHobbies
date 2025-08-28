@@ -42,7 +42,7 @@ const Header = () => {
       }
     };
 
-    const timeoutId = setTimeout(() => {
+    const timeoutId = setTimeout(() => { //quando si digita un carattere la chiamata APi parte dopo 300ms
       fetchResults();
     }, 300);
 
