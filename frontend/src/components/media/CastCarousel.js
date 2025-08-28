@@ -28,7 +28,7 @@ const CastCarousel = ({ cast, title = "Cast" }) => {
         >
           {castData.map((actor, index) => (
             <SwiperSlide key={index} className="carousel-slide">
-              <Link to={`/person/${actor.id}`} className="carousel-card" role="group" aria-label={`${actor.nomeAttore} as ${actor.nomePersonaggio}`}>
+              <Link to={`/person/${actor.id}`} className="carousel-card" role="group">
                 <img
                   src={actor.urlImmagine || '/img/Actor_Placeholder.png'}
                   alt={actor.nomeAttore}
