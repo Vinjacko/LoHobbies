@@ -8,13 +8,13 @@ import './Watchlist.css';
 const Favourites = () => {
     const { t } = useTranslation();
     const [favourites, setFavourites] = useState([]);
-    const auth = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchFavourites = async () => {
-            if (auth.user) {
+            if (user) {
                 try {
                     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/favourites`);
                     setFavourites(response.data.data);
@@ -27,11 +27,7 @@ const Favourites = () => {
         };
 
         fetchFavourites();
-    }, [auth.user]);
-
-    if (!auth.user) {
-        return <div>{t('mustBeLoggedIn')}</div>;
-    }
+    }, [user]);
 
     if (loading) {
         return <div>{t('loading')}</div>;
