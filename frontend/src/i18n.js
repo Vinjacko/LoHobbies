@@ -115,7 +115,9 @@ i18n
           resultsfor: 'Results for:',
           noresult:'No result founded',
           orderby: 'Order by:',
-          popularity: 'Popularity'
+          popularity: 'Popularity',
+          disc: 'Desc',
+          asc: 'Asc'
        }
      },
       it: {
@@ -221,7 +223,9 @@ i18n
           resultsfor: 'Risultati per:',
           noresult: 'Nessun risultato trovato',
           orderby: 'Ordina per:',
-          popularity: 'Popolarità'
+          popularity: 'Popolarità',
+          disc: 'Disc',
+          asc: 'Cresc'
        }
       }
      }

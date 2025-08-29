@@ -1,19 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import axios from '../api/axios';
 import { useFilters } from '../context/FilterContext';
 import './SearchPage.css';
 import { useTranslation } from 'react-i18next';
 
-const useQuery = () => {
-    return new URLSearchParams(useLocation().search);
-}
-
 const SearchPage = () => {
     const{t} = useTranslation();
     const { results, loading, filters, updateFilters } = useFilters();
     const [genreMap, setGenreMap] = useState({});
-    const query = useQuery().get('q');
+    const [searchParams] = useSearchParams();
+    const query = searchParams.get('q');
 
     useEffect(() => {
         if (query && query !== filters.searchQuery) {
@@ -62,12 +59,12 @@ const SearchPage = () => {
                 <div className="sort-by-container">
                     <label htmlFor="sort-by">{t('orderby')}</label>
                     <select id="sort-by" value={filters.sortBy} onChange={(e) => updateFilters({ sortBy: e.target.value })}>
-                        <option value="popularity.desc">{t('popularity')} (Disc)</option>
-                        <option value="popularity.asc">{t('popularity')} (Asc)</option>
-                        <option value="release_date.desc">{t('releaseYear')} (Disc)</option>
-                        <option value="release_date.asc">{t('releaseYear')} (Asc)</option>
-                        <option value="vote_average.desc">{t('rating')} (Disc)</option>
-                        <option value="vote_average.asc">{t('rating')} (Asc)</option>
+                        <option value="popularity.desc">{t('popularity')} ({t('disc')})</option>
+                        <option value="popularity.asc">{t('popularity')} ({t('asc')})</option>
+                        <option value="release_date.desc">{t('releaseYear')} ({t('disc')})</option>
+                        <option value="release_date.asc">{t('releaseYear')} ({t('asc')})</option>
+                        <option value="vote_average.desc">{t('rating')} ({t('disc')})</option>
+                        <option value="vote_average.asc">{t('rating')} ({t('asc')})</option>
                     </select>
                 </div>
             </div>
