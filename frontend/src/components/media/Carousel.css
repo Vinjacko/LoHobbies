@@ -65,6 +65,12 @@
   text-overflow: ellipsis;
 }
 
+.actor-name a,
+.character-name a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .carousel-container .carousel-arrow.prev,
 .carousel-container .carousel-arrow.next {
   position: absolute;
