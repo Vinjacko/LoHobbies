@@ -17,7 +17,7 @@ const PersonPage = () => {
                 const personRes = await axios.get(`/api/v1/media/person/${id}?language=${i18n.language}`);
                 setPerson(personRes.data.data);
             } catch (error) {
-                console.error("Non è stato possibile recuperare i dati del membro del cast", error);
+                console.error(t('fetchImpossibleCast'), error);
             }
         };
 

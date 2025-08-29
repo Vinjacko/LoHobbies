@@ -32,7 +32,7 @@ const SearchPage = () => {
                 }, {});
                 setGenreMap(map);
             } catch (error) {
-                console.error("Errore durante il recupero dei generi", error);
+                console.error(t('fetchImpossibleFilter'), error);
             }
         };
         fetchGenreMap();
