@@ -206,7 +206,7 @@ const MediaPage = () => {
                 watchedDate: watchedDate,
             });
                 setNotificationMessage(t('addedtodiary'));
-                setNotificationType(t('success'));
+                setNotificationType('success');
                 setShowNotification(true);
                 setTimeout(() => setShowNotification(false), 3000);
         } catch (error) {
