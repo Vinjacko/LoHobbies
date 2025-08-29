@@ -34,7 +34,6 @@ function AppContent() {
     <>
       <RouteChangeTracker />
       <Header />
-      {showAuthModal && <AuthModal closeModal={() => setShowAuthModal(false)} />}
       <Routes>
         <Route path="/" element={<><Trending /><Explore /></>} />
         <Route path="/diary" element={<Diary />} />

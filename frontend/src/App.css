@@ -1,5 +1,5 @@
 :root {
-  /* Dark Theme */
+
   --background-color-dark: #000000;
   --text-color-dark: #e0e0e0;
   --title-color-dark: #FFC107;
@@ -8,7 +8,6 @@
   --border-color-dark: #FFC107;
   --input-background-color-dark: #000000;
 
-  /* Light Theme (Original) */
   --background-color-light: #f0f2f5;
   --text-color-light: #1c1e21;
   --title-color-light: #1c1e21;
@@ -17,7 +16,6 @@
   --border-color-light: #3a3b3c;
   --input-background-color-light: #ffffff;
 
-  /* Common */
   --primary-variant-color: #f6de8f;
   --secondary-color: #03dac6;
   --error-color: #ff0000;
