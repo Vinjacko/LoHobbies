@@ -54,7 +54,7 @@ const MediaPage = () => {
                     setSimilarByGenre(filteredSimilar);
                 }
             } catch (error) {
-                console.error("Non è stato possibile recuperare i dati dei titoli", error);
+                console.error(t('fetchImpossibleTitle'), error);
             }
         };
 
@@ -83,7 +83,7 @@ const MediaPage = () => {
                     const inWatchlist = response.data.data.some(item => item.mediaId === id);
                     setIsInWatchlist(inWatchlist);
                 } catch (error) {
-                    console.error("Errore nel caricamento della watchlist", error);
+                    console.error(t('fetchImpossibleWatchlist'), error);
                 }
             }
         };
@@ -98,7 +98,7 @@ const MediaPage = () => {
                     const inFavourites = response.data.data.some(item => item.mediaId === id);
                     setIsInFavourites(inFavourites);
                 } catch (error) {
-                    console.error("Errore nel caricamento dei preferiti", error);
+                    console.error(t('fetchImpossibleFavourites'), error);
                 }
             }
         };
@@ -156,7 +156,7 @@ const MediaPage = () => {
             setShowNotification(true);
             setTimeout(() => setShowNotification(false), 3000);
         } catch (error) {
-            console.error("Impossibile aggiornare la Watchlist", error);
+            console.error(t('updateImpossibleWatchlist'), error);
         }
     };
 
@@ -185,7 +185,7 @@ const MediaPage = () => {
             setShowNotification(true);
             setTimeout(() => setShowNotification(false), 3000);
         } catch (error) {
-            console.error("Impossibile aggiornare i Preferiti", error);
+            console.error(t('updateImpossibleFavourites'), error);
         }
     };
 
@@ -206,11 +206,11 @@ const MediaPage = () => {
                 watchedDate: watchedDate,
             });
                 setNotificationMessage(t('addedtodiary'));
-                setNotificationType('success');
+                setNotificationType(t('success'));
                 setShowNotification(true);
                 setTimeout(() => setShowNotification(false), 3000);
         } catch (error) {
-            console.error("Impossibile aggiornare il Diario", error);
+            console.error(t('updateImpossibleDiary'), error);
         }
     };
 
