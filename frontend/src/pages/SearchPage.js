@@ -6,7 +6,7 @@ import './SearchPage.css';
 import { useTranslation } from 'react-i18next';
 
 const SearchPage = () => {
-    const{t} = useTranslation();
+    const { t } = useTranslation();
     const { results, loading, filters, updateFilters } = useFilters();
     const [genreMap, setGenreMap] = useState({});
     const [searchParams] = useSearchParams();

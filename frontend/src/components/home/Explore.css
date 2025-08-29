@@ -20,6 +20,8 @@
 .explore-item {
   text-decoration: none;
   color: inherit;
+  min-height: 30px;
+  min-width: 40px;
 }
 
 .explore-item-image-container {
@@ -82,4 +84,18 @@
   font-weight: 400;
   color: #e0e0e0;
   font-size: clamp(0.5rem, 0.8vw, 1rem);
+}
+
+@media (max-width: 768px) {
+  .explore-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 275px) {
+  .explore-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
 }
