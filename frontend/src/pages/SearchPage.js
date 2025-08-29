@@ -10,7 +10,7 @@ const useQuery = () => {
 }
 
 const SearchPage = () => {
-    const{t} = useTranslation();
+    const { t } = useTranslation();
     const { results, loading, filters, updateFilters } = useFilters();
     const [genreMap, setGenreMap] = useState({});
     const query = useQuery().get('q');
