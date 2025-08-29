@@ -65,8 +65,7 @@
   text-overflow: ellipsis;
 }
 
-.actor-name a,
-.character-name a {
+.carousel-card{
   text-decoration: none;
   color: inherit;
 }
