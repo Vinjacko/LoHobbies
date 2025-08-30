@@ -43,6 +43,9 @@ function AppContent() {
         <Route path="/media/:media_type/:id" element={<MediaPage />} />
         <Route path="/search" element={<SearchPage />} />
       </Routes>
+      {showAuthModal && (
+        <AuthModal closeModal={() => setShowAuthModal(false)} />
+      )}
     </>
   );
 }
