@@ -27,7 +27,7 @@ const upload = multer({
   fileFilter: function(req, file, callback){
     checkFileType(file, callback);
   }
-}).single('profilePicture');  // viene caricato solo un file dal modulo HTML 'profilePicture'
+}).single('profilePicture');
 
 
 
