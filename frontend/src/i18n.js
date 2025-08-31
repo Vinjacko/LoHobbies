@@ -62,7 +62,7 @@ i18n
           removedFromWatchlist: 'Removed from watchlist',
           addToDiary: 'Add to Diary',
           cast: 'Cast',
-          recommedations: 'You might also like',
+          recommendations: 'You might also like',
           sameGenre: 'From the same genre',
           episodes: 'Episodes',
           removedFromFavourites: 'Removed from favourites',
