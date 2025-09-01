@@ -1,7 +1,6 @@
 const multer = require('multer');
 const path = require('path');
 
-// crea un motore di archiviazione per salvare i file sul disco del server
 const storage = multer.diskStorage({
   destination: './public/uploads/',
   filename: function(req, file, callback){
