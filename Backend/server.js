@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 app.use(cors({
   origin: ['http://34.154.124.100:3001', 'http://localhost:3001'], 
-  credentials: true // permette di inviare i cookies
+  credentials: true 
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));

@@ -406,8 +406,7 @@ const autocompleteSearch = async (req, res) => {
       .filter(item =>
         item.relevanceScore > 0 &&
         ((item.media_type === 'movie' && item.poster_path) ||
-         (item.media_type === 'tv' && item.poster_path) ||
-         (item.media_type === 'person' && item.profile_path))
+         (item.media_type === 'tv' && item.poster_path))
       )
       .slice(0, 7);
 
