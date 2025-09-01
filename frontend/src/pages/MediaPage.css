@@ -67,6 +67,7 @@
 
 .overview {
     max-width: 600px;
+    justify-self: center;
 }
 
 .rating {
