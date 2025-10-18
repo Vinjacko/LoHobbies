@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-  origin: ['http://34.154.124.100:3001', 'http://localhost:3001'], 
+  origin: ['http://34.154.124.100:3001', 'http://localhost:3001', 'https://lohobbies-frontend.onrender.com'], 
   credentials: true 
 }));
 
@@ -31,7 +31,7 @@ const server = app.listen(
 
 const io = require('socket.io')(server, {
   cors: {
-    origin: ['http://34.154.124.100:3001', 'http://localhost:3001'],
+    origin: ['http://34.154.124.100:3001', 'http://localhost:3001', 'https://lohobbies-frontend.onrender.com'],
     credentials: true
   }
 });
