@@ -34,7 +34,7 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
 
   const refreshTokenCookieOptions = {
     ...cookieOptions,
-    path: '/api/auth/refresh'
+    path: '/' // Accessibile da tutti i path per permettere il refresh automatico
   };
 
   if (rememberMe) {
@@ -120,7 +120,10 @@ const getMe = async (req, res) => {
 const refreshToken = async (req, res) => {
   const { refreshToken } = req.cookies;
 
+  console.log('Refresh token request - cookies:', req.cookies);
+
   if (!refreshToken) {
+    console.log('Refresh Token non presente');
     return res.status(401).json({ msg: 'Refresh Token non presente, autorizzazione negata!' });
   }
 
@@ -129,12 +132,14 @@ const refreshToken = async (req, res) => {
     const user = await User.findById(decoded.id);  
 
     if (!user || user.refreshToken !== refreshToken) {
+      console.log('Refresh Token non valido o user non trovato');
       return res.status(401).json({ msg: 'Refresh Token non valido!' });
     }
 
+    console.log('Refresh token valido, generando nuovi token');
     sendTokenResponse(user, 200, res);
   } catch (err) {
-    console.error(err.message);
+    console.error('Errore verifica refresh token:', err.message);
     res.status(401).json({ msg: 'Refresh Token non valido' });
   }
 };
@@ -143,10 +148,12 @@ const logoutUser = async (req, res) => {
   res.cookie('accessToken', 'none', {
     expires: new Date(Date.now() + 5 * 1000),
     httpOnly: true,
+    path: '/'
   });
   res.cookie('refreshToken', 'none', {
     expires: new Date(Date.now() + 5 * 1000),
     httpOnly: true,
+    path: '/'
   });
   res.status(200).json({ success: true });
 };

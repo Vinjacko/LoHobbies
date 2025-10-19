@@ -45,9 +45,18 @@ const Trending = () => {
                   <img
                     src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
                     alt={item.title || item.name}
+                    loading="lazy"
+                    width="200"
+                    height="300"
                   />
                 ) : (
-                  <img src='/img/content_placeholder.jpg' alt='Placeholder' />
+                  <img 
+                    src='/img/content_placeholder.jpg' 
+                    alt='Placeholder'
+                    loading="lazy"
+                    width="200"
+                    height="300"
+                  />
                 )}
                 <div className="trending-item-overlay">
                   <div className="trending-item-info">

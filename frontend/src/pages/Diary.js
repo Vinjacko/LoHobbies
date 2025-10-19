@@ -17,20 +17,24 @@ const Diary = () => {
 
   useEffect(() => {
     const fetchDiary = async () => {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const res = await axios.get('/api/v1/media/diary');
         const sortedDiary = res.data.data.sort((a, b) => new Date(b.watchedDate) - new Date(a.watchedDate));
         setDiary(sortedDiary);
       } catch (err) {
-        setError (t('servererror'));
+        console.error('Errore nel caricamento del diario:', err);
+        setError(err.response?.data?.msg || err.message || t('servererror'));
       } finally {
         setLoading(false);
       }
     };
 
-    if (user) {
-      fetchDiary();
-    }
+    fetchDiary();
   }, [user, t]);
 
   const handleRemove = async (id) => {
@@ -43,24 +47,30 @@ const Diary = () => {
   };
 
   if (loading) {
-    return <div>{t('loading')}</div>;
+    return <div className="loading-message">{t('loading')}</div>;
   }
 
   if (error) {
-    return <div>{t('error')}: {error}</div>;
+    return <div className="error-message-page">{t('error')}: {error}</div>;
   }
 
   return (
     <div className="diary-container">
       <h1>{t('myDiary')}</h1>
       {diary.length === 0 ? (
-        <p>{t('noDiaryItems')}</p>
+        <p className="empty-message">{t('noDiaryItems')}</p>
       ) : (
         <div className="diary-grid">
           {diary.map((entry) => (
             <div key={entry._id} className="diary-entry">
               <Link to={`/media/${entry.mediaType}/${entry.mediaId}`}>
-                <img src={`https://image.tmdb.org/t/p/w500${entry.posterPath}`} alt={entry.title} />
+                <img 
+                  src={`https://image.tmdb.org/t/p/w500${entry.posterPath}`} 
+                  alt={entry.title}
+                  loading="lazy"
+                  width="220"
+                  height="330"
+                />
               </Link>
               <div className="diary-entry-content">
                 <h2>{entry.title}</h2>

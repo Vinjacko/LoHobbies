@@ -14,7 +14,7 @@ if (GA_MEASUREMENT_ID) {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <React.Suspense fallback='Loading'>
+    <React.Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.5rem'}}>Loading...</div>}>
       <App />
     </React.Suspense>
   </React.StrictMode>

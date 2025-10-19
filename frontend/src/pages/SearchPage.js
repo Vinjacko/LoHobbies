@@ -90,9 +90,21 @@ const SearchPage = () => {
                         <div key={item.id} className="search-result-card">
                             <Link to={getResultLink(item)}>
                                 {item.poster_path ? (
-                                    <img src={getResultImage(item)} alt={getResultTitle(item)} />
+                                    <img 
+                                        src={getResultImage(item)} 
+                                        alt={getResultTitle(item)}
+                                        loading="lazy"
+                                        width="154"
+                                        height="231"
+                                    />
                                 ) : (
-                                    <img src='/img/content_placeholder.jpg' alt='Placeholder' />
+                                    <img 
+                                        src='/img/content_placeholder.jpg' 
+                                        alt='Placeholder'
+                                        loading="lazy"
+                                        width="154"
+                                        height="231"
+                                    />
                                 )}
                                 <div className="search-result-info">
                                     <h3>{getResultTitle(item)}</h3>

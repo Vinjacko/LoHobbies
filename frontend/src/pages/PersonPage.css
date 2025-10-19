@@ -1,39 +1,65 @@
 .person-header {
-    background: #111;
-    padding: 2rem;
+    background: linear-gradient(135deg, var(--surface-color) 0%, var(--surface-elevated) 100%);
+    padding: 3rem 2rem;
+    box-shadow: var(--shadow);
+    animation: fadeIn 0.6s ease-out;
 }
 
 .person-header-content {
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
     max-width: 1200px;
     margin: 0 auto;
+    align-items: center;
 }
 
 .person-header-content img {
     width: 300px;
-    border-radius: 8px;
+    border-radius: 20px;
+    box-shadow: var(--glow);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.person-info h1 {
+.person-header-content img:hover {
+    transform: scale(1.05);
+}
+
+  .person-info h1 {
     margin-top: 0;
-    color: #fff;
-}
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--title-color);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
-.person-info h3 {
-    color: #fff;
+  /* Fallback per browser che non supportano background-clip */
+  @supports not (background-clip: text) {
+    .person-info h1 {
+      color: var(--title-color);
+      background: none;
+    }
+  }.person-info h3 {
+    color: var(--primary-color);
     text-align: center;
+    font-weight: 700;
+    font-size: 1.3rem;
 }
 
 .person-info p {
     text-align: center;
-    color: #ddd;
+    color: var(--text-color);
+    font-size: 1.05rem;
+    line-height: 1.6;
 }
 
 .person-details {
-    padding: 2rem;
+    padding: 3rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    animation: fadeIn 0.8s ease-out;
 }
 
 @media (max-width: 1272px) {
