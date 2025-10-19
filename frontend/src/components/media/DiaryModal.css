@@ -1,9 +1,6 @@
 .diary-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: linear-gradient(135deg,
     rgba(0, 0, 0, 0.85) 0%,
     rgba(20, 20, 30, 0.9) 100%);
@@ -12,6 +9,7 @@
   align-items: center;
   z-index: 1000;
   backdrop-filter: blur(15px) saturate(180%);
+  overscroll-behavior: contain;
   animation: overlayFadeIn 0.3s ease-out;
 }
 
