@@ -114,11 +114,18 @@ const loginUser = async (req, res) => {
 
 const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    // req.user.id viene dal JWT decode (vedi middleware)
+    const userId = req.user.id || req.user._id;
+    const user = await User.findById(userId).select('-password');
+    
+    if (!user) {
+      return res.status(401).json({ msg: 'Utente non trovato' });
+    }
+    
     res.json(user);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Errore del server!');
+    console.error('GetMe error:', err.message);
+    res.status(500).json({ msg: 'Errore del server!' });
   }
 };
 

@@ -1,7 +1,13 @@
 const jwt = require('jsonwebtoken');
 
 const protect = (req, res, next) => {
-  const token = req.cookies.accessToken;
+  // Controlla prima i cookie, poi l'header Authorization come fallback
+  let token = req.cookies.accessToken;
+  
+  // Se non c'è nei cookie, controlla l'header Authorization
+  if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
 
   if (!token) {
     return res.status(401).json({ msg: 'Nessun token, autorizzazione negata' });
@@ -12,6 +18,7 @@ const protect = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
+    console.error('Token verification error:', err.message);
     res.status(401).json({ msg: 'Il token non è valido!' });
   }
 };
