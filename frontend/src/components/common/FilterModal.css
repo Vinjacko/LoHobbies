@@ -1,6 +1,9 @@
 .filter-modal-overlay {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: linear-gradient(135deg, 
     rgba(0, 0, 0, 0.7) 0%, 
     rgba(0, 14, 39, 0.85) 50%,
@@ -10,7 +13,6 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  overscroll-behavior: contain;
   animation: overlayFadeIn 0.4s ease-out;
 }
 
