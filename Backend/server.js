@@ -15,10 +15,19 @@ app.use(express.json());
 
 app.use(cookieParser());
 
+// Configurazione CORS migliorata per autenticazione cross-domain
 app.use(cors({
-  origin: ['http://34.154.124.100:3001', 'http://localhost:3001', 'https://lohobbies-frontend.onrender.com'], 
-  credentials: true 
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://lohobbies-frontend.onrender.com']
+    : ['http://localhost:3000', 'http://localhost:3001', 'http://34.154.124.100:3001'],
+  credentials: true, // ESSENZIALE per cookie e autenticazione
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Set-Cookie']
 }));
+
+// Gestione preflight requests
+app.options('*', cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -31,8 +40,11 @@ const server = app.listen(
 
 const io = require('socket.io')(server, {
   cors: {
-    origin: ['http://34.154.124.100:3001', 'http://localhost:3001', 'https://lohobbies-frontend.onrender.com'],
-    credentials: true
+    origin: process.env.NODE_ENV === 'production' 
+      ? ['https://lohobbies-frontend.onrender.com']
+      : ['http://localhost:3000', 'http://localhost:3001', 'http://34.154.124.100:3001'],
+    credentials: true,
+    methods: ['GET', 'POST']
   }
 });
 

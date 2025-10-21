@@ -21,10 +21,14 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
   user.refreshToken = refreshToken;
   user.save();
 
+  // Configurazione cookie sicura per produzione
+  const isProduction = process.env.NODE_ENV === 'production';
+  
   const cookieOptions = {
     httpOnly: true,
-    secure: false,
-    sameSite: 'Strict',
+    secure: isProduction, // true solo in HTTPS (produzione)
+    sameSite: isProduction ? 'none' : 'lax', // 'none' necessario per cross-domain in produzione
+    domain: isProduction ? '.onrender.com' : undefined, // permette cookie condivisi tra sottodomini
   };
 
   const accessTokenCookieOptions = {
@@ -47,6 +51,7 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
     .cookie('refreshToken', refreshToken, refreshTokenCookieOptions)
     .json({
       success: true,
+      token: accessToken, // Aggiungi anche nel response body per fallback
       user: {
         _id: user._id,
         name: user.name,

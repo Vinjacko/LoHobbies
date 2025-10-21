@@ -39,9 +39,17 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.get(`/api/v1/auth?t=${new Date().getTime()}`);  
       setUser(res.data);
+      
+      // Salva il token se presente nella risposta
+      if (res.data?.token) {
+        localStorage.setItem('token', res.data.token);
+      }
 
     } catch (err) {
+      console.error('Errore caricamento utente:', err);
       setUser(null);
+      // Rimuovi token non valido
+      localStorage.removeItem('token');
     }
     setLoading(false);
   };
@@ -52,17 +60,25 @@ export const AuthProvider = ({ children }) => {
 
   const login = (userData) => {
     setUser(userData);
+    
+    // Salva il token se presente
+    if (userData?.token) {
+      localStorage.setItem('token', userData.token);
+    }
+    
     loadUser();
   };
 
   const logout = async () => {
     try {
       await axios.post('/api/v1/auth/logout');
-      setUser(null);
-      navigate('/');
-      
     } catch (err) {
       console.error('Logout fallito', err);
+    } finally {
+      // Pulizia sempre eseguita
+      setUser(null);
+      localStorage.removeItem('token');
+      navigate('/');
     }
   };
 
