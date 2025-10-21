@@ -14,31 +14,27 @@ const Favourites = () => {
 
     useEffect(() => {
         const fetchFavourites = async () => {
-            if (!user) {
-                setLoading(false);
-                return;
-            }
-            
-            try {
-                const response = await axios.get('/api/v1/media/favourites');
-                setFavourites(response.data.data);
-            } catch (err) {
-                console.error('Errore nel caricamento dei preferiti:', err);
-                setError(err.response?.data?.msg || err.message || t('servererror'));
-            } finally {
-                setLoading(false);
+            if (user) {
+                try {
+                    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/media/favourites`);
+                    setFavourites(response.data.data);
+                } catch (err) {
+                    setError(err.message);
+                } finally {
+                    setLoading(false);
+                }
             }
         };
 
         fetchFavourites();
-    }, [user, t]);
+    }, [user]);
 
     if (loading) {
-        return <div className="loading-message">{t('loading')}</div>;
+        return <div>{t('loading')}</div>;
     }
 
     if (error) {
-        return <div className="error-message-page">{error}</div>;
+        return <div>{error}</div>;
     }
 
     return (
@@ -49,13 +45,7 @@ const Favourites = () => {
                     {favourites.map(item => (
                         <div key={item.mediaId} className="watchlist-item">
                             <Link to={`/media/${item.mediaType}/${item.mediaId}`}>
-                                <img 
-                                    src={`https://image.tmdb.org/t/p/w500${item.posterPath}`} 
-                                    alt={item.title}
-                                    loading="lazy"
-                                    width="180"
-                                    height="270"
-                                />
+                                <img src={`https://image.tmdb.org/t/p/w500${item.posterPath}`} alt={item.title} />
                                 <div className="watchlist-item-info">
                                     <h3>{item.title}</h3>
                                     <p>{new Date(item.releaseDate).getFullYear()}</p>
@@ -65,7 +55,7 @@ const Favourites = () => {
                     ))}
                 </div>
             ) : (
-                <p className="empty-message">{t('noFavourites')}</p>
+                <p>{t('noFavourites')}</p>
             )}
         </div>
     );

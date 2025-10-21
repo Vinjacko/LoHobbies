@@ -40,8 +40,6 @@ const AuthModal = ({ closeModal }) => {
         { name: registerName, email: registerEmail, password: registerPassword },
         { withCredentials: true }
       );
-      console.log('Risposta registrazione:', data);
-      console.log('User dalla registrazione:', data.user);
       login(data.user);
       closeModal(); 
 
@@ -65,8 +63,6 @@ const AuthModal = ({ closeModal }) => {
         { email: loginEmail, password: loginPassword, rememberMe },
         { withCredentials: true }
       );
-      console.log('Risposta login:', data);
-      console.log('User dal login:', data.user);
       login(data.user);
       closeModal();
       

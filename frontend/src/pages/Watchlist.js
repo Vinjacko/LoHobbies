@@ -15,6 +15,7 @@ const Watchlist = () => {
   useEffect(() => {
     const fetchWatchlist = async () => {
       if (!user) {
+        setError(t('pleaseLogIn'));
         setLoading(false);
         return;
       }
@@ -23,8 +24,7 @@ const Watchlist = () => {
         const res = await axios.get('/api/v1/media/watchlist');
         setWatchlist(res.data.data);
       } catch (err) {
-        console.error('Errore nel caricamento della watchlist:', err);
-        setError(err.response?.data?.msg || err.message || t('servererror'));
+        setError(err.message);
       } finally {
         setLoading(false);
       }
@@ -34,11 +34,11 @@ const Watchlist = () => {
   }, [user, t]);
 
   if (loading) {
-    return <div className="loading-message">{t('loading')}</div>;
+    return <div>{t('loading')}</div>;
   }
 
   if (error) {
-    return <div className="error-message-page">{error}</div>;
+    return <div>{error}</div>;
   }
 
   return (
@@ -49,13 +49,7 @@ const Watchlist = () => {
           {watchlist.map(item => (
             <div key={item.mediaId} className="watchlist-item">
               <Link to={`/media/${item.mediaType}/${item.mediaId}`}>
-                <img 
-                  src={`https://image.tmdb.org/t/p/w500${item.posterPath}`} 
-                  alt={item.title}
-                  loading="lazy"
-                  width="180"
-                  height="270"
-                />
+                <img src={`https://image.tmdb.org/t/p/w500${item.posterPath}`} alt={item.title} />
                 <div className="watchlist-item-info">
                   <h3>{item.title}</h3>
                   <p>{new Date(item.releaseDate).getFullYear()}</p>
@@ -65,7 +59,7 @@ const Watchlist = () => {
           ))}
         </div>
       ) : (
-        <p className="empty-message">{t('emptyWatchlist')}</p>
+        <p>{t('emptyWatchlist')}</p>
       )}
     </div>
   );

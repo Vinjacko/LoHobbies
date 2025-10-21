@@ -1,255 +1,72 @@
 .diary-container {
-  padding: 2.5rem;
-  animation: fadeIn 0.6s ease-out;
-  position: relative;
-}
-
-.diary-container::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
-              radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.03) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: -1;
-}
-
-.diary-container h1 {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: var(--title-color);
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 2rem;
-  text-align: center;
-  letter-spacing: 1px;
-  filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.3));
-  animation: titlePulse 2s ease-in-out infinite;
-}
-
-@keyframes titlePulse {
-  0%, 100% {
-    filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.3));
-  }
-  50% {
-    filter: drop-shadow(0 0 40px rgba(168, 85, 247, 0.5));
-  }
-}
-
-/* Fallback per browser che non supportano background-clip */
-@supports not (background-clip: text) {
-  .diary-container h1 {
-    color: var(--title-color);
-    background: none;
-  }
+  padding: 2rem;
 }
 
 .diary-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1.5rem;
 }
 
 .diary-entry {
-  background: linear-gradient(135deg,
-    rgba(20, 25, 35, 0.8) 0%,
-    rgba(30, 30, 45, 0.8) 100%);
-  border-radius: 20px;
+  background-color: var(--background-color);
+  border-radius: 8px;
   overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  border: 2px solid transparent;
-  background-image: 
-    linear-gradient(135deg, rgba(20, 25, 35, 0.8) 0%, rgba(30, 30, 45, 0.8) 100%),
-    linear-gradient(135deg, rgba(0, 212, 255, 0.3) 0%, rgba(168, 85, 247, 0.3) 100%);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 0 40px rgba(0, 212, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  position: relative;
-}
-
-.diary-entry::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg,
-    rgba(0, 212, 255, 0.1) 0%,
-    rgba(168, 85, 247, 0.1) 50%,
-    rgba(255, 61, 113, 0.1) 100%);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-  border-radius: 20px;
+  transition: transform 0.2s;
+  border: 1px solid var(--border-color);
 }
 
 .diary-entry:hover {
-  transform: translateY(-12px) scale(1.03);
-  box-shadow: 
-    0 12px 48px rgba(0, 212, 255, 0.4),
-    0 0 60px rgba(168, 85, 247, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.diary-entry:hover::after {
-  opacity: 1;
+  transform: scale(1.05);
 }
 
 .diary-entry img {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.diary-entry:hover img {
-  transform: scale(1.1);
 }
 
 .diary-entry-content {
   padding: 1rem;
-  position: relative;
-  z-index: 1;
 }
 
 .diary-entry-content h2 {
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 1rem;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg,
-    #00d4ff 0%,
-    #a855f7 50%,
-    #ff3d71 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 2px 8px rgba(0, 212, 255, 0.3));
-  letter-spacing: 0.5px;
+  color: var(--text-color);
 }
 
 .diary-entry-content p {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   margin-bottom: 0.5rem;
-  color: var(--text-color);
-  line-height: 1.5;
+  color:var(--text-color);
 }
 
 .review-button {
-  background: var(--gradient-primary);
-  color: white;
+  background-color: #f39c12;
+  color: #000;
   border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
   cursor: pointer;
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.5px;
+  font-weight: bold;
   margin-top: 0.5rem;
-  box-shadow: 
-    0 4px 15px rgba(0, 212, 255, 0.3),
-    0 0 30px rgba(168, 85, 247, 0.2);
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.review-button::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s ease, height 0.6s ease;
-}
-
-.review-button:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 
-    0 8px 25px rgba(0, 212, 255, 0.5),
-    0 0 40px rgba(168, 85, 247, 0.4);
-}
-
-.review-button:hover::before {
-  width: 300px;
-  height: 300px;
 }
 
 .diary-entry-buttons {
   display: flex;
   justify-content: space-between;
-  gap: 8px;
-  margin-top: 0.75rem;
+  gap: 10px;
+  margin-top: 0.5rem;
 }
 
 .remove-button {
-  background: linear-gradient(135deg, var(--error-color) 0%, #dc2626 100%);
-  color: white;
+  background-color: #e74c3c;
+  color: #fff;
   border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
   cursor: pointer;
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.5px;
+  font-weight: bold;
   margin-top: 0.5rem;
-  box-shadow: 
-    0 4px 15px rgba(239, 68, 68, 0.3),
-    0 0 30px rgba(239, 68, 68, 0.2);
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.remove-button::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s ease, height 0.6s ease;
-}
-
-.remove-button:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 
-    0 8px 25px rgba(239, 68, 68, 0.5),
-    0 0 40px rgba(239, 68, 68, 0.4);
-}
-
-.remove-button:hover::before {
-  width: 300px;
-  height: 300px;
-}
-
-/* Messaggi di stato */
-.diary-container > div:first-of-type {
-  text-align: center;
-  padding: 3rem;
-  font-size: 1.2rem;
-  color: var(--text-color);
-}
-
-/* Messaggio quando il diario è vuoto */
-.diary-container p {
-  text-align: center;
-  font-size: 1.1rem;
-  color: var(--text-color);
-  margin-top: 2rem;
 }

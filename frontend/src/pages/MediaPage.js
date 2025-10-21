@@ -229,20 +229,9 @@ const MediaPage = () => {
                             <i className="fas fa-heart"></i>
                         </button>
                         {media.poster_path ? (
-                            <img 
-                                src={`https://image.tmdb.org/t/p/w500${media.poster_path}`} 
-                                alt={title}
-                                width="300"
-                                height="450"
-                                fetchpriority="high"
-                            />
+                            <img src={`https://image.tmdb.org/t/p/w500${media.poster_path}`} alt={title} />
                         ) : (
-                            <img 
-                                src='/img/content_placeholder.jpg' 
-                                alt='Placeholder'
-                                width="300"
-                                height="450"
-                            />
+                            <img src='/img/content_placeholder.jpg' alt='Placeholder' />
                         )}
                         <div className="media-info">
                             <h1>{title} ({new Date(release_date).getFullYear()})</h1>

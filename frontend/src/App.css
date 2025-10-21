@@ -1,228 +1,61 @@
 :root {
-  /* Performance optimizations */
-  content-visibility: auto;
-  contain-intrinsic-size: auto 500px;
-  
-  /* Dark Theme - Modern Vibrant Colors */
-  --background-color-dark: #0a0e27;
-  --background-gradient-dark: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  --text-color-dark: #e8eaf6;
-  --title-color-dark: #00d4ff;
-  --surface-color-dark: #151932;
-  --surface-elevated-dark: #1e2139;
-  --primary-color-dark: #00d4ff;
-  --primary-hover-dark: #00b8e6;
-  --secondary-color-dark: #ff3d71;
-  --accent-color-dark: #a855f7;
-  --border-color-dark: rgba(0, 212, 255, 0.3);
-  --input-background-color-dark: #1e2139;
-  --shadow-dark: 0 8px 32px rgba(0, 212, 255, 0.15);
-  --glow-dark: 0 0 20px rgba(0, 212, 255, 0.4);
 
-  /* Light Theme - Fresh Modern Colors */
-  --background-color-light: #f8f9fe;
-  --background-gradient-light: linear-gradient(135deg, #f8f9fe 0%, #e8eaf6 100%);
-  --text-color-light: #1e293b;
-  --title-color-light: #0891b2;
+  --background-color-dark: #000000;
+  --text-color-dark: #e0e0e0;
+  --title-color-dark: #FFC107;
+  --surface-color-dark: #000000;
+  --primary-color-dark: #FFC107;
+  --border-color-dark: #FFC107;
+  --input-background-color-dark: #000000;
+
+  --background-color-light: #f0f2f5;
+  --text-color-light: #1c1e21;
+  --title-color-light: #1c1e21;
   --surface-color-light: #ffffff;
-  --surface-elevated-light: #f1f5f9;
-  --primary-color-light: #0891b2;
-  --primary-hover-light: #0e7490;
-  --secondary-color-light: #ec4899;
-  --accent-color-light: #8b5cf6;
-  --border-color-light: rgba(8, 145, 178, 0.2);
+  --primary-color-light: #ffc107;
+  --border-color-light: #3a3b3c;
   --input-background-color-light: #ffffff;
-  --shadow-light: 0 8px 32px rgba(8, 145, 178, 0.1);
-  --glow-light: 0 0 20px rgba(8, 145, 178, 0.2);
 
-  /* Shared Colors */
-  --primary-variant-color: #06b6d4;
-  --error-color: #ef4444;
-  --success-color: #10b981;
-  --warning-color: #f59e0b;
-  
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #a855f7 100%);
-  --gradient-secondary: linear-gradient(135deg, #ff3d71 0%, #ff6b9d 100%);
-  --gradient-accent: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  --primary-variant-color: #f6de8f;
+  --secondary-color: #03dac6;
+  --error-color: #ff0000;
+  --success-color: #008000;
 }
 
 [data-theme='dark'] {
   --background-color: var(--background-color-dark);
-  --background-gradient: var(--background-gradient-dark);
   --text-color: var(--text-color-dark);
   --title-color: var(--title-color-dark);
   --surface-color: var(--surface-color-dark);
-  --surface-elevated: var(--surface-elevated-dark);
   --primary-color: var(--primary-color-dark);
-  --primary-hover: var(--primary-hover-dark);
-  --secondary-color: var(--secondary-color-dark);
-  --accent-color: var(--accent-color-dark);
   --border-color: var(--border-color-dark);
   --input-background-color: var(--input-background-color-dark);
-  --shadow: var(--shadow-dark);
-  --glow: var(--glow-dark);
 }
 
 [data-theme='light'] {
   --background-color: var(--background-color-light);
-  --background-gradient: var(--background-gradient-light);
   --text-color: var(--text-color-light);
   --title-color: var(--title-color-light);
   --surface-color: var(--surface-color-light);
-  --surface-elevated: var(--surface-elevated-light);
   --primary-color: var(--primary-color-light);
-  --primary-hover: var(--primary-hover-light);
-  --secondary-color: var(--secondary-color-light);
-  --accent-color: var(--accent-color-light);
   --border-color: var(--border-color-light);
   --input-background-color: var(--input-background-color-light);
-  --shadow: var(--shadow-light);
-  --glow: var(--glow-light);
-}
-
-/* Keyframes for Modern Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-@keyframes glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) translateZ(0);
-  }
-  50% {
-    transform: translateY(-10px) translateZ(0);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9) translateZ(0);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateZ(0);
-  }
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: var(--title-color);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  animation: fadeIn 0.6s ease-out;
-  will-change: auto;
 }
 
 body {
-  background: var(--background-gradient);
-  background-attachment: fixed;
+  background-color: var(--background-color);
   color: var(--text-color);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.3s, color 0.3s;
 }
 
 a {
   color: var(--text-color);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-a:hover {
-  color: var(--primary-color);
 }
 
 .App {
   text-align: center;
-  min-height: 100vh;
-}
-
-/* Modern Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--surface-color);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 5px;
-  transition: background 0.3s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-hover);
-}
-
-/* Stili globali per messaggi di stato */
-.loading-message,
-.error-message-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 50vh;
-  font-size: 1.3rem;
-  color: var(--text-color);
-  font-weight: 600;
-}
-
-.error-message-page {
-  color: var(--error-color);
-}
-
-/* Messaggio lista vuota */
-.empty-message {
-  text-align: center;
-  padding: 3rem;
-  font-size: 1.2rem;
-  color: var(--text-color);
-  opacity: 0.8;
-}
-
-/* Reduce animations for users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }
