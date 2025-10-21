@@ -23,8 +23,8 @@ const sendTokenResponse = (user, statusCode, res, rememberMe = false) => {
 
   const cookieOptions = {
     httpOnly: true,
-    secure: false,
-    sameSite: 'strict',
+    secure: true,
+    sameSite: 'none',
   };
 
   const accessTokenCookieOptions = {
